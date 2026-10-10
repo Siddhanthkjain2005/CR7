@@ -31,12 +31,14 @@ export default function EvaluationEvidence() {
   const [pack, setPack] = useState<Data | null>(null);
   const [surrogate, setSurrogate] = useState<Data | null>(null);
   const [audit, setAudit] = useState<Data | null>(null);
+  const [study, setStudy] = useState<Data | null>(null);
   const [missing, setMissing] = useState<string[]>([]);
   useEffect(() => {
     const gone = (name: string) => () => setMissing(m => [...m, name]);
     api('/api/evaluation-pack').then(setPack).catch(gone('evaluation pack'));
     api('/api/verification/surrogate').then(setSurrogate).catch(gone('surrogate study'));
     api('/api/verification/physics-audit').then(setAudit).catch(gone('physics audit'));
+    api('/api/verification/parameter-calibration-study').then(setStudy).catch(gone('parameter calibration study'));
   }, []);
   if (!pack && !surrogate && !audit && !missing.length) {
     return (
@@ -136,6 +138,54 @@ export default function EvaluationEvidence() {
             )}
           </div>
           <p className="panel-note">{pack.measured_performance}</p>
+        </Panel>
+      )}
+
+      {study && (
+        <Panel
+          title="Calibrating the generator from one reduced-voltage shot"
+          eyebrow="Simulated model-mismatch study · not laboratory evidence"
+          action={<PassFail pass={study.gates.all_pass} passText="All declared gates passed" failText="Declared gates not met" />}
+        >
+          <p className="panel-note">
+            A stand-in “true” generator differs from the declared model (loss, stray capacitance, a charging-resistor discharge path, part of the tail at the load, spark-gap
+            resistance and extra inductance). One shot at half charge fits three circuit parameters, which then predict other settings and voltages.
+          </p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Impulse · method</th>
+                  <th className="num">Shots</th>
+                  <th className="num">Crest median / worst %</th>
+                  <th className="num">Front median / worst %</th>
+                  <th className="num">Tail median / worst %</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(study.summary as Data).flatMap(([impulse, m]: [string, Data]) =>
+                  (['uncalibrated', 'metric_offset', 'fitted_parameters'] as const).map(method => (
+                    <tr key={impulse + method}>
+                      <td>
+                        {impulse} · {method === 'uncalibrated' ? 'declared model' : method === 'metric_offset' ? 'one-shot offset' : 'fitted parameters'}
+                      </td>
+                      <td className="num">{m.validation_shots}</td>
+                      {(['crest_kv', 'front_us', 'tail_us'] as const).map(k => (
+                        <td className="num" key={k}>
+                          {fmt(m[method][k].median_abs_pct, 3)} / {fmt(m[method][k].worst_abs_pct, 2)}
+                        </td>
+                      ))}
+                    </tr>
+                  )),
+                )}
+              </tbody>
+            </table>
+          </div>
+          <p className="panel-note">
+            Recommendations that pass on the stand-in generator: {study.gates.recommendation_truth_passes.uncalibrated} of {study.gates.recommendation_truth_passes.cases} with the declared model,{' '}
+            {study.gates.recommendation_truth_passes.fitted_parameters} of {study.gates.recommendation_truth_passes.cases} after fitting. The one-shot offset cannot transfer to other settings or
+            voltages, so it equals the declared model here. Real calibration shots are needed to confirm this on the machine.
+          </p>
         </Panel>
       )}
 

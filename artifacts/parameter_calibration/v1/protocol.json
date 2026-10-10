@@ -1,0 +1,85 @@
+{
+  "version": "parameter-calibration-study-v1",
+  "declared_at": "2026-10-10T17:54:26.563945+00:00",
+  "evidence_type": "SIMULATED MODEL-MISMATCH STUDY (not laboratory evidence)",
+  "method": "effective-parameter-calibration-v1",
+  "scenarios": {
+    "control_no_difference": {},
+    "less_loss_more_stray": {
+      "efficiency_scale": 1.08,
+      "extra_stray_pf": 250
+    },
+    "charging_resistor_path": {
+      "extra_shunt_ohm_per_stage": 135000,
+      "efficiency_scale": 0.97
+    },
+    "tail_partly_at_load": {
+      "tail_load_fraction": 0.3
+    },
+    "spark_resistance_and_inductance": {
+      "spark_ohm_per_stage": 3,
+      "extra_l_uh": 10,
+      "extra_stray_pf": 100
+    },
+    "combined": {
+      "tail_load_fraction": 0.15,
+      "extra_shunt_ohm_per_stage": 135000,
+      "efficiency_scale": 1.05,
+      "extra_stray_pf": 150,
+      "extra_l_uh": 5
+    }
+  },
+  "targets_kv": {
+    "Lightning": 1425,
+    "Switching": 1050
+  },
+  "stock": {
+    "front": [
+      {
+        "ohm": 30,
+        "count_per_stage": 2
+      },
+      {
+        "ohm": 465,
+        "count_per_stage": 2
+      },
+      {
+        "ohm": 3700,
+        "count_per_stage": 2
+      }
+    ],
+    "tail": [
+      {
+        "ohm": 520,
+        "count_per_stage": 2
+      },
+      {
+        "ohm": 22000,
+        "count_per_stage": 2
+      }
+    ],
+    "provenance": "Study assumption: two units per CPRI source value per stage"
+  },
+  "base_request": {
+    "profile_id": "cpri_problem_brief_profile",
+    "solver": "circuit",
+    "model_mode": "physics",
+    "include_base_c": true,
+    "load_c_pf": 650,
+    "divider_c_pf": 250,
+    "stray_c_pf": 55,
+    "l_uh": 12,
+    "efficiency": 0.83
+  },
+  "calibration_shot": "Rank-1 setting at 50 % of its recommended charge; one shot.",
+  "validation_shots": "Ranks 1-5 at full charge, rank 1 at 75 % charge, best setting with two fewer stages.",
+  "gate": {
+    "G1_crest": "Per impulse type, median |crest error| over all mismatch scenarios and validation shots with fitted parameters <= 50 % of the uncalibrated median.",
+    "G2_timing": "Per impulse type, median |front| and |tail| errors with fitted parameters <= the uncalibrated medians.",
+    "G3_recommendations": "Recommendations re-made with fitted parameters pass on the true generator at least as often as uncalibrated ones in every scenario and impulse type, and more often in total.",
+    "G4_no_regression": "No scenario/impulse/metric where the fitted-parameter p95 |error| exceeds the uncalibrated p95 by more than 2 percentage points.",
+    "G5_control": "With no true difference, fitted-parameter errors stay below 0.5 % for every metric.",
+    "decision": "All five must hold for the fitted-parameter workflow to be offered in the application; otherwise it stays an experiment."
+  },
+  "script_sha256": "0b5b5f142fb9ed1eaa40ddb46f383291e82ca504f8eff7a46a66c292f85946f8"
+}

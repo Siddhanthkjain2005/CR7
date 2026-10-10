@@ -72,7 +72,17 @@ def physics(req,p,n,charge,rf,rt,include_waveform=False):
     stray=req.stray_c_pf+(p['base_c_pf'] or 0 if req.include_base_c else 0)
     if req.solver=='reference':
         return predict(n,charge,rf,rt,req.load_c_pf,req.divider_c_pf,stray,req.l_uh,req.efficiency,p['stage_c_uf'])
-    return simulate(n,charge,rf,rt,p['stage_c_uf'],req.load_c_pf+req.divider_c_pf+stray,req.l_uh,req.efficiency,req.impulse_type,include_waveform)
+    # Effective generator parameters fitted from calibration shots (circuit only).
+    fitted=p.get('effective_parameters') or {}
+    return simulate(n,charge,rf,rt*fitted.get('tail_scale',1.),p['stage_c_uf'],
+        req.load_c_pf+req.divider_c_pf+stray+fitted.get('extra_load_pf',0.),req.l_uh,
+        req.efficiency*fitted.get('loss_scale',1.),req.impulse_type,include_waveform)
+
+def parameter_scope_matches(record,req,p):
+    scope=record.get('scope',{})
+    return (same_hardware(scope.get('generator_profile'),p) and scope.get('impulse_type')==req.impulse_type
+            and scope.get('layout_id')==req.layout_id and scope.get('include_base_c')==req.include_base_c
+            and scope.get('physics_version')==CIRCUIT_VERSION and req.solver=='circuit')
 
 def ml_row(req,settings,phys):
     return {'Impulse_Type':req.impulse_type,'Test_kV':req.test_kv,'Load_C_pF':req.load_c_pf,
@@ -118,8 +128,18 @@ def final_rank(c):
             -(agreement.get('sampled_both_pass_pct',0)),not c['compliance']['robust_pass'],c['score'])
     return (not c['compliance']['nominal_pass'],not c['compliance']['robust_pass'],c['score'])
 
-def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None,_network_selector=None):
+def optimize(req:OptimizeRequest,calibration=None,*,parameter_calibration=None,_benchmark_networks=None,_network_selector=None):
     p=resolve_profile(req)
+    parameter_review=None
+    if parameter_calibration is not None:
+        if not parameter_scope_matches(parameter_calibration,req,p):
+            raise ValueError('The fitted generator parameters belong to a different generator, impulse type, layout, base-capacitance choice or model version. No recommendation generated.')
+        p={**p,'effective_parameters':{**parameter_calibration['parameters'],'calibration_id':parameter_calibration.get('id'),
+            'shots':parameter_calibration['fit']['shots'],'source_type':parameter_calibration.get('source_type')}}
+        parameter_review={'id':parameter_calibration.get('id'),'parameters':parameter_calibration['parameters'],
+            'shots':parameter_calibration['fit']['shots'],'source_type':parameter_calibration.get('source_type'),
+            'fit_residual_pct':parameter_calibration['fit']['residual_pct'],
+            'note':'Circuit predictions use generator parameters fitted from calibration shots: extra loss, extra load-side capacitance and effective tail resistance. They apply to every setting of this generator, impulse type and layout.'}
     reference_review=validate_request(req,p)
     if reference_review['confirmation_required']:
         raise ValueError(reference_review['message'])
@@ -312,6 +332,7 @@ def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None,_ne
         'inventory_provenance':inventory_source,'warnings':warnings,'source_type':'model_prediction',
         'ranking_config':{**WEIGHTS,'ranking_order':['Both nominal model checks','Sampled agreement among shortlisted candidates','Reference interval containment','Weighted objective using worse model deviations']} if req.require_model_agreement else WEIGHTS,
         'calibration_review':calibration_review,'test_object_review':reference_review,
+        'parameter_calibration_review':parameter_review,
         **({'benchmark_ranking':benchmark_ranking} if benchmark_ranking is not None else {})}
 
 def calibration_matches(cal,req,c):

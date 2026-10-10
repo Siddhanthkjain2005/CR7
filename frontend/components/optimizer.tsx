@@ -38,6 +38,10 @@ const customFields: [string, string, string, string][] = [
 export function predictionBasis(run: Data | null | undefined, c: Data | null | undefined): string {
   if (!run || !c) return '';
   if (c.calibration) return 'Circuit prediction with a local correction from one shot (corrected metrics listed separately)';
+  if (run.parameter_calibration_review) {
+    const n = run.parameter_calibration_review.shots;
+    return `Circuit prediction with generator parameters fitted from ${n} calibration shot${n === 1 ? '' : 's'}`;
+  }
   if (run.inputs?.solver === 'circuit') return 'Circuit prediction';
   if ((c.ood?.trust_weight ?? 0) > 0) return 'Workbook metrics with ML correction; curve reconstructed from those metrics';
   if (run.inputs?.model_mode !== 'physics') return 'Outside validated ML range; workbook-equation metrics used, curve reconstructed from them';
@@ -255,6 +259,19 @@ export default function Optimizer() {
             The source lists resistor values but no quantities. Enter counted stock with its provenance in <a href="#stock">Counted stock</a>, or choose a clearly labelled assumed-stock demo preset.
           </Notice>
         )}
+        {inputs.parameter_calibration_id && (
+          <Notice
+            tone="info"
+            title="Fitted generator parameters are in use"
+            action={
+              <button className="button small" type="button" onClick={() => set({parameter_calibration_id: null})}>
+                Use the declared model
+              </button>
+            }
+          >
+            Predictions use loss, extra load capacitance and tail resistance fitted from calibration shots (record {inputs.parameter_calibration_id}). They apply to every setting of this generator and impulse type.
+          </Notice>
+        )}
         {inputs.require_model_agreement && (
           <Notice tone="info">Agreement search changes resistor settings and charging voltage to meet both model checks. It keeps the original tolerances and uncertainty assumptions. Model agreement is not laboratory validation.</Notice>
         )}
@@ -345,7 +362,7 @@ export default function Optimizer() {
             <Segmented
               label="Impulse type"
               value={inputs.impulse_type}
-              onChange={v => set({impulse_type: v})}
+              onChange={v => set({impulse_type: v, parameter_calibration_id: null})}
               options={[
                 ['Lightning', <><Zap size={14} aria-hidden /> Lightning</>],
                 ['Switching', <><Zap size={14} aria-hidden /> Switching</>],
@@ -919,6 +936,25 @@ export default function Optimizer() {
                 </div>
               </div>
             </Panel>
+            {run.parameter_calibration_review && (
+              <Panel id="fitted-parameters" title="Fitted generator parameters" eyebrow={`From ${run.parameter_calibration_review.shots} calibration shot(s) · ${run.parameter_calibration_review.source_type === 'measured_lab' ? 'measured' : 'generated or simulated'}`}>
+                <div className="crosscheck">
+                  <div>
+                    <span>Loss scale on the assumed factor</span>
+                    <strong>×{fmt(run.parameter_calibration_review.parameters.loss_scale, 4)}</strong>
+                  </div>
+                  <div>
+                    <span>Extra load-side capacitance</span>
+                    <strong>{fmt(run.parameter_calibration_review.parameters.extra_load_pf, 1)} pF</strong>
+                  </div>
+                  <div>
+                    <span>Effective tail resistance</span>
+                    <strong>×{fmt(run.parameter_calibration_review.parameters.tail_scale, 4)}</strong>
+                  </div>
+                </div>
+                <p className="panel-note">{run.parameter_calibration_review.note} These are effective values of the lumped circuit, not measured component values.</p>
+              </Panel>
+            )}
             <Panel id="scenarios" title="Parasitic scenario checks" eyebrow="Finite simulation evidence, not a probability of laboratory success">
               <div className="scenario">
                 <div className="scenario-top">

@@ -12,8 +12,10 @@ from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse, Response
 from fastapi.staticfiles import StaticFiles
-from .schemas import OptimizeRequest,SimulationRequest,ComplianceRequest,TrialEvaluationRequest,SetupTransitionRequest,SensitivityRequest
-from .optimization.engine import optimize, profile_for, custom_profile, CUSTOM_ID, PROFILES, physics
+from .schemas import OptimizeRequest,SimulationRequest,ComplianceRequest,TrialEvaluationRequest,SetupTransitionRequest,SensitivityRequest,ParameterCalibrationRequest
+from .physics.parameter_calibration import fit as fit_parameters, VERSION as PARAMETER_CALIBRATION_VERSION
+from .physics.circuit import VERSION as CIRCUIT_VERSION
+from .optimization.engine import optimize, profile_for, custom_profile, CUSTOM_ID, PROFILES, physics, same_hardware as same_hardware_profile
 from .physics.waveform_metrics import analyze,waveform_from_metrics
 from .physics.compliance import check,RULES
 from .data.workbook_reference import calculate
@@ -184,7 +186,8 @@ def run_optimize(req:OptimizeRequest):
         if cal:
             cal=reviewed_calibration_origin(cal,storage.get,ROOT)
             if cal['source_type']=='unknown':raise ValueError(cal['source_review']['message'])
-        result=optimize(req,cal)
+        fitted=saved(req.parameter_calibration_id,'parameter_calibration') if req.parameter_calibration_id else None
+        result=optimize(req,cal,parameter_calibration=fitted)
     except ValueError as e:raise HTTPException(422,str(e))
     id=uuid.uuid4().hex[:12]; result['run_id']=id
     return storage.put('run',id,result)
@@ -256,6 +259,13 @@ def surrogate_study():
     curve_path=ROOT/'data/generated/circuit_dataset_v1/learning_curve.json'
     return {'summary':summary,'protocol':protocol,'dataset':{k:manifest[k] for k in ['version','rows','configurations','circuit_model','split','summary','surrogate_warning','provenance_classes']},
             'learning_curve':json.loads(curve_path.read_text(encoding='utf-8')) if curve_path.is_file() else None}
+
+@app.get('/api/verification/parameter-calibration-study')
+def parameter_calibration_study():
+    result=saved_json('artifacts/parameter_calibration/v1/results.json')
+    return {**{k:v for k,v in result.items() if k!='results'},'protocol':saved_json('artifacts/parameter_calibration/v1/protocol.json'),
+            'cases':[{'scenario':r['scenario'],'impulse_type':r['impulse_type'],'parameters':r['fit']['parameters'],
+                      'recommendation':{k:{'truth_pass':v['truth_pass']} for k,v in r['recommendation'].items()}} for r in result['results']]}
 
 @app.get('/api/verification/independent-circuit')
 def independent_circuit_verification():
@@ -339,8 +349,9 @@ def predict_as_fired(run,candidate,as_fired):
     if min(settings['charge_kv_stage'],settings['front_r_stage'],settings['tail_r_stage'],circuit['load_c_pf'])<=0 or min(circuit['divider_c_pf'],circuit['stray_c_pf'],circuit['l_uh'])<0:
         raise ValueError('As-fired values must be positive.')
     total=circuit['load_c_pf']+circuit['divider_c_pf']+circuit['stray_c_pf']+((p.get('base_c_pf') or 0) if inputs.get('include_base_c') else 0)
-    result=circuit_simulate(settings['stages'],settings['charge_kv_stage'],settings['front_r_stage'],settings['tail_r_stage'],
-        p['stage_c_uf'],total,circuit['l_uh'],inputs['efficiency'],inputs['impulse_type'],True)
+    fitted=p.get('effective_parameters') or {}
+    result=circuit_simulate(settings['stages'],settings['charge_kv_stage'],settings['front_r_stage'],settings['tail_r_stage']*fitted.get('tail_scale',1.),
+        p['stage_c_uf'],total+fitted.get('extra_load_pf',0.),circuit['l_uh'],inputs['efficiency']*fitted.get('loss_scale',1.),inputs['impulse_type'],True)
     return {'settings':settings,'circuit_inputs':circuit,'changed_fields':sorted(as_fired),
             'prediction':{k:result[k] for k in ['front_us','tail_us','crest_kv']},'waveform':result['waveform'],
             'model':result['diagnostics']['model'],
@@ -475,9 +486,61 @@ def calibrate(id:str):
         'retraining_queue':'Stored for later engineer-reviewed retraining; no automatic training',
         'limitation':'Applies only to same profile, layout, solver and hardware settings with inputs within 1%. Reduced-voltage transfer to a higher-voltage shot is not inferred.'})
 
+def calibration_shot(trial):
+    """Circuit inputs of one capture as fired, plus its measured metrics."""
+    run=saved(trial['run_id'],'run'); c=selected_candidate(run,trial['candidate_id']); i=run['inputs']; p=run['profile']
+    if i.get('solver')!='circuit':raise ValueError('Generator parameters are fitted only against circuit predictions.')
+    if p.get('effective_parameters'):raise ValueError('Fit from captures of runs without fitted parameters, so the fit starts from the declared model.')
+    fired=(trial.get('as_fired') or {})
+    settings=fired.get('settings') or {k:c['settings'][k] for k in ['stages','charge_kv_stage','front_r_stage','tail_r_stage']}
+    circuit=fired.get('circuit_inputs') or {k:i[k] for k in ['load_c_pf','divider_c_pf','stray_c_pf','l_uh']}
+    total=circuit['load_c_pf']+circuit['divider_c_pf']+circuit['stray_c_pf']+((p.get('base_c_pf') or 0) if i.get('include_base_c') else 0)
+    return run,{**settings,'stage_c_uf':p['stage_c_uf'],'total_c_pf':total,'l_uh':circuit['l_uh'],'efficiency':i['efficiency'],
+        'impulse_type':i['impulse_type'],'measured':{k:trial['measured'][k] for k in ['front_us','tail_us','crest_kv']}}
+
+@app.post('/api/parameter-calibrations')
+def create_parameter_calibration(body:ParameterCalibrationRequest):
+    """Fit loss, extra load capacitance and effective tail resistance from calibration captures."""
+    try:
+        if len(set(body.trial_ids))!=len(body.trial_ids):raise ValueError('Select distinct captures.')
+        shots=[];runs=[];sources=[];hashes=[]
+        for tid in body.trial_ids:
+            trial=saved(tid,'trial')
+            if trial.get('capture_purpose')=='validation':
+                raise ValueError(f'Capture {tid} was recorded for independent validation; it cannot be used to fit parameters.')
+            run=saved(trial['run_id'],'run')
+            source=evidence_record(trial,run)['source_type']
+            if source not in ('generated_demo','measured_lab'):raise ValueError('Only explicitly classified captures can fit generator parameters.')
+            raw=(ROOT/trial['raw_path']).resolve()
+            if not raw.is_relative_to(ROOT.resolve()) or not raw.is_file() or hashlib.sha256(raw.read_bytes()).hexdigest()!=trial['raw_sha256']:
+                raise ValueError('Original capture CSV is missing or changed.')
+            wave=trial.get('waveform') or {}
+            quality=assess_waveform(wave.get('time_us'),wave.get('voltage_kv'),trial['measured'],impulse_type=run['inputs']['impulse_type'],rules=run.get('rules',{}))
+            if not quality['calibration_allowed']:raise ValueError('Capture review required: '+' '.join(x['message'] for x in quality['issues']))
+            run,shot=calibration_shot(trial); shots.append(shot); runs.append(run); sources.append(source); hashes.append(trial['raw_sha256'])
+        if len(set(hashes))!=len(hashes):raise ValueError('The same waveform was selected twice.')
+        first=runs[0]
+        keys=['impulse_type','layout_id','include_base_c']
+        if any(not same_hardware_profile(r['profile'],first['profile']) or any(r['inputs'][k]!=first['inputs'][k] for k in keys) for r in runs):
+            raise ValueError('All captures must come from the same generator, impulse type, layout and base-capacitance choice.')
+        fitted=fit_parameters(shots)
+    except (KeyError,ValueError) as e:raise HTTPException(422,str(e))
+    record={'version':PARAMETER_CALIBRATION_VERSION,'trial_ids':body.trial_ids,'raw_sha256':hashes,
+        'source_type':'generated_stress_test' if 'generated_demo' in sources else 'measured_lab',
+        'parameters':fitted['parameters'],'fit':{k:v for k,v in fitted.items() if k!='parameters'},
+        'scope':{'generator_profile':first['profile'],**{k:first['inputs'][k] for k in keys},'physics_version':CIRCUIT_VERSION},
+        'production_model_changed':False,
+        'limitation':'Effective parameters of the lumped circuit for this generator, impulse type and layout. They absorb unmodelled losses, '
+                     'capacitance and discharge paths seen in the calibration shots; they are not measured component values. '
+                     'Captures used here are excluded from independent evaluation.'}
+    return storage.put('parameter_calibration',uuid.uuid4().hex[:12],record)
+
+@app.get('/api/parameter-calibrations/{id}')
+def get_parameter_calibration(id:str):return saved(id,'parameter_calibration')
+
 @app.get('/api/documents/{name}')
 def document(name:str):
-    paths={'source_reconciliation':ROOT/'docs/source_reconciliation.md','data_audit':ROOT/'reports/data_audit.html','assumptions':ROOT/'docs/assumptions.md','accuracy_v2_results':ROOT/'docs/accuracy_v2_results.md','accuracy_v4_results':ROOT/'docs/accuracy_v4_results.md','accuracy_v5_results':ROOT/'docs/accuracy_v5_results.md','judging_criteria':ROOT/'docs/judging_criteria_evidence.md','capture_resolution':ROOT/'docs/capture_resolution_review.md','independent_simulation_results':ROOT/'docs/independent_simulation_results.md','trusted_waveform_data_search':ROOT/'docs/trusted_waveform_data_search.md','physics_audit':ROOT/'docs/physics_audit.md','laboratory_validation_checklist':ROOT/'docs/laboratory_validation_checklist.md','accuracy_report':ROOT/'docs/accuracy_report.md'}
+    paths={'source_reconciliation':ROOT/'docs/source_reconciliation.md','data_audit':ROOT/'reports/data_audit.html','assumptions':ROOT/'docs/assumptions.md','accuracy_v2_results':ROOT/'docs/accuracy_v2_results.md','accuracy_v4_results':ROOT/'docs/accuracy_v4_results.md','accuracy_v5_results':ROOT/'docs/accuracy_v5_results.md','judging_criteria':ROOT/'docs/judging_criteria_evidence.md','capture_resolution':ROOT/'docs/capture_resolution_review.md','independent_simulation_results':ROOT/'docs/independent_simulation_results.md','trusted_waveform_data_search':ROOT/'docs/trusted_waveform_data_search.md','physics_audit':ROOT/'docs/physics_audit.md','laboratory_validation_checklist':ROOT/'docs/laboratory_validation_checklist.md','accuracy_report':ROOT/'docs/accuracy_report.md','parameter_calibration':ROOT/'docs/parameter_calibration.md'}
     p=paths.get(name)
     if p is None or not p.exists():raise HTTPException(404,'Document not found')
     return FileResponse(p,media_type='text/html' if p.suffix=='.html' else 'text/plain')

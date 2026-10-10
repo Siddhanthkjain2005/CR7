@@ -1,6 +1,6 @@
 # Accuracy report — what is demonstrated (10 October 2026)
 
-Branch `codex/hardening-judge-workflow`. **No measured generator waveform with known settings has been supplied, so no laboratory accuracy is claimed.**
+Branch `codex/effective-parameter-calibration` (built on `codex/hardening-judge-workflow`). **No measured generator waveform with known settings has been supplied, so no laboratory accuracy is claimed.**
 
 The organizers will test against a real impulse generator. Measured agreement can only be established then, using the workflow and checklist below.
 
@@ -58,6 +58,19 @@ What this means:
 | Surrogate-screened network search | **Evaluated, not promoted** | Equal or better top setting in 24/24 requests, and strictly better in 1, at about 4 % more runtime. That fails the promotion rule declared in advance, so the default search is unchanged. |
 
 Wherever ML is outside validated support, the app says "Outside validated ML range; circuit prediction used" or shows the workbook-equation basis. The surrogate never produces a displayed prediction.
+
+## Better approach tested on this branch: fitting the generator from one shot
+
+See `docs/parameter_calibration.md`. Three effective circuit parameters are fitted from one reduced-voltage calibration shot: extra loss, extra load-side capacitance and effective tail resistance. They are then used at every other setting.
+
+In a simulated model-mismatch study whose gates were declared in advance:
+
+- Median errors fell from 3–4 % to below 0.03 %.
+- Recommendations that pass on the stand-in generator rose from 6/12 to 12/12.
+
+With realistic measurement noise on the calibration shot, errors were still roughly halved and recommendations still rose from 6/12 to 12/12. The existing one-shot offset cannot transfer across settings or voltages, so it gave no improvement in this workflow.
+
+This is simulation evidence. Real shots must confirm it.
 
 ## What still needs real-generator measurements
 

@@ -49,6 +49,12 @@ Keep calibration and validation captures separate:
   - [ ] Polarity mismatch.
 - [ ] Keep the raw file. The application stores it byte-for-byte, with its SHA-256.
 
+## Fitting the generator (branch `codex/effective-parameter-calibration`)
+
+- [ ] After the reduced-voltage calibration shots (shots 1–3 and 10–12), use **Fit generator parameters**. Fit from all three repeats if possible, to average out noise.
+- [ ] Check that no fitted parameter sits at a bound and that the residuals are small. If either fails, review the units, the onset and the as-fired settings before continuing.
+- [ ] Press **Recommend again with the fitted generator**, then fire the validation shots at the new recommendation.
+
 ## After the session
 
 - [ ] Run **Independent evaluation** on at least three validation shots per group. It reports error statistics and false-pass counts against the predictions saved before the shots.

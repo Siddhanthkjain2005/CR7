@@ -1,0 +1,4038 @@
+{
+  "version": "parameter-calibration-study-v1",
+  "protocol_sha256": "b0e56f96125557d6c175cbeef8ebea1adde3608ebdc1224ea7084886e20e314c",
+  "summary": {
+    "Lightning": {
+      "uncalibrated": {
+        "front_us": {
+          "median_abs_pct": 4.101170651256014,
+          "p95_abs_pct": 13.02875150897178,
+          "worst_abs_pct": 13.039828861758608
+        },
+        "tail_us": {
+          "median_abs_pct": 0.8580208687727409,
+          "p95_abs_pct": 2.5128187146970644,
+          "worst_abs_pct": 2.51778039166497
+        },
+        "crest_kv": {
+          "median_abs_pct": 2.9195101485383788,
+          "p95_abs_pct": 5.283934378079567,
+          "worst_abs_pct": 5.28975153724317
+        }
+      },
+      "metric_offset": {
+        "front_us": {
+          "median_abs_pct": 4.101170651256014,
+          "p95_abs_pct": 13.02875150897178,
+          "worst_abs_pct": 13.039828861758608
+        },
+        "tail_us": {
+          "median_abs_pct": 0.8580208687727409,
+          "p95_abs_pct": 2.5128187146970644,
+          "worst_abs_pct": 2.51778039166497
+        },
+        "crest_kv": {
+          "median_abs_pct": 2.9195101485383788,
+          "p95_abs_pct": 5.283934378079567,
+          "worst_abs_pct": 5.28975153724317
+        }
+      },
+      "fitted_parameters": {
+        "front_us": {
+          "median_abs_pct": 0.00587023858740765,
+          "p95_abs_pct": 0.028827293495251035,
+          "worst_abs_pct": 0.029838836778317557
+        },
+        "tail_us": {
+          "median_abs_pct": 0.0007729900290076586,
+          "p95_abs_pct": 0.007877456027218788,
+          "worst_abs_pct": 0.008594508241355214
+        },
+        "crest_kv": {
+          "median_abs_pct": 0.0014463742302517346,
+          "p95_abs_pct": 0.029867094548237105,
+          "worst_abs_pct": 0.030768648736279047
+        }
+      },
+      "validation_shots": 30
+    },
+    "Switching": {
+      "uncalibrated": {
+        "front_us": {
+          "median_abs_pct": 3.71307543251862,
+          "p95_abs_pct": 10.16431696115231,
+          "worst_abs_pct": 10.336638741265169
+        },
+        "tail_us": {
+          "median_abs_pct": 3.1487131381421674,
+          "p95_abs_pct": 14.554493355383835,
+          "worst_abs_pct": 15.216711987175291
+        },
+        "crest_kv": {
+          "median_abs_pct": 4.067618365786552,
+          "p95_abs_pct": 4.896499195138601,
+          "worst_abs_pct": 5.180470203226861
+        }
+      },
+      "metric_offset": {
+        "front_us": {
+          "median_abs_pct": 3.71307543251862,
+          "p95_abs_pct": 10.16431696115231,
+          "worst_abs_pct": 10.336638741265169
+        },
+        "tail_us": {
+          "median_abs_pct": 3.1487131381421674,
+          "p95_abs_pct": 14.554493355383835,
+          "worst_abs_pct": 15.216711987175291
+        },
+        "crest_kv": {
+          "median_abs_pct": 4.067618365786552,
+          "p95_abs_pct": 4.896499195138601,
+          "worst_abs_pct": 5.180470203226861
+        }
+      },
+      "fitted_parameters": {
+        "front_us": {
+          "median_abs_pct": 0.023953040378499324,
+          "p95_abs_pct": 0.3083890067947291,
+          "worst_abs_pct": 0.4021080032804103
+        },
+        "tail_us": {
+          "median_abs_pct": 0.0048750265530639325,
+          "p95_abs_pct": 0.39515735573204686,
+          "worst_abs_pct": 0.599157012675855
+        },
+        "crest_kv": {
+          "median_abs_pct": 0.0030701532155674727,
+          "p95_abs_pct": 0.36998727113896057,
+          "worst_abs_pct": 0.4773952107981261
+        }
+      },
+      "validation_shots": 35
+    }
+  },
+  "gates": {
+    "G1_crest": true,
+    "G2_timing": true,
+    "G3_recommendations": true,
+    "G4_no_regression": true,
+    "G5_control": true,
+    "all_pass": true,
+    "largest_p95_increase_pp": 0.003062284767758605,
+    "recommendation_truth_passes": {
+      "uncalibrated": 6,
+      "fitted_parameters": 12,
+      "cases": 12
+    }
+  },
+  "results": [
+    {
+      "scenario": "control_no_difference",
+      "impulse_type": "Lightning",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 91.00249856659505,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 507.9928952042628,
+          "stage_utilization": 0.9100249856659505,
+          "stored_energy_kj": 22.77400054974862,
+          "voltage_margin_kv_stage": 17.995002866809898,
+          "energy_margin_kj": 7.225999450251379,
+          "energy_margin_pct": 24.086664834171266
+        },
+        "measured": {
+          "front_us": 1.1850593815341757,
+          "tail_us": 52.556396154570244,
+          "crest_kv": 712.4999882264926
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 1.000000096992562,
+          "extra_load_pf": 0.0012779331694169425,
+          "tail_scale": 1.0000001738959696
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -3.676724480428106e-08,
+            "tail_us": -4.612243920121273e-09,
+            "crest_kv": -3.8754333075985414e-09
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.3232163354873867,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.1850593815341757,
+            "tail_us": 52.556396154570244,
+            "crest_kv": 1424.9999764529853
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -7.971718606336609e-05,
+              "tail_us": -2.9871553208771218e-05,
+              "crest_kv": 1.652422088049832e-06
+            },
+            "metric_offset": {
+              "front_us": -7.971718606336609e-05,
+              "tail_us": -2.9871553208771218e-05,
+              "crest_kv": 1.652422088049832e-06
+            },
+            "fitted_parameters": {
+              "front_us": -3.676724480428106e-08,
+              "tail_us": -4.612243920121273e-09,
+              "crest_kv": -3.8754333075985414e-09
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.10674299358814,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9105337149679407,
+            "stored_energy_kj": 22.799470267566278,
+            "voltage_margin_kv_stage": 17.893257006411858,
+            "energy_margin_kj": 7.200529732433722,
+            "energy_margin_pct": 24.00176577477907
+          },
+          "truth": {
+            "front_us": 1.1833535032966984,
+            "tail_us": 51.4226225061384,
+            "crest_kv": 1424.9999969597288
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -5.330849202067611e-05,
+              "tail_us": -2.837407419020721e-05,
+              "crest_kv": 2.1335235800279406e-07
+            },
+            "metric_offset": {
+              "front_us": -5.330849202067611e-05,
+              "tail_us": -2.837407419020721e-05,
+              "crest_kv": 2.1335235800279406e-07
+            },
+            "fitted_parameters": {
+              "front_us": 2.6317553603050214e-05,
+              "tail_us": 1.538671057232932e-06,
+              "crest_kv": -1.4686860505541688e-06
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 181.90279026170387,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 520.0,
+            "stage_utilization": 0.9095139513085193,
+            "stored_energy_kj": 22.74842975968298,
+            "voltage_margin_kv_stage": 18.09720973829613,
+            "energy_margin_kj": 7.251570240317019,
+            "energy_margin_pct": 24.171900801056733
+          },
+          "truth": {
+            "front_us": 1.1867814984138718,
+            "tail_us": 53.743542449745505,
+            "crest_kv": 1424.9999503566137
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -6.858663795794584e-05,
+              "tail_us": -2.9404798074228466e-05,
+              "crest_kv": 3.4837465356929442e-06
+            },
+            "metric_offset": {
+              "front_us": -6.858663795794584e-05,
+              "tail_us": -2.9404798074228466e-05,
+              "crest_kv": 3.4837465356929442e-06
+            },
+            "fitted_parameters": {
+              "front_us": 1.1148791267956426e-05,
+              "tail_us": 4.160247923934435e-07,
+              "crest_kv": 1.8533478085558386e-06
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.00264236028917,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 508.2638888888888,
+            "stage_utilization": 0.9100132118014459,
+            "stored_energy_kj": 22.773411255462534,
+            "voltage_margin_kv_stage": 17.997357639710827,
+            "energy_margin_kj": 7.226588744537466,
+            "energy_margin_pct": 24.088629148458217
+          },
+          "truth": {
+            "front_us": 1.1850984548498087,
+            "tail_us": 52.58319121270811,
+            "crest_kv": 1424.999968070612
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -3.713837640750839e-05,
+              "tail_us": -2.8623593295584726e-05,
+              "crest_kv": 2.2406588584544807e-06
+            },
+            "metric_offset": {
+              "front_us": -3.713837640750839e-05,
+              "tail_us": -2.8623593295584726e-05,
+              "crest_kv": 2.2406588584544807e-06
+            },
+            "fitted_parameters": {
+              "front_us": 4.2543339517919776e-05,
+              "tail_us": 1.2422874284823138e-06,
+              "crest_kv": 5.849575268612739e-07
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.1043987374899,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.7866740302173,
+            "stage_utilization": 0.9105219936874495,
+            "stored_energy_kj": 22.798883277185617,
+            "voltage_margin_kv_stage": 17.895601262510098,
+            "energy_margin_kj": 7.201116722814383,
+            "energy_margin_pct": 24.00372240938128
+          },
+          "truth": {
+            "front_us": 1.1833920781000646,
+            "tail_us": 51.44822579573179,
+            "crest_kv": 1424.999999149742
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -6.884773973148128e-07,
+              "tail_us": -2.6349713111439854e-05,
+              "crest_kv": 5.966720451056062e-08
+            },
+            "metric_offset": {
+              "front_us": -6.884773973148128e-07,
+              "tail_us": -2.6349713111439854e-05,
+              "crest_kv": 5.966720451056062e-08
+            },
+            "fitted_parameters": {
+              "front_us": 7.893885918264232e-05,
+              "tail_us": 3.56197498163624e-06,
+              "crest_kv": -1.6217785780980876e-06
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 136.5037478498926,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.1850593815341723,
+            "tail_us": 52.55639615457017,
+            "crest_kv": 1068.7499823397382
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -7.97171857747081e-05,
+              "tail_us": -2.9871553086646685e-05,
+              "crest_kv": 1.6524221990721344e-06
+            },
+            "metric_offset": {
+              "front_us": -7.97171857747081e-05,
+              "tail_us": -2.9871553086646685e-05,
+              "crest_kv": 1.6524221990721344e-06
+            },
+            "fitted_parameters": {
+              "front_us": -3.676680071507121e-08,
+              "tail_us": -4.612166204509549e-09,
+              "crest_kv": -3.875322285296079e-09
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.1850593815341757,
+            "tail_us": 52.556396154570244,
+            "crest_kv": 1424.9999764529853
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0050001477344,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.910025000738672,
+            "stored_energy_kj": 22.774001304159047,
+            "voltage_margin_kv_stage": 17.994999852265607,
+            "energy_margin_kj": 7.2259986958409534,
+            "energy_margin_pct": 24.08666231946984
+          },
+          "truth": {
+            "front_us": 1.1850593815341701,
+            "tail_us": 52.55639615457024,
+            "crest_kv": 1425.0000000552234
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "control_no_difference",
+      "impulse_type": "Switching",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 70.55811311968995,
+          "front_r_stage": 4165.0,
+          "tail_r_stage": 22000.0,
+          "stage_utilization": 0.7055811311968995,
+          "stored_energy_kj": 13.69073014928015,
+          "voltage_margin_kv_stage": 58.8837737606201,
+          "energy_margin_kj": 16.30926985071985,
+          "energy_margin_pct": 54.36423283573284
+        },
+        "measured": {
+          "front_us": 243.42130204891706,
+          "tail_us": 2468.016767195046,
+          "crest_kv": 524.9999996517796
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 0.999978649863086,
+          "extra_load_pf": -0.1777967524152556,
+          "tail_scale": 1.0000260577503202
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": 7.885153352482632e-06,
+            "tail_us": -3.288338912277311e-06,
+            "crest_kv": 8.539913221028428e-07
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.9057369571566083,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 243.42130204891706,
+            "tail_us": 2468.016767195046,
+            "crest_kv": 1049.9999993035592
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.007711670403720561,
+              "tail_us": -7.504592169915725e-07,
+              "crest_kv": 6.632769888881285e-08
+            },
+            "metric_offset": {
+              "front_us": 0.007711670403720561,
+              "tail_us": -7.504592169915725e-07,
+              "crest_kv": 6.632769888881285e-08
+            },
+            "fitted_parameters": {
+              "front_us": 7.885153352482632e-06,
+              "tail_us": -3.288338912277311e-06,
+              "crest_kv": 8.539913221028428e-07
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.82452255339666,
+            "front_r_stage": 3932.5,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6541226127669834,
+            "stored_energy_kj": 12.836291775993143,
+            "voltage_margin_kv_stage": 69.17547744660334,
+            "energy_margin_kj": 17.163708224006857,
+            "energy_margin_pct": 57.21236074668952
+          },
+          "truth": {
+            "front_us": 247.45149119716896,
+            "tail_us": 2496.837839615006,
+            "crest_kv": 1049.9999482140806
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.05574637314496034,
+              "tail_us": -6.80143413811507e-06,
+              "crest_kv": 4.931992547696495e-06
+            },
+            "metric_offset": {
+              "front_us": 0.05574637314496034,
+              "tail_us": -6.80143413811507e-06,
+              "crest_kv": 4.931992547696495e-06
+            },
+            "fitted_parameters": {
+              "front_us": 0.048104349370459154,
+              "tail_us": -0.00010777954876362017,
+              "crest_kv": 0.00011118241687313457
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 153.6310564691924,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 22520.0,
+            "stage_utilization": 0.768155282345962,
+            "stored_energy_kj": 14.751563444900116,
+            "voltage_margin_kv_stage": 46.3689435308076,
+            "energy_margin_kj": 15.248436555099884,
+            "energy_margin_pct": 50.82812185033294
+          },
+          "truth": {
+            "front_us": 248.3670725990709,
+            "tail_us": 2501.277338814516,
+            "crest_kv": 1049.9999147573703
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -0.07190065386061262,
+              "tail_us": -1.0399926297921525e-05,
+              "crest_kv": 8.118346306318358e-06
+            },
+            "metric_offset": {
+              "front_us": -0.07190065386061262,
+              "tail_us": -1.0399926297921525e-05,
+              "crest_kv": 8.118346306318358e-06
+            },
+            "fitted_parameters": {
+              "front_us": -0.07965577147458491,
+              "tail_us": 7.308431657637726e-05,
+              "crest_kv": -8.945889984346422e-05
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.33643990253782,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6516821995126891,
+            "stored_energy_kj": 12.74069067485089,
+            "voltage_margin_kv_stage": 69.66356009746218,
+            "energy_margin_kj": 17.25930932514911,
+            "energy_margin_pct": 57.531031083830364
+          },
+          "truth": {
+            "front_us": 236.40530822761576,
+            "tail_us": 2481.4638289539757,
+            "crest_kv": 1049.999969626203
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -0.04335595695179606,
+              "tail_us": -4.27327063734495e-06,
+              "crest_kv": 2.8927426676261803e-06
+            },
+            "metric_offset": {
+              "front_us": -0.04335595695179606,
+              "tail_us": -4.27327063734495e-06,
+              "crest_kv": 2.8927426676261803e-06
+            },
+            "fitted_parameters": {
+              "front_us": -0.05102277310209402,
+              "tail_us": -5.514763021796654e-05,
+              "crest_kv": 7.681322975461313e-05
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.30618807891287,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6565309403945644,
+            "stored_energy_kj": 12.930986270861133,
+            "voltage_margin_kv_stage": 68.69381192108713,
+            "energy_margin_kj": 17.069013729138867,
+            "energy_margin_pct": 56.896712430462884
+          },
+          "truth": {
+            "front_us": 258.68961493582265,
+            "tail_us": 2512.0202171320875,
+            "crest_kv": 1049.9999994556326
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -0.0034323183226936393,
+              "tail_us": -4.974791689704716e-07,
+              "crest_kv": 5.1844528670130785e-08
+            },
+            "metric_offset": {
+              "front_us": -0.0034323183226936393,
+              "tail_us": -4.974791689704716e-07,
+              "crest_kv": 5.1844528670130785e-08
+            },
+            "fitted_parameters": {
+              "front_us": -0.011038782777939016,
+              "tail_us": -0.00015026457020894668,
+              "crest_kv": 0.00013794722457660669
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 105.83716967953492,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 243.42130204891706,
+            "tail_us": 2468.016767195046,
+            "crest_kv": 787.4999994776688
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.007711670403720561,
+              "tail_us": -7.504592169915725e-07,
+              "crest_kv": 6.632776550219432e-08
+            },
+            "metric_offset": {
+              "front_us": 0.007711670403720561,
+              "tail_us": -7.504592169915725e-07,
+              "crest_kv": 6.632776550219432e-08
+            },
+            "fitted_parameters": {
+              "front_us": 7.885153330278172e-06,
+              "tail_us": -3.288338912277311e-06,
+              "crest_kv": 8.539914109206848e-07
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "two_fewer_stages",
+          "settings": {
+            "stages": 9,
+            "charge_kv_stage": 167.76345369191026,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.8388172684595513,
+            "stored_energy_kj": 15.831324221983714,
+            "voltage_margin_kv_stage": 32.23654630808974,
+            "energy_margin_kj": 14.168675778016286,
+            "energy_margin_pct": 47.22891926005429
+          },
+          "truth": {
+            "front_us": 231.36166624091086,
+            "tail_us": 2504.46446481123,
+            "crest_kv": 1049.9999438420687
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.060072152942325374,
+              "tail_us": -7.1469563489579e-06,
+              "crest_kv": 5.348374720881566e-06
+            },
+            "metric_offset": {
+              "front_us": 0.060072152942325374,
+              "tail_us": -7.1469563489579e-06,
+              "crest_kv": 5.348374720881566e-06
+            },
+            "fitted_parameters": {
+              "front_us": 0.052184494402252035,
+              "tail_us": 0.00026202784575435345,
+              "crest_kv": -0.0002549671447638069
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 243.42130204891706,
+            "tail_us": 2468.016767195046,
+            "crest_kv": 1049.9999993035592
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162251278587,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811256392935,
+            "stored_energy_kj": 13.690729933606347,
+            "voltage_margin_kv_stage": 58.88377487214129,
+            "energy_margin_kj": 16.30927006639365,
+            "energy_margin_pct": 54.3642335546455
+          },
+          "truth": {
+            "front_us": 243.42130204891706,
+            "tail_us": 2468.0167671950476,
+            "crest_kv": 1049.9999910330907
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "less_loss_more_stray",
+      "impulse_type": "Lightning",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 91.00249856659505,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 507.9928952042628,
+          "stage_utilization": 0.9100249856659505,
+          "stored_energy_kj": 22.77400054974862,
+          "voltage_margin_kv_stage": 17.995002866809898,
+          "energy_margin_kj": 7.225999450251379,
+          "energy_margin_pct": 24.086664834171266
+        },
+        "measured": {
+          "front_us": 1.3625838226609284,
+          "tail_us": 53.90788177463318,
+          "crest_kv": 752.2477139842985
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 1.0799434755041228,
+          "extra_load_pf": 249.80922115152433,
+          "tail_scale": 1.0000284547349494
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.0095031270174184,
+            "tail_us": 0.0007780289823733355,
+            "crest_kv": -0.0034534970481781
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.443827909814636,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.3625838226609284,
+            "tail_us": 53.90788177463318,
+            "crest_kv": 1504.495427968597
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -13.028584581025148,
+              "tail_us": -2.507056992379797,
+              "crest_kv": -5.283859724049389
+            },
+            "metric_offset": {
+              "front_us": -13.028584581025148,
+              "tail_us": -2.507056992379797,
+              "crest_kv": -5.283859724049389
+            },
+            "fitted_parameters": {
+              "front_us": -0.0095031270174184,
+              "tail_us": 0.0007780289823733355,
+              "crest_kv": -0.0034534970481781
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.10674299358814,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9105337149679407,
+            "stored_energy_kj": 22.799470267566278,
+            "voltage_margin_kv_stage": 17.893257006411858,
+            "energy_margin_kj": 7.200529732433722,
+            "energy_margin_pct": 24.00176577477907
+          },
+          "truth": {
+            "front_us": 1.3604494161404412,
+            "tail_us": 52.75075610921825,
+            "crest_kv": 1504.4024175895895
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -13.017503008238918,
+              "tail_us": -2.51778039166497,
+              "crest_kv": -5.278003854634273
+            },
+            "metric_offset": {
+              "front_us": -13.017503008238918,
+              "tail_us": -2.51778039166497,
+              "crest_kv": -5.278003854634273
+            },
+            "fitted_parameters": {
+              "front_us": -0.009525500646112572,
+              "tail_us": 0.0007668807623595342,
+              "crest_kv": -0.0034473680174396115
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 181.90279026170387,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 520.0,
+            "stage_utilization": 0.9095139513085193,
+            "stored_energy_kj": 22.74842975968298,
+            "voltage_margin_kv_stage": 18.09720973829613,
+            "energy_margin_kj": 7.251570240317019,
+            "energy_margin_pct": 24.171900801056733
+          },
+          "truth": {
+            "front_us": 1.3647405115540836,
+            "tail_us": 55.11944899332529,
+            "crest_kv": 1504.5890208601415
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -13.039828861758608,
+              "tail_us": -2.4962556264423785,
+              "crest_kv": -5.28975153724317
+            },
+            "metric_offset": {
+              "front_us": -13.039828861758608,
+              "tail_us": -2.4962556264423785,
+              "crest_kv": -5.28975153724317
+            },
+            "fitted_parameters": {
+              "front_us": -0.009523623014107141,
+              "tail_us": 0.0007896839772980613,
+              "crest_kv": -0.003459410615436198
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.00264236028917,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 508.2638888888888,
+            "stage_utilization": 0.9100132118014459,
+            "stored_energy_kj": 22.773411255462534,
+            "voltage_margin_kv_stage": 17.997357639710827,
+            "energy_margin_kj": 7.226588744537466,
+            "energy_margin_pct": 24.088629148458217
+          },
+          "truth": {
+            "front_us": 1.3626340846378546,
+            "tail_us": 53.93522876264318,
+            "crest_kv": 1504.4975840148386
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -13.028888086382661,
+              "tail_us": -2.5068079475178306,
+              "crest_kv": -5.283995458649704
+            },
+            "metric_offset": {
+              "front_us": -13.028888086382661,
+              "tail_us": -2.5068079475178306,
+              "crest_kv": -5.283995458649704
+            },
+            "fitted_parameters": {
+              "front_us": -0.00955567778392341,
+              "tail_us": 0.0007788265755870327,
+              "crest_kv": -0.003453739422987212
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.1043987374899,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.7866740302173,
+            "stage_utilization": 0.9105219936874495,
+            "stored_energy_kj": 22.798883277185617,
+            "voltage_margin_kv_stage": 17.895601262510098,
+            "energy_margin_kj": 7.201116722814383,
+            "energy_margin_pct": 24.00372240938128
+          },
+          "truth": {
+            "front_us": 1.3604990385213638,
+            "tail_us": 52.776887725571605,
+            "crest_kv": 1504.4045646912489
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -13.017794467622112,
+              "tail_us": -2.5175328511384376,
+              "crest_kv": -5.278139042840879
+            },
+            "metric_offset": {
+              "front_us": -13.017794467622112,
+              "tail_us": -2.5175328511384376,
+              "crest_kv": -5.278139042840879
+            },
+            "fitted_parameters": {
+              "front_us": -0.009567480470429324,
+              "tail_us": 0.0007679510756419816,
+              "crest_kv": -0.0034479044069057885
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 136.5037478498926,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.3625838226609273,
+            "tail_us": 53.90788177463319,
+            "crest_kv": 1128.3715709764483
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -13.028584581025083,
+              "tail_us": -2.5070569923798303,
+              "crest_kv": -5.2838597240494
+            },
+            "metric_offset": {
+              "front_us": -13.028584581025083,
+              "tail_us": -2.5070569923798303,
+              "crest_kv": -5.2838597240494
+            },
+            "fitted_parameters": {
+              "front_us": -0.0095031270174184,
+              "tail_us": 0.0007780289823733355,
+              "crest_kv": -0.003453497048222509
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.3625838226609284,
+            "tail_us": 53.90788177463318,
+            "crest_kv": 1504.495427968597
+          },
+          "truth_pass": false,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 186.99362544604256,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9349681272302128,
+            "stored_energy_kj": 21.854134973409284,
+            "voltage_margin_kv_stage": 13.006374553957443,
+            "energy_margin_kj": 8.145865026590716,
+            "energy_margin_pct": 27.152883421969054
+          },
+          "truth": {
+            "front_us": 1.2371347400005728,
+            "tail_us": 51.88324724391951,
+            "crest_kv": 1425.0509269973954
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "less_loss_more_stray",
+      "impulse_type": "Switching",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 70.55811311968995,
+          "front_r_stage": 4165.0,
+          "tail_r_stage": 22000.0,
+          "stage_utilization": 0.7055811311968995,
+          "stored_energy_kj": 13.69073014928015,
+          "voltage_margin_kv_stage": 58.8837737606201,
+          "energy_margin_kj": 16.30926985071985,
+          "energy_margin_pct": 54.36423283573284
+        },
+        "measured": {
+          "front_us": 270.94164459653376,
+          "tail_us": 2548.253955772214,
+          "crest_kv": 551.8064011700435
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 1.079875318260174,
+          "extra_load_pf": 249.3271039552458,
+          "tail_scale": 1.0001381398959548
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.013433565559006766,
+            "tail_us": 0.003896482759491171,
+            "crest_kv": -0.0034504203145990786
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 2.1376621056904983,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 270.94164459653376,
+            "tail_us": 2548.253955772214,
+            "crest_kv": 1103.612802340087
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.15036678472353,
+              "tail_us": -3.1487131381421674,
+              "crest_kv": -4.857935883527908
+            },
+            "metric_offset": {
+              "front_us": -10.15036678472353,
+              "tail_us": -3.1487131381421674,
+              "crest_kv": -4.857935883527908
+            },
+            "fitted_parameters": {
+              "front_us": -0.013433565559006766,
+              "tail_us": 0.003896482759491171,
+              "crest_kv": -0.0034504203145990786
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.82452255339666,
+            "front_r_stage": 3932.5,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6541226127669834,
+            "stored_energy_kj": 12.836291775993143,
+            "voltage_margin_kv_stage": 69.17547744660334,
+            "energy_margin_kj": 17.163708224006857,
+            "energy_margin_pct": 57.21236074668952
+          },
+          "truth": {
+            "front_us": 275.2304151926473,
+            "tail_us": 2581.3730455211194,
+            "crest_kv": 1102.049046313564
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.042850367571287,
+              "tail_us": -3.2748221290049395,
+              "crest_kv": -4.722933746703218
+            },
+            "metric_offset": {
+              "front_us": -10.042850367571287,
+              "tail_us": -3.2748221290049395,
+              "crest_kv": -4.722933746703218
+            },
+            "fitted_parameters": {
+              "front_us": 0.019708518503924743,
+              "tail_us": 0.0035473398918295374,
+              "crest_kv": -0.0030701532155674727
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 153.6310564691924,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 22520.0,
+            "stage_utilization": 0.768155282345962,
+            "stored_energy_kj": 14.751563444900116,
+            "voltage_margin_kv_stage": 46.3689435308076,
+            "energy_margin_kj": 15.248436555099884,
+            "energy_margin_pct": 50.82812185033294
+          },
+          "truth": {
+            "front_us": 276.3413068844808,
+            "tail_us": 2579.5445235852985,
+            "crest_kv": 1105.105886850889
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.18769584322471,
+              "tail_us": -3.034157549372274,
+              "crest_kv": -4.986480255563497
+            },
+            "metric_offset": {
+              "front_us": -10.18769584322471,
+              "tail_us": -3.034157549372274,
+              "crest_kv": -4.986480255563497
+            },
+            "fitted_parameters": {
+              "front_us": 0.023953040378499324,
+              "tail_us": 0.004190186006858276,
+              "crest_kv": -0.003796745596962303
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.33643990253782,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6516821995126891,
+            "stored_energy_kj": 12.74069067485089,
+            "voltage_margin_kv_stage": 69.66356009746218,
+            "energy_margin_kj": 17.25930932514911,
+            "energy_margin_pct": 57.531031083830364
+          },
+          "truth": {
+            "front_us": 263.00958834045264,
+            "tail_us": 2564.1598994267415,
+            "crest_kv": 1102.421025522158
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.154297440264138,
+              "tail_us": -3.2250787687195026,
+              "crest_kv": -4.755082160858559
+            },
+            "metric_offset": {
+              "front_us": -10.154297440264138,
+              "tail_us": -3.2250787687195026,
+              "crest_kv": -4.755082160858559
+            },
+            "fitted_parameters": {
+              "front_us": -0.07158566942631062,
+              "tail_us": 0.003738248900697627,
+              "crest_kv": -0.003195346347961703
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.30618807891287,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6565309403945644,
+            "stored_energy_kj": 12.930986270861133,
+            "voltage_margin_kv_stage": 68.69381192108713,
+            "energy_margin_kj": 17.069013729138867,
+            "energy_margin_pct": 56.896712430462884
+          },
+          "truth": {
+            "front_us": 287.5819617785391,
+            "tail_us": 2598.3695175510557,
+            "crest_kv": 1101.6850947056269
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.049735287648199,
+              "tail_us": -3.3232114344201924,
+              "crest_kv": -4.691458108493062
+            },
+            "metric_offset": {
+              "front_us": -10.049735287648199,
+              "tail_us": -3.3232114344201924,
+              "crest_kv": -4.691458108493062
+            },
+            "fitted_parameters": {
+              "front_us": -0.019258527476373466,
+              "tail_us": 0.0033646024938160934,
+              "crest_kv": -0.0029499469119009802
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 105.83716967953492,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 270.94164459653376,
+            "tail_us": 2548.2539557722102,
+            "crest_kv": 827.7096017550655
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.15036678472353,
+              "tail_us": -3.148713138142023,
+              "crest_kv": -4.857935883527931
+            },
+            "metric_offset": {
+              "front_us": -10.15036678472353,
+              "tail_us": -3.148713138142023,
+              "crest_kv": -4.857935883527931
+            },
+            "fitted_parameters": {
+              "front_us": -0.013433565559006766,
+              "tail_us": 0.003896482759624398,
+              "crest_kv": -0.0034504203146323853
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "two_fewer_stages",
+          "settings": {
+            "stages": 9,
+            "charge_kv_stage": 167.76345369191026,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.8388172684595513,
+            "stored_energy_kj": 15.831324221983714,
+            "voltage_margin_kv_stage": 32.23654630808974,
+            "energy_margin_kj": 14.168675778016286,
+            "energy_margin_pct": 47.22891926005429
+          },
+          "truth": {
+            "front_us": 258.1886814469078,
+            "tail_us": 2577.071024572466,
+            "crest_kv": 1107.3668075031242
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -10.336638741265169,
+              "tail_us": -2.817413181938333,
+              "crest_kv": -5.180470203226861
+            },
+            "metric_offset": {
+              "front_us": -10.336638741265169,
+              "tail_us": -2.817413181938333,
+              "crest_kv": -5.180470203226861
+            },
+            "fitted_parameters": {
+              "front_us": 0.003877530379226002,
+              "tail_us": 0.0048750265530639325,
+              "crest_kv": -0.004401157106403986
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 270.94164459653376,
+            "tail_us": 2548.253955772214,
+            "crest_kv": 1103.612802340087
+          },
+          "truth_pass": false,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 133.23596800393315,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6661798400196658,
+            "stored_energy_kj": 12.204378429337252,
+            "voltage_margin_kv_stage": 66.76403199606685,
+            "energy_margin_kj": 17.795621570662746,
+            "energy_margin_pct": 59.31873856887583
+          },
+          "truth": {
+            "front_us": 247.72492430100493,
+            "tail_us": 2516.1520052296255,
+            "crest_kv": 1050.0387267184549
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "charging_resistor_path",
+      "impulse_type": "Lightning",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 91.00249856659505,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 507.9928952042628,
+          "stage_utilization": 0.9100249856659505,
+          "stored_energy_kj": 22.77400054974862,
+          "voltage_margin_kv_stage": 17.995002866809898,
+          "energy_margin_kj": 7.225999450251379,
+          "energy_margin_pct": 24.086664834171266
+        },
+        "measured": {
+          "front_us": 1.184779844701486,
+          "tail_us": 52.36809131590586,
+          "crest_kv": 691.061902226849
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 0.9700114975992885,
+          "extra_load_pf": 0.003047868383788521,
+          "tail_scale": 0.9962524149172186
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": 0.00015473672201338218,
+            "tail_us": 0.00011648101474470707,
+            "crest_kv": 0.001163554119054666
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.3326429546841287,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.184779844701486,
+            "tail_us": 52.36809131590586,
+            "crest_kv": 1382.123804453698
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.02351425355044956,
+              "tail_us": 0.3595493639756864,
+              "crest_kv": 3.102196446377614
+            },
+            "metric_offset": {
+              "front_us": 0.02351425355044956,
+              "tail_us": 0.3595493639756864,
+              "crest_kv": 3.102196446377614
+            },
+            "fitted_parameters": {
+              "front_us": 0.00015473672201338218,
+              "tail_us": 0.00011648101474470707,
+              "crest_kv": 0.001163554119054666
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.10674299358814,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9105337149679407,
+            "stored_energy_kj": 22.799470267566278,
+            "voltage_margin_kv_stage": 17.893257006411858,
+            "energy_margin_kj": 7.200529732433722,
+            "energy_margin_pct": 24.00176577477907
+          },
+          "truth": {
+            "front_us": 1.1830764234009399,
+            "tail_us": 51.242673117222964,
+            "crest_kv": 1382.1244327063173
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.023366966189386496,
+              "tail_us": 0.35114248979704055,
+              "crest_kv": 3.1021495806805577
+            },
+            "metric_offset": {
+              "front_us": 0.023366966189386496,
+              "tail_us": 0.35114248979704055,
+              "crest_kv": 3.1021495806805577
+            },
+            "fitted_parameters": {
+              "front_us": -0.0003391529775464974,
+              "tail_us": -0.007961425581148873,
+              "crest_kv": 0.000954231396188554
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 181.90279026170387,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 520.0,
+            "stage_utilization": 0.9095139513085193,
+            "stored_energy_kj": 22.74842975968298,
+            "voltage_margin_kv_stage": 18.09720973829613,
+            "energy_margin_kj": 7.251570240317019,
+            "energy_margin_pct": 24.171900801056733
+          },
+          "truth": {
+            "front_us": 1.1864993692250891,
+            "tail_us": 53.54628358027075,
+            "crest_kv": 1382.1231834882674
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.023709680978312164,
+              "tail_us": 0.368359955362596,
+              "crest_kv": 3.102242768514918
+            },
+            "metric_offset": {
+              "front_us": 0.023709680978312164,
+              "tail_us": 0.368359955362596,
+              "crest_kv": 3.102242768514918
+            },
+            "fitted_parameters": {
+              "front_us": 0.0007007442927253749,
+              "tail_us": 0.008594508241355214,
+              "crest_kv": 0.0013733921963687834
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.00264236028917,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 508.2638888888888,
+            "stage_utilization": 0.9100132118014459,
+            "stored_energy_kj": 22.773411255462534,
+            "voltage_margin_kv_stage": 17.997357639710827,
+            "energy_margin_kj": 7.226588744537466,
+            "energy_margin_pct": 24.088629148458217
+          },
+          "truth": {
+            "front_us": 1.184818798555104,
+            "tail_us": 52.39468488338231,
+            "crest_kv": 1382.1238152028698
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.023566149416298643,
+              "tail_us": 0.35975267061256755,
+              "crest_kv": 3.1021956445224097
+            },
+            "metric_offset": {
+              "front_us": 0.023566149416298643,
+              "tail_us": 0.35975267061256755,
+              "crest_kv": 3.1021956445224097
+            },
+            "fitted_parameters": {
+              "front_us": 0.00021467114588169522,
+              "tail_us": 0.00031213347813086045,
+              "crest_kv": 0.0011665723751441703
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.1043987374899,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.7866740302173,
+            "stage_utilization": 0.9105219936874495,
+            "stored_energy_kj": 22.798883277185617,
+            "voltage_margin_kv_stage": 17.895601262510098,
+            "energy_margin_kj": 7.201116722814383,
+            "energy_margin_pct": 24.00372240938128
+          },
+          "truth": {
+            "front_us": 1.1831157281186797,
+            "tail_us": 51.26808864838091,
+            "crest_kv": 1382.1244443327405
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.02335712622445474,
+              "tail_us": 0.35133666114675055,
+              "crest_kv": 3.1021487133858328
+            },
+            "metric_offset": {
+              "front_us": 0.02335712622445474,
+              "tail_us": 0.35133666114675055,
+              "crest_kv": 3.1021487133858328
+            },
+            "fitted_parameters": {
+              "front_us": -0.00034103079087355326,
+              "tail_us": -0.00777482657241535,
+              "crest_kv": 0.000957162393100397
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 136.5037478498926,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.1847798447014881,
+            "tail_us": 52.36809131590588,
+            "crest_kv": 1036.5928533402725
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 0.02351425355024972,
+              "tail_us": 0.35954936397564197,
+              "crest_kv": 3.1021964463777474
+            },
+            "metric_offset": {
+              "front_us": 0.02351425355024972,
+              "tail_us": 0.35954936397564197,
+              "crest_kv": 3.1021964463777474
+            },
+            "fitted_parameters": {
+              "front_us": 0.00015473672188015541,
+              "tail_us": 0.00011648101467809369,
+              "crest_kv": 0.0011635541191878929
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.184779844701486,
+            "tail_us": 52.36809131590586,
+            "crest_kv": 1382.123804453698
+          },
+          "truth_pass": false,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 187.64896628920894,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9382448314460448,
+            "stored_energy_kj": 24.208342502718462,
+            "voltage_margin_kv_stage": 12.351033710791057,
+            "energy_margin_kj": 5.791657497281538,
+            "energy_margin_pct": 19.305524990938462
+          },
+          "truth": {
+            "front_us": 1.1847798447014863,
+            "tail_us": 52.368091315905865,
+            "crest_kv": 1424.983419546726
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "charging_resistor_path",
+      "impulse_type": "Switching",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 70.55811311968995,
+          "front_r_stage": 4165.0,
+          "tail_r_stage": 22000.0,
+          "stage_utilization": 0.7055811311968995,
+          "stored_energy_kj": 13.69073014928015,
+          "voltage_margin_kv_stage": 58.8837737606201,
+          "energy_margin_kj": 16.30926985071985,
+          "energy_margin_pct": 54.36423283573284
+        },
+        "measured": {
+          "front_us": 234.72457342740637,
+          "tail_us": 2157.1259641920087,
+          "crest_kv": 504.23446384335136
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 0.9698801155195266,
+          "extra_load_pf": -1.0416415980152298,
+          "tail_scale": 0.8600670779821431
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.001362989574882345,
+            "tail_us": 0.005712890592746156,
+            "crest_kv": 0.0011684926583876987
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 2.0878654749753762,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 234.72457342740637,
+            "tail_us": 2157.1259641920087,
+            "crest_kv": 1008.4689276867027
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.71307543251862,
+              "tail_us": 14.41226843690735,
+              "crest_kv": 4.11823023725324
+            },
+            "metric_offset": {
+              "front_us": 3.71307543251862,
+              "tail_us": 14.41226843690735,
+              "crest_kv": 4.11823023725324
+            },
+            "fitted_parameters": {
+              "front_us": -0.001362989574882345,
+              "tail_us": 0.005712890592746156,
+              "crest_kv": 0.0011684926583876987
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.82452255339666,
+            "front_r_stage": 3932.5,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6541226127669834,
+            "stored_energy_kj": 12.836291775993143,
+            "voltage_margin_kv_stage": 69.17547744660334,
+            "energy_margin_kj": 17.163708224006857,
+            "energy_margin_pct": 57.21236074668952
+          },
+          "truth": {
+            "front_us": 238.62298958829348,
+            "tail_us": 2182.578237998598,
+            "crest_kv": 1008.3770825098084
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.7575787881885425,
+              "tail_us": 14.398541427948963,
+              "crest_kv": 4.127713552017043
+            },
+            "metric_offset": {
+              "front_us": 3.7575787881885425,
+              "tail_us": 14.398541427948963,
+              "crest_kv": 4.127713552017043
+            },
+            "fitted_parameters": {
+              "front_us": 0.03427380776810374,
+              "tail_us": 0.005129361311428937,
+              "crest_kv": 0.0017958169377552125
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 153.6310564691924,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 22520.0,
+            "stage_utilization": 0.768155282345962,
+            "stored_energy_kj": 14.751563444900116,
+            "voltage_margin_kv_stage": 46.3689435308076,
+            "energy_margin_kj": 15.248436555099884,
+            "energy_margin_pct": 50.82812185033294
+          },
+          "truth": {
+            "front_us": 239.09646611939183,
+            "tail_us": 2179.9530347697737,
+            "crest_kv": 1008.2090075400074
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.8026613601080284,
+              "tail_us": 14.73995259478964,
+              "crest_kv": 4.1450723161024605
+            },
+            "metric_offset": {
+              "front_us": 3.8026613601080284,
+              "tail_us": 14.73995259478964,
+              "crest_kv": 4.1450723161024605
+            },
+            "fitted_parameters": {
+              "front_us": 0.0805139937501087,
+              "tail_us": 0.29948269353639034,
+              "crest_kv": 0.023550975352604198
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.33643990253782,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6516821995126891,
+            "stored_energy_kj": 12.74069067485089,
+            "voltage_margin_kv_stage": 69.66356009746218,
+            "energy_margin_kj": 17.25930932514911,
+            "energy_margin_pct": 57.531031083830364
+          },
+          "truth": {
+            "front_us": 227.93351753396072,
+            "tail_us": 2167.690315159607,
+            "crest_kv": 1008.8041675542809
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.671814044962085,
+              "tail_us": 14.475010824209921,
+              "crest_kv": 4.083630279362671
+            },
+            "metric_offset": {
+              "front_us": 3.671814044962085,
+              "tail_us": 14.475010824209921,
+              "crest_kv": 4.083630279362671
+            },
+            "fitted_parameters": {
+              "front_us": -0.006395045826645962,
+              "tail_us": 0.005491325622486443,
+              "crest_kv": 0.0015579861978975984
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.30618807891287,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6565309403945644,
+            "stored_energy_kj": 12.930986270861133,
+            "voltage_margin_kv_stage": 68.69381192108713,
+            "energy_margin_kj": 17.069013729138867,
+            "energy_margin_pct": 56.896712430462884
+          },
+          "truth": {
+            "front_us": 249.42997567212888,
+            "tail_us": 2197.2772291533747,
+            "crest_kv": 1007.9598863638793
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.7087604197185042,
+              "tail_us": 14.324226879791958,
+              "crest_kv": 4.1708121726725444
+            },
+            "metric_offset": {
+              "front_us": 3.7087604197185042,
+              "tail_us": 14.324226879791958,
+              "crest_kv": 4.1708121726725444
+            },
+            "fitted_parameters": {
+              "front_us": -0.05303738529995883,
+              "tail_us": 0.004798126628635657,
+              "crest_kv": 0.0020109618499963844
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 105.83716967953492,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 234.72457342740637,
+            "tail_us": 2157.1259641920087,
+            "crest_kv": 756.3516957650268
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.71307543251862,
+              "tail_us": 14.41226843690735,
+              "crest_kv": 4.118230237253284
+            },
+            "metric_offset": {
+              "front_us": 3.71307543251862,
+              "tail_us": 14.41226843690735,
+              "crest_kv": 4.118230237253284
+            },
+            "fitted_parameters": {
+              "front_us": -0.001362989574882345,
+              "tail_us": 0.005712890592746156,
+              "crest_kv": 0.001168492658454312
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "two_fewer_stages",
+          "settings": {
+            "stages": 9,
+            "charge_kv_stage": 167.76345369191026,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.8388172684595513,
+            "stored_energy_kj": 15.831324221983714,
+            "voltage_margin_kv_stage": 32.23654630808974,
+            "energy_margin_kj": 14.168675778016286,
+            "energy_margin_pct": 47.22891926005429
+          },
+          "truth": {
+            "front_us": 223.18004667444572,
+            "tail_us": 2173.6987999596954,
+            "crest_kv": 1008.772719118967
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.7282022404971693,
+              "tail_us": 15.216711987175291,
+              "crest_kv": 4.086875080943897
+            },
+            "metric_offset": {
+              "front_us": 3.7282022404971693,
+              "tail_us": 15.216711987175291,
+              "crest_kv": 4.086875080943897
+            },
+            "fitted_parameters": {
+              "front_us": 0.082792777096663,
+              "tail_us": 0.599157012675855,
+              "crest_kv": 0.04199714788328812
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 234.72457342740637,
+            "tail_us": 2157.1259641920087,
+            "crest_kv": 1008.4689276867027
+          },
+          "truth_pass": false,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 136.77997196172586,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6838998598086293,
+            "stored_energy_kj": 14.031570547387883,
+            "voltage_margin_kv_stage": 63.22002803827414,
+            "energy_margin_kj": 15.968429452612117,
+            "energy_margin_pct": 53.22809817537373
+          },
+          "truth": {
+            "front_us": 249.42997567212888,
+            "tail_us": 2197.2772291533756,
+            "crest_kv": 1049.9788853251844
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "tail_partly_at_load",
+      "impulse_type": "Lightning",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 91.00249856659505,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 507.9928952042628,
+          "stage_utilization": 0.9100249856659505,
+          "stored_energy_kj": 22.77400054974862,
+          "voltage_margin_kv_stage": 17.995002866809898,
+          "energy_margin_kj": 7.225999450251379,
+          "energy_margin_pct": 24.086664834171266
+        },
+        "measured": {
+          "front_us": 1.170161730860623,
+          "tail_us": 52.583974962292714,
+          "crest_kv": 703.1958699786073
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 0.9850013324604062,
+          "extra_load_pf": -20.661436265609915,
+          "tail_scale": 1.0027947672060111
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": 0.0007037717981717151,
+            "tail_us": -0.00017769496392094908,
+            "crest_kv": 0.0005909447776897281
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.321366224892841,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.170161730860623,
+            "tail_us": 52.583974962292714,
+            "crest_kv": 1406.3917399572147
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 1.2730467579558091,
+              "tail_us": -0.05247702775246221,
+              "crest_kv": 1.32312068637086
+            },
+            "metric_offset": {
+              "front_us": 1.2730467579558091,
+              "tail_us": -0.05247702775246221,
+              "crest_kv": 1.32312068637086
+            },
+            "fitted_parameters": {
+              "front_us": 0.0007037717981717151,
+              "tail_us": -0.00017769496392094908,
+              "crest_kv": 0.0005909447776897281
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.10674299358814,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9105337149679407,
+            "stored_energy_kj": 22.799470267566278,
+            "voltage_margin_kv_stage": 17.893257006411858,
+            "energy_margin_kj": 7.200529732433722,
+            "energy_margin_pct": 24.00176577477907
+          },
+          "truth": {
+            "front_us": 1.1681536445249572,
+            "tail_us": 51.44961796783076,
+            "crest_kv": 1405.9767538302285
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 1.3011326048650185,
+              "tail_us": -0.052498062089223474,
+              "crest_kv": 1.3530270765819807
+            },
+            "metric_offset": {
+              "front_us": 1.3011326048650185,
+              "tail_us": -0.052498062089223474,
+              "crest_kv": 1.3530270765819807
+            },
+            "fitted_parameters": {
+              "front_us": 0.029838836778317557,
+              "tail_us": -0.0013871873663084955,
+              "crest_kv": 0.030768648736279047
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 181.90279026170387,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 520.0,
+            "stage_utilization": 0.9095139513085193,
+            "stored_energy_kj": 22.74842975968298,
+            "voltage_margin_kv_stage": 18.09720973829613,
+            "energy_margin_kj": 7.251570240317019,
+            "energy_margin_pct": 24.171900801056733
+          },
+          "truth": {
+            "front_us": 1.172186668961855,
+            "tail_us": 53.77170984586319,
+            "crest_kv": 1406.8073017218176
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 1.2450248637797978,
+              "tail_us": -0.0524126894580923,
+              "crest_kv": 1.2931904928213278
+            },
+            "metric_offset": {
+              "front_us": 1.2450248637797978,
+              "tail_us": -0.0524126894580923,
+              "crest_kv": 1.2931904928213278
+            },
+            "fitted_parameters": {
+              "front_us": -0.028383131905196368,
+              "tail_us": 0.0010834077419641375,
+              "crest_kv": -0.029613961868113492
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.00264236028917,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 508.2638888888888,
+            "stage_utilization": 0.9100132118014459,
+            "stored_energy_kj": 22.773411255462534,
+            "voltage_margin_kv_stage": 17.997357639710827,
+            "energy_margin_kj": 7.226588744537466,
+            "energy_margin_pct": 24.088629148458217
+          },
+          "truth": {
+            "front_us": 1.170208116556053,
+            "tail_us": 52.61078292167854,
+            "crest_kv": 1406.4013109693778
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 1.2724145352240424,
+              "tail_us": -0.0524735779171448,
+              "crest_kv": 1.3224311500252162
+            },
+            "metric_offset": {
+              "front_us": 1.2724145352240424,
+              "tail_us": -0.0524735779171448,
+              "crest_kv": 1.3224311500252162
+            },
+            "fitted_parameters": {
+              "front_us": 4.6941730613703214e-05,
+              "tail_us": -0.00014670423608142968,
+              "crest_kv": -0.00010491313008342829
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.1043987374899,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.7866740302173,
+            "stage_utilization": 0.9105219936874495,
+            "stored_energy_kj": 22.798883277185617,
+            "voltage_margin_kv_stage": 17.895601262510098,
+            "energy_margin_kj": 7.201116722814383,
+            "energy_margin_pct": 24.00372240938128
+          },
+          "truth": {
+            "front_us": 1.1681995317913472,
+            "tail_us": 51.47523460165553,
+            "crest_kv": 1405.986300533769
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 1.3005088384202557,
+              "tail_us": -0.05249585085479458,
+              "crest_kv": 1.3523388854508989
+            },
+            "metric_offset": {
+              "front_us": 1.3005088384202557,
+              "tail_us": -0.05249585085479458,
+              "crest_kv": 1.3523388854508989
+            },
+            "fitted_parameters": {
+              "front_us": 0.029190698432568496,
+              "tail_us": -0.0013576251735036848,
+              "crest_kv": 0.03007420310470188
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 136.5037478498926,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.1701617308606251,
+            "tail_us": 52.583974962292736,
+            "crest_kv": 1054.7938049679115
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 1.2730467579556093,
+              "tail_us": -0.052477027752517724,
+              "crest_kv": 1.32312068637086
+            },
+            "metric_offset": {
+              "front_us": 1.2730467579556093,
+              "tail_us": -0.052477027752517724,
+              "crest_kv": 1.32312068637086
+            },
+            "fitted_parameters": {
+              "front_us": 0.0007037717979940794,
+              "tail_us": -0.0001776949639320513,
+              "crest_kv": 0.0005909447776231147
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.170161730860623,
+            "tail_us": 52.583974962292714,
+            "crest_kv": 1406.3917399572147
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 184.4120531270907,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9220602656354535,
+            "stored_energy_kj": 23.380366170252387,
+            "voltage_margin_kv_stage": 15.5879468729093,
+            "energy_margin_kj": 6.619633829747613,
+            "energy_margin_pct": 22.065446099158713
+          },
+          "truth": {
+            "front_us": 1.1701617308606236,
+            "tail_us": 52.58397496229281,
+            "crest_kv": 1424.9915790866821
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "tail_partly_at_load",
+      "impulse_type": "Switching",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 70.55811311968995,
+          "front_r_stage": 4165.0,
+          "tail_r_stage": 22000.0,
+          "stage_utilization": 0.7055811311968995,
+          "stored_energy_kj": 13.69073014928015,
+          "voltage_margin_kv_stage": 58.8837737606201,
+          "energy_margin_kj": 16.30926985071985,
+          "energy_margin_pct": 54.36423283573284
+        },
+        "measured": {
+          "front_us": 235.75746791131857,
+          "tail_us": 2465.614393161314,
+          "crest_kv": 504.4796914201314
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 0.9527746252421746,
+          "extra_load_pf": -71.22168254035381,
+          "tail_scale": 1.009449386555756
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": 0.003352551786406366,
+            "tail_us": -0.0014113370605639552,
+            "crest_kv": 0.0017997731140528828
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.8780027866904827,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 235.75746791131857,
+            "tail_us": 2465.614393161314,
+            "crest_kv": 1008.9593828402628
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.2586904050881715,
+              "tail_us": 0.09743435627791452,
+              "crest_kv": 4.067618365786552
+            },
+            "metric_offset": {
+              "front_us": 3.2586904050881715,
+              "tail_us": 0.09743435627791452,
+              "crest_kv": 4.067618365786552
+            },
+            "fitted_parameters": {
+              "front_us": 0.003352551786406366,
+              "tail_us": -0.0014113370605639552,
+              "crest_kv": 0.0017997731140528828
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.82452255339666,
+            "front_r_stage": 3932.5,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6541226127669834,
+            "stored_energy_kj": 12.836291775993143,
+            "voltage_margin_kv_stage": 69.17547744660334,
+            "energy_margin_kj": 17.163708224006857,
+            "energy_margin_pct": 57.21236074668952
+          },
+          "truth": {
+            "front_us": 240.20440754468484,
+            "tail_us": 2492.5156715110925,
+            "crest_kv": 1012.0561165417873
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.0744768422893642,
+              "tail_us": 0.17339904147972707,
+              "crest_kv": 3.749187701949497
+            },
+            "metric_offset": {
+              "front_us": 3.0744768422893642,
+              "tail_us": 0.17339904147972707,
+              "crest_kv": 3.749187701949497
+            },
+            "fitted_parameters": {
+              "front_us": -0.14860306535586787,
+              "tail_us": 0.03460540728064121,
+              "crest_kv": -0.2617357183714253
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 153.6310564691924,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 22520.0,
+            "stage_utilization": 0.768155282345962,
+            "stored_energy_kj": 14.751563444900116,
+            "voltage_margin_kv_stage": 46.3689435308076,
+            "energy_margin_kj": 15.248436555099884,
+            "energy_margin_pct": 50.82812185033294
+          },
+          "truth": {
+            "front_us": 239.64244040673444,
+            "tail_us": 2500.86280112419,
+            "crest_kv": 1004.5838295858251
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.5661690928612044,
+              "tail_us": 0.016565385319822212,
+              "crest_kv": 4.520894033591882
+            },
+            "metric_offset": {
+              "front_us": 3.5661690928612044,
+              "tail_us": 0.016565385319822212,
+              "crest_kv": 4.520894033591882
+            },
+            "fitted_parameters": {
+              "front_us": 0.27773195927938144,
+              "tail_us": -0.04728385925659717,
+              "crest_kv": 0.3974260654274975
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.33643990253782,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6516821995126891,
+            "stored_energy_kj": 12.74069067485089,
+            "voltage_margin_kv_stage": 69.66356009746218,
+            "energy_margin_kj": 17.25930932514911,
+            "energy_margin_pct": 57.531031083830364
+          },
+          "truth": {
+            "front_us": 229.80830138356396,
+            "tail_us": 2477.8197457037545,
+            "crest_kv": 1014.1196377340979
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 2.8260559001935803,
+              "tail_us": 0.1470638538930924,
+              "crest_kv": 3.538079821239992
+            },
+            "metric_offset": {
+              "front_us": 2.8260559001935803,
+              "tail_us": 0.1470638538930924,
+              "crest_kv": 3.538079821239992
+            },
+            "fitted_parameters": {
+              "front_us": -0.4021080032804103,
+              "tail_us": 0.028155799820295258,
+              "crest_kv": -0.4773952107981261
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.30618807891287,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6565309403945644,
+            "stored_energy_kj": 12.930986270861133,
+            "voltage_margin_kv_stage": 68.69381192108713,
+            "energy_margin_kj": 17.069013729138867,
+            "energy_margin_pct": 56.896712430462884
+          },
+          "truth": {
+            "front_us": 250.66345261736376,
+            "tail_us": 2506.9754254906175,
+            "crest_kv": 1010.0115128512836
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.1984252924357692,
+              "tail_us": 0.20122970067428803,
+              "crest_kv": 3.959211022835607
+            },
+            "metric_offset": {
+              "front_us": 3.1984252924357692,
+              "tail_us": 0.20122970067428803,
+              "crest_kv": 3.959211022835607
+            },
+            "fitted_parameters": {
+              "front_us": -0.016162242560624485,
+              "tail_us": 0.043058404243279114,
+              "crest_kv": -0.04733456156840177
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 105.83716967953492,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 235.75746791131857,
+            "tail_us": 2465.614393161313,
+            "crest_kv": 756.7195371301972
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.2586904050881715,
+              "tail_us": 0.09743435627798114,
+              "crest_kv": 4.067618365786552
+            },
+            "metric_offset": {
+              "front_us": 3.2586904050881715,
+              "tail_us": 0.09743435627798114,
+              "crest_kv": 4.067618365786552
+            },
+            "fitted_parameters": {
+              "front_us": 0.003352551786406366,
+              "tail_us": -0.001411337060508444,
+              "crest_kv": 0.0017997731140750872
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "two_fewer_stages",
+          "settings": {
+            "stages": 9,
+            "charge_kv_stage": 167.76345369191026,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.8388172684595513,
+            "stored_energy_kj": 15.831324221983714,
+            "voltage_margin_kv_stage": 32.23654630808974,
+            "energy_margin_kj": 14.168675778016286,
+            "energy_margin_pct": 47.22891926005429
+          },
+          "truth": {
+            "front_us": 223.39630742070318,
+            "tail_us": 2507.2991310155685,
+            "crest_kv": 1004.3211489463362
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": 3.6277872484882234,
+              "tail_us": -0.1130637011856006,
+              "crest_kv": 4.548231519528101
+            },
+            "metric_offset": {
+              "front_us": 3.6277872484882234,
+              "tail_us": -0.1130637011856006,
+              "crest_kv": 4.548231519528101
+            },
+            "fitted_parameters": {
+              "front_us": 0.28810589378756024,
+              "tail_us": -0.10252965287946836,
+              "crest_kv": 0.3582277878724449
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 235.75746791131857,
+            "tail_us": 2465.614393161314,
+            "crest_kv": 1008.9593828402628
+          },
+          "truth_pass": false,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 136.5695217353479,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6828476086767395,
+            "stored_energy_kj": 13.988425700266244,
+            "voltage_margin_kv_stage": 63.430478264652095,
+            "energy_margin_kj": 16.011574299733756,
+            "energy_margin_pct": 53.371914332445854
+          },
+          "truth": {
+            "front_us": 250.66345261736376,
+            "tail_us": 2506.975425490617,
+            "crest_kv": 1050.4972482667552
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "spark_resistance_and_inductance",
+      "impulse_type": "Lightning",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 91.00249856659505,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 507.9928952042628,
+          "stage_utilization": 0.9100249856659505,
+          "stored_energy_kj": 22.77400054974862,
+          "voltage_margin_kv_stage": 17.995002866809898,
+          "energy_margin_kj": 7.225999450251379,
+          "energy_margin_pct": 24.086664834171266
+        },
+        "measured": {
+          "front_us": 1.3080866921522352,
+          "tail_us": 53.199822418482384,
+          "crest_kv": 705.2628824271616
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 1.0056743317293508,
+          "extra_load_pf": 172.47596443602322,
+          "tail_scale": 0.9942925949375224
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.005870238587180054,
+            "tail_us": 0.000656489452199871,
+            "crest_kv": -0.00022826123035057932
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.4078803931721482,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.3080866921522352,
+            "tail_us": 53.199822418482384,
+            "crest_kv": 1410.5257648543231
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -9.405206554898083,
+              "tail_us": -1.2094814119162134,
+              "crest_kv": 1.0261588626260476
+            },
+            "metric_offset": {
+              "front_us": -9.405206554898083,
+              "tail_us": -1.2094814119162134,
+              "crest_kv": 1.0261588626260476
+            },
+            "fitted_parameters": {
+              "front_us": -0.005870238587180054,
+              "tail_us": 0.000656489452199871,
+              "crest_kv": -0.00022826123035057932
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.10674299358814,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9105337149679407,
+            "stored_energy_kj": 22.799470267566278,
+            "voltage_margin_kv_stage": 17.893257006411858,
+            "energy_margin_kj": 7.200529732433722,
+            "energy_margin_pct": 24.00176577477907
+          },
+          "truth": {
+            "front_us": 1.3061070905702423,
+            "tail_us": 52.05633805471637,
+            "crest_kv": 1410.4624639029325
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -9.398480338075322,
+              "tail_us": -1.2173928534982892,
+              "crest_kv": 1.030692873374317
+            },
+            "metric_offset": {
+              "front_us": -9.398480338075322,
+              "tail_us": -1.2173928534982892,
+              "crest_kv": 1.030692873374317
+            },
+            "fitted_parameters": {
+              "front_us": -0.00801544632068607,
+              "tail_us": 0.0008585063554722439,
+              "crest_kv": -0.0003420340978665948
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 181.90279026170387,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 520.0,
+            "stage_utilization": 0.9095139513085193,
+            "stored_energy_kj": 22.74842975968298,
+            "voltage_margin_kv_stage": 18.09720973829613,
+            "energy_margin_kj": 7.251570240317019,
+            "energy_margin_pct": 24.171900801056733
+          },
+          "truth": {
+            "front_us": 1.3100864543395292,
+            "tail_us": 54.39712330216126,
+            "crest_kv": 1410.5894155307908
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -9.412033037266287,
+              "tail_us": -1.2015279778037846,
+              "crest_kv": 1.021600212687468
+            },
+            "metric_offset": {
+              "front_us": -9.412033037266287,
+              "tail_us": -1.2015279778037846,
+              "crest_kv": 1.021600212687468
+            },
+            "fitted_parameters": {
+              "front_us": -0.003727159327504559,
+              "tail_us": 0.0004381503435402223,
+              "crest_kv": -0.00011036458729130061
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.00264236028917,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 508.2638888888888,
+            "stage_utilization": 0.9100132118014459,
+            "stored_energy_kj": 22.773411255462534,
+            "voltage_margin_kv_stage": 17.997357639710827,
+            "energy_margin_kj": 7.226588744537466,
+            "energy_margin_pct": 24.088629148458217
+          },
+          "truth": {
+            "front_us": 1.3081331106428018,
+            "tail_us": 53.226850444393996,
+            "crest_kv": 1410.5272276437756
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -9.405395744387201,
+              "tail_us": -1.2093037207924318,
+              "crest_kv": 1.0260540932910844
+            },
+            "metric_offset": {
+              "front_us": -9.405395744387201,
+              "tail_us": -1.2093037207924318,
+              "crest_kv": 1.0260540932910844
+            },
+            "fitted_parameters": {
+              "front_us": -0.005856826523387149,
+              "tail_us": 0.0006460849535372404,
+              "crest_kv": -0.00022537560210311725
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.1043987374899,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.7866740302173,
+            "stage_utilization": 0.9105219936874495,
+            "stored_energy_kj": 22.798883277185617,
+            "voltage_margin_kv_stage": 17.895601262510098,
+            "energy_margin_kj": 7.201116722814383,
+            "energy_margin_pct": 24.00372240938128
+          },
+          "truth": {
+            "front_us": 1.3061522852666214,
+            "tail_us": 52.082162715189675,
+            "crest_kv": 1410.463911780318
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -9.39861428859997,
+              "tail_us": -1.2172122716649358,
+              "crest_kv": 1.0305891627765185
+            },
+            "metric_offset": {
+              "front_us": -9.39861428859997,
+              "tail_us": -1.2172122716649358,
+              "crest_kv": 1.0305891627765185
+            },
+            "fitted_parameters": {
+              "front_us": -0.007943537846999416,
+              "tail_us": 0.0008523720419706393,
+              "crest_kv": -0.00033875118587989306
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 136.5037478498926,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.3080866921522394,
+            "tail_us": 53.1998224184824,
+            "crest_kv": 1057.8943236407442
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -9.405206554898381,
+              "tail_us": -1.2094814119162578,
+              "crest_kv": 1.0261588626259144
+            },
+            "metric_offset": {
+              "front_us": -9.405206554898381,
+              "tail_us": -1.2094814119162578,
+              "crest_kv": 1.0261588626259144
+            },
+            "fitted_parameters": {
+              "front_us": -0.005870238587635246,
+              "tail_us": 0.0006564894521776665,
+              "crest_kv": -0.00022826123051711278
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.3080866921522352,
+            "tail_us": 53.199822418482384,
+            "crest_kv": 1410.5257648543231
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 199.53929711560897,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9976964855780449,
+            "stored_energy_kj": 24.884956933369544,
+            "voltage_margin_kv_stage": 0.4607028843910257,
+            "energy_margin_kj": 5.115043066630456,
+            "energy_margin_pct": 17.05014355543485
+          },
+          "truth": {
+            "front_us": 1.1714224076840232,
+            "tail_us": 51.208773667714134,
+            "crest_kv": 1425.0112284067266
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "spark_resistance_and_inductance",
+      "impulse_type": "Switching",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 70.55811311968995,
+          "front_r_stage": 4165.0,
+          "tail_r_stage": 22000.0,
+          "stage_utilization": 0.7055811311968995,
+          "stored_energy_kj": 13.69073014928015,
+          "voltage_margin_kv_stage": 58.8837737606201,
+          "energy_margin_kj": 16.30926985071985,
+          "energy_margin_pct": 54.36423283573284
+        },
+        "measured": {
+          "front_us": 254.71044372594298,
+          "tail_us": 2500.534403413894,
+          "crest_kv": 519.2301155552175
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 0.9999728601292082,
+          "extra_load_pf": 100.21499805050583,
+          "tail_scale": 1.000067685636388
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.004444144926163407,
+            "tail_us": 0.0011783919664498654,
+            "crest_kv": 1.0826020746534937e-06
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 2.0010400029569473,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 254.71044372594298,
+            "tail_us": 2500.534403413894,
+            "crest_kv": 1038.460231110435
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.424777274011527,
+              "tail_us": -1.300428208302662,
+              "crest_kv": 1.1112384031524591
+            },
+            "metric_offset": {
+              "front_us": -4.424777274011527,
+              "tail_us": -1.300428208302662,
+              "crest_kv": 1.1112384031524591
+            },
+            "fitted_parameters": {
+              "front_us": -0.004444144926163407,
+              "tail_us": 0.0011783919664498654,
+              "crest_kv": 1.0826020746534937e-06
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.82452255339666,
+            "front_r_stage": 3932.5,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6541226127669834,
+            "stored_energy_kj": 12.836291775993143,
+            "voltage_margin_kv_stage": 69.17547744660334,
+            "energy_margin_kj": 17.163708224006857,
+            "energy_margin_pct": 57.21236074668952
+          },
+          "truth": {
+            "front_us": 259.0280666976836,
+            "tail_us": 2531.0982933619134,
+            "crest_kv": 1037.8573643527031
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.415981022716464,
+              "tail_us": -1.3535872414572325,
+              "crest_kv": 1.169971526373459
+            },
+            "metric_offset": {
+              "front_us": -4.415981022716464,
+              "tail_us": -1.3535872414572325,
+              "crest_kv": 1.169971526373459
+            },
+            "fitted_parameters": {
+              "front_us": -0.030802577689659216,
+              "tail_us": 0.0007813924675970085,
+              "crest_kv": 0.00019737179977052932
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 153.6310564691924,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 22520.0,
+            "stage_utilization": 0.768155282345962,
+            "stored_energy_kj": 14.751563444900116,
+            "voltage_margin_kv_stage": 46.3689435308076,
+            "energy_margin_kj": 15.248436555099884,
+            "energy_margin_pct": 50.82812185033294
+          },
+          "truth": {
+            "front_us": 259.7706962922734,
+            "tail_us": 2532.9904534602188,
+            "crest_kv": 1039.0359550563091
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.4586250134019405,
+              "tail_us": -1.2520131978144722,
+              "crest_kv": 1.0552132378418344
+            },
+            "metric_offset": {
+              "front_us": -4.4586250134019405,
+              "tail_us": -1.2520131978144722,
+              "crest_kv": 1.0552132378418344
+            },
+            "fitted_parameters": {
+              "front_us": -0.007497450152416096,
+              "tail_us": 0.001807556953514755,
+              "crest_kv": -0.0003321951755008712
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.33643990253782,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6516821995126891,
+            "stored_energy_kj": 12.74069067485089,
+            "voltage_margin_kv_stage": 69.66356009746218,
+            "energy_margin_kj": 17.25930932514911,
+            "energy_margin_pct": 57.531031083830364
+          },
+          "truth": {
+            "front_us": 247.46089148191365,
+            "tail_us": 2514.9798447584235,
+            "crest_kv": 1038.001162353262
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.509027253213604,
+              "tail_us": -1.3326596598364548,
+              "crest_kv": 1.1559560896382104
+            },
+            "metric_offset": {
+              "front_us": -4.509027253213604,
+              "tail_us": -1.3326596598364548,
+              "crest_kv": 1.1559560896382104
+            },
+            "fitted_parameters": {
+              "front_us": -0.11439005547376757,
+              "tail_us": 0.0006017244671419064,
+              "crest_kv": 0.00029971569286413313
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.30618807891287,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6565309403945644,
+            "stored_energy_kj": 12.930986270861133,
+            "voltage_margin_kv_stage": 68.69381192108713,
+            "energy_margin_kj": 17.069013729138867,
+            "energy_margin_pct": 56.896712430462884
+          },
+          "truth": {
+            "front_us": 270.6837305444098,
+            "tail_us": 2547.0154600592086,
+            "crest_kv": 1037.7165196985143
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.434324381261712,
+              "tail_us": -1.3739710642779124,
+              "crest_kv": 1.1837028772611946
+            },
+            "metric_offset": {
+              "front_us": -4.434324381261712,
+              "tail_us": -1.3739710642779124,
+              "crest_kv": 1.1837028772611946
+            },
+            "fitted_parameters": {
+              "front_us": -0.06316128083148076,
+              "tail_us": 0.0009436716295052605,
+              "crest_kv": 0.00010647253105844356
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 105.83716967953492,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 254.71044372594298,
+            "tail_us": 2500.5344034138934,
+            "crest_kv": 778.8451733328257
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.424777274011527,
+              "tail_us": -1.3004282083026508,
+              "crest_kv": 1.111238403152548
+            },
+            "metric_offset": {
+              "front_us": -4.424777274011527,
+              "tail_us": -1.3004282083026508,
+              "crest_kv": 1.111238403152548
+            },
+            "fitted_parameters": {
+              "front_us": -0.004444144926163407,
+              "tail_us": 0.0011783919664498654,
+              "crest_kv": 1.0826021412668752e-06
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "two_fewer_stages",
+          "settings": {
+            "stages": 9,
+            "charge_kv_stage": 167.76345369191026,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.8388172684595513,
+            "stored_energy_kj": 15.831324221983714,
+            "voltage_margin_kv_stage": 32.23654630808974,
+            "energy_margin_kj": 14.168675778016286,
+            "energy_margin_pct": 47.22891926005429
+          },
+          "truth": {
+            "front_us": 242.34133307892202,
+            "tail_us": 2533.879454779437,
+            "crest_kv": 1039.9061340921444
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.4733115751602215,
+              "tail_us": -1.1608748358453158,
+              "crest_kv": 0.9706516364256235
+            },
+            "metric_offset": {
+              "front_us": -4.4733115751602215,
+              "tail_us": -1.1608748358453158,
+              "crest_kv": 0.9706516364256235
+            },
+            "fitted_parameters": {
+              "front_us": 0.037571262904534386,
+              "tail_us": 0.0021534065772765842,
+              "crest_kv": -0.0004999875480304894
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 254.71044372594298,
+            "tail_us": 2500.534403413894,
+            "crest_kv": 1038.460231110435
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.8426767634167,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6592133838170835,
+            "stored_energy_kj": 13.036868562107085,
+            "voltage_margin_kv_stage": 68.1573232365833,
+            "energy_margin_kj": 16.963131437892915,
+            "energy_margin_pct": 56.54377145964305
+          },
+          "truth": {
+            "front_us": 247.46089148191365,
+            "tail_us": 2514.9798447584185,
+            "crest_kv": 1049.9968529946577
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "combined",
+      "impulse_type": "Lightning",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 91.00249856659505,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 507.9928952042628,
+          "stage_utilization": 0.9100249856659505,
+          "stored_energy_kj": 22.77400054974862,
+          "voltage_margin_kv_stage": 17.995002866809898,
+          "energy_margin_kj": 7.225999450251379,
+          "energy_margin_pct": 24.086664834171266
+        },
+        "measured": {
+          "front_us": 1.2357381679067423,
+          "tail_us": 53.011227852929245,
+          "crest_kv": 733.9270754506522
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 1.0366407894582392,
+          "extra_load_pf": 69.84984577485908,
+          "tail_scale": 1.0014892491685154
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.002399618546133908,
+            "tail_us": 0.0001387514237949361,
+            "crest_kv": -0.0015193562641346858
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 1.3428043006290287,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.2357381679067423,
+            "tail_us": 53.011227852929245,
+            "crest_kv": 1467.8541509013044
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.101170651255903,
+              "tail_us": -0.858020868772813,
+              "crest_kv": -2.919510148538318
+            },
+            "metric_offset": {
+              "front_us": -4.101170651255903,
+              "tail_us": -0.858020868772813,
+              "crest_kv": -2.919510148538318
+            },
+            "fitted_parameters": {
+              "front_us": -0.002399618546133908,
+              "tail_us": 0.0001387514237949361,
+              "crest_kv": -0.0015193562641346858
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.10674299358814,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.9105337149679407,
+            "stored_energy_kj": 22.799470267566278,
+            "voltage_margin_kv_stage": 17.893257006411858,
+            "energy_margin_kj": 7.200529732433722,
+            "energy_margin_pct": 24.00176577477907
+          },
+          "truth": {
+            "front_us": 1.2337583052363903,
+            "tail_us": 51.8720315308013,
+            "crest_kv": 1467.613260187973
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.085519226388678,
+              "tail_us": -0.8664083555106061,
+              "crest_kv": -2.9035755770232985
+            },
+            "metric_offset": {
+              "front_us": -4.085519226388678,
+              "tail_us": -0.8664083555106061,
+              "crest_kv": -2.9035755770232985
+            },
+            "fitted_parameters": {
+              "front_us": 0.010294427861912148,
+              "tail_us": -0.005238621060343895,
+              "crest_kv": 0.013167113719703138
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 181.90279026170387,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 520.0,
+            "stage_utilization": 0.9095139513085193,
+            "stored_energy_kj": 22.74842975968298,
+            "voltage_margin_kv_stage": 18.09720973829613,
+            "energy_margin_kj": 7.251570240317019,
+            "energy_margin_pct": 24.171900801056733
+          },
+          "truth": {
+            "front_us": 1.2377375025721902,
+            "tail_us": 54.203824311875884,
+            "crest_kv": 1468.0954146141453
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.116932550395602,
+              "tail_us": -0.8491977663090178,
+              "crest_kv": -2.9354641520675018
+            },
+            "metric_offset": {
+              "front_us": -4.116932550395602,
+              "tail_us": -0.8491977663090178,
+              "crest_kv": -2.9354641520675018
+            },
+            "fitted_parameters": {
+              "front_us": -0.015169019450023136,
+              "tail_us": 0.005933469218977194,
+              "crest_kv": -0.016215686452603073
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.00264236028917,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 508.2638888888888,
+            "stage_utilization": 0.9100132118014459,
+            "stored_energy_kj": 22.773411255462534,
+            "voltage_margin_kv_stage": 17.997357639710827,
+            "energy_margin_kj": 7.226588744537466,
+            "energy_margin_pct": 24.088629148458217
+          },
+          "truth": {
+            "front_us": 1.2357844615303666,
+            "tail_us": 53.038148639524984,
+            "crest_kv": 1467.8597081598698
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.101560456919318,
+              "tail_us": -0.8578211903811028,
+              "crest_kv": -2.9198776914177493
+            },
+            "metric_offset": {
+              "front_us": -4.101560456919318,
+              "tail_us": -0.8578211903811028,
+              "crest_kv": -2.9198776914177493
+            },
+            "fitted_parameters": {
+              "front_us": -0.0027218825913832845,
+              "tail_us": 0.0002687181253291371,
+              "crest_kv": -0.0018579488613279516
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.1043987374899,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.7866740302173,
+            "stage_utilization": 0.9105219936874495,
+            "stored_energy_kj": 22.798883277185617,
+            "voltage_margin_kv_stage": 17.895601262510098,
+            "energy_margin_kj": 7.201116722814383,
+            "energy_margin_pct": 24.00372240938128
+          },
+          "truth": {
+            "front_us": 1.2338033978733123,
+            "tail_us": 51.89776073164398,
+            "crest_kv": 1467.6187942559757
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.085847713462931,
+              "tail_us": -0.8662194399805423,
+              "crest_kv": -2.903941706305413
+            },
+            "metric_offset": {
+              "front_us": -4.085847713462931,
+              "tail_us": -0.8662194399805423,
+              "crest_kv": -2.903941706305413
+            },
+            "fitted_parameters": {
+              "front_us": 0.010035192928015135,
+              "tail_us": -0.005119007162701639,
+              "crest_kv": 0.012829745492859423
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 136.5037478498926,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.2357381679067452,
+            "tail_us": 53.01122785292916,
+            "crest_kv": 1100.89061317598
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -4.101170651256125,
+              "tail_us": -0.8580208687726687,
+              "crest_kv": -2.91951014853844
+            },
+            "metric_offset": {
+              "front_us": -4.101170651256125,
+              "tail_us": -0.8580208687726687,
+              "crest_kv": -2.91951014853844
+            },
+            "fitted_parameters": {
+              "front_us": -0.0023996185461894193,
+              "tail_us": 0.00013875142395036733,
+              "crest_kv": -0.0015193562643012193
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 182.0049971331901,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 507.9928952042628,
+            "stage_utilization": 0.9100249856659505,
+            "stored_energy_kj": 22.77400054974862,
+            "voltage_margin_kv_stage": 17.995002866809898,
+            "energy_margin_kj": 7.225999450251379,
+            "energy_margin_pct": 24.086664834171266
+          },
+          "truth": {
+            "front_us": 1.2357381679067423,
+            "tail_us": 53.011227852929245,
+            "crest_kv": 1467.8541509013044
+          },
+          "truth_pass": false,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 176.79585716834868,
+            "front_r_stage": 30.0,
+            "tail_r_stage": 496.52777777777777,
+            "stage_utilization": 0.8839792858417433,
+            "stored_energy_kj": 21.489032889425165,
+            "voltage_margin_kv_stage": 23.204142831651325,
+            "energy_margin_kj": 8.510967110574835,
+            "energy_margin_pct": 28.369890368582784
+          },
+          "truth": {
+            "front_us": 1.2337583052363945,
+            "tail_us": 51.87203153080122,
+            "crest_kv": 1424.8123933318777
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    },
+    {
+      "scenario": "combined",
+      "impulse_type": "Switching",
+      "calibration_shot": {
+        "settings": {
+          "stages": 11,
+          "charge_kv_stage": 70.55811311968995,
+          "front_r_stage": 4165.0,
+          "tail_r_stage": 22000.0,
+          "stage_utilization": 0.7055811311968995,
+          "stored_energy_kj": 13.69073014928015,
+          "voltage_margin_kv_stage": 58.8837737606201,
+          "energy_margin_kj": 16.30926985071985,
+          "energy_margin_pct": 54.36423283573284
+        },
+        "measured": {
+          "front_us": 246.7362590390704,
+          "tail_us": 2188.9325300300916,
+          "crest_kv": 526.1990547159045
+        }
+      },
+      "fit": {
+        "version": "effective-parameter-calibration-v1",
+        "parameters": {
+          "loss_scale": 1.0251371801546239,
+          "extra_load_pf": 111.10291842731016,
+          "tail_scale": 0.859523495178833
+        },
+        "shots": 1,
+        "residual_pct": [
+          {
+            "front_us": -0.007251630158588984,
+            "tail_us": 0.007574696637036027,
+            "crest_kv": -0.0010307827900124522
+          }
+        ],
+        "parameters_at_bound": [],
+        "jacobian_condition": 2.2330502152888974,
+        "converged": true
+      },
+      "validation": [
+        {
+          "shot": "rank1_full_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 246.7362590390704,
+            "tail_us": 2188.9325300300916,
+            "crest_kv": 1052.398109431809
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.3359143704634535,
+              "tail_us": 12.74978624579437,
+              "crest_kv": -0.22787093689323745
+            },
+            "metric_offset": {
+              "front_us": -1.3359143704634535,
+              "tail_us": 12.74978624579437,
+              "crest_kv": -0.22787093689323745
+            },
+            "fitted_parameters": {
+              "front_us": -0.007251630158588984,
+              "tail_us": 0.007574696637036027,
+              "crest_kv": -0.0010307827900124522
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank2_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.82452255339666,
+            "front_r_stage": 3932.5,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6541226127669834,
+            "stored_energy_kj": 12.836291775993143,
+            "voltage_margin_kv_stage": 69.17547744660334,
+            "energy_margin_kj": 17.163708224006857,
+            "energy_margin_pct": 57.21236074668952
+          },
+          "truth": {
+            "front_us": 250.9784210074763,
+            "tail_us": 2216.2334041079134,
+            "crest_kv": 1053.03964697455
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.3503091481202767,
+              "tail_us": 12.661313793312367,
+              "crest_kv": -0.2886545614197211
+            },
+            "metric_offset": {
+              "front_us": -1.3503091481202767,
+              "tail_us": 12.661313793312367,
+              "crest_kv": -0.2886545614197211
+            },
+            "fitted_parameters": {
+              "front_us": -0.06819516712656126,
+              "tail_us": -0.000692870085639008,
+              "crest_kv": -0.13470127418003797
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank3_full_voltage",
+          "settings": {
+            "stages": 10,
+            "charge_kv_stage": 153.6310564691924,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 22520.0,
+            "stage_utilization": 0.768155282345962,
+            "stored_energy_kj": 14.751563444900116,
+            "voltage_margin_kv_stage": 46.3689435308076,
+            "energy_margin_kj": 15.248436555099884,
+            "energy_margin_pct": 50.82812185033294
+          },
+          "truth": {
+            "front_us": 251.1797067948636,
+            "tail_us": 2210.5527257712415,
+            "crest_kv": 1050.6497348307748
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.1908652108622686,
+              "tail_us": 13.151658837309288,
+              "crest_kv": -0.06184124063762786
+            },
+            "metric_offset": {
+              "front_us": -1.1908652108622686,
+              "tail_us": 13.151658837309288,
+              "crest_kv": -0.06184124063762786
+            },
+            "fitted_parameters": {
+              "front_us": 0.17057140145821936,
+              "tail_us": 0.31873908938018225,
+              "crest_kv": 0.22280515978252424
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank4_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 130.33643990253782,
+            "front_r_stage": 3700.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6516821995126891,
+            "stored_energy_kj": 12.74069067485089,
+            "voltage_margin_kv_stage": 69.66356009746218,
+            "energy_margin_kj": 17.25930932514911,
+            "energy_margin_pct": 57.531031083830364
+          },
+          "truth": {
+            "front_us": 240.1518095515261,
+            "tail_us": 2201.255372968565,
+            "crest_kv": 1054.7894155717615
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.6027350011499464,
+              "tail_us": 12.729479431905366,
+              "crest_kv": -0.45406367385336655
+            },
+            "metric_offset": {
+              "front_us": -1.6027350011499464,
+              "tail_us": 12.729479431905366,
+              "crest_kv": -0.45406367385336655
+            },
+            "fitted_parameters": {
+              "front_us": -0.2658139137136528,
+              "tail_us": -0.032900155804904685,
+              "crest_kv": -0.24105354055048434
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank5_full_voltage",
+          "settings": {
+            "stages": 12,
+            "charge_kv_stage": 131.30618807891287,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.6565309403945644,
+            "stored_energy_kj": 12.930986270861133,
+            "voltage_margin_kv_stage": 68.69381192108713,
+            "energy_margin_kj": 17.069013729138867,
+            "energy_margin_pct": 56.896712430462884
+          },
+          "truth": {
+            "front_us": 261.8943286041772,
+            "tail_us": 2230.9834278423095,
+            "crest_kv": 1051.3142881454146
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.2270570105639367,
+              "tail_us": 12.596990783782047,
+              "crest_kv": -0.12501381939105105
+            },
+            "metric_offset": {
+              "front_us": -1.2270570105639367,
+              "tail_us": 12.596990783782047,
+              "crest_kv": -0.12501381939105105
+            },
+            "fitted_parameters": {
+              "front_us": 0.0008217669319687815,
+              "tail_us": 0.032361479260800685,
+              "crest_kv": -0.02895988094672175
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "rank1_75pct_voltage",
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 105.83716967953492,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 246.7362590390704,
+            "tail_us": 2188.9325300300948,
+            "crest_kv": 789.2985820738568
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.3359143704634535,
+              "tail_us": 12.749786245794192,
+              "crest_kv": -0.22787093689323745
+            },
+            "metric_offset": {
+              "front_us": -1.3359143704634535,
+              "tail_us": 12.749786245794192,
+              "crest_kv": -0.22787093689323745
+            },
+            "fitted_parameters": {
+              "front_us": -0.007251630158588984,
+              "tail_us": 0.0075746966369028,
+              "crest_kv": -0.0010307827900235544
+            }
+          },
+          "metric_offset_applied": false
+        },
+        {
+          "shot": "two_fewer_stages",
+          "settings": {
+            "stages": 9,
+            "charge_kv_stage": 167.76345369191026,
+            "front_r_stage": 4630.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.8388172684595513,
+            "stored_energy_kj": 15.831324221983714,
+            "voltage_margin_kv_stage": 32.23654630808974,
+            "energy_margin_kj": 14.168675778016286,
+            "energy_margin_pct": 47.22891926005429
+          },
+          "truth": {
+            "front_us": 234.19158012949495,
+            "tail_us": 2202.8685912257333,
+            "crest_kv": 1052.3838957304022
+          },
+          "error_pct": {
+            "uncalibrated": {
+              "front_us": -1.1490293344884606,
+              "tail_us": 13.6910433874178,
+              "crest_kv": -0.22652339512925224
+            },
+            "metric_offset": {
+              "front_us": -1.1490293344884606,
+              "tail_us": 13.6910433874178,
+              "crest_kv": -0.22652339512925224
+            },
+            "fitted_parameters": {
+              "front_us": 0.3557162704781236,
+              "tail_us": 0.5734666438864,
+              "crest_kv": 0.2281472741462398
+            }
+          },
+          "metric_offset_applied": false
+        }
+      ],
+      "recommendation": {
+        "uncalibrated": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 141.1162262393799,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 22000.0,
+            "stage_utilization": 0.7055811311968995,
+            "stored_energy_kj": 13.69073014928015,
+            "voltage_margin_kv_stage": 58.8837737606201,
+            "energy_margin_kj": 16.30926985071985,
+            "energy_margin_pct": 54.36423283573284
+          },
+          "truth": {
+            "front_us": 246.7362590390704,
+            "tail_us": 2188.9325300300916,
+            "crest_kv": 1052.398109431809
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        },
+        "fitted_parameters": {
+          "settings": {
+            "stages": 11,
+            "charge_kv_stage": 140.33604627578734,
+            "front_r_stage": 4165.0,
+            "tail_r_stage": 23040.0,
+            "stage_utilization": 0.7016802313789366,
+            "stored_energy_kj": 13.539766545469949,
+            "voltage_margin_kv_stage": 59.66395372421266,
+            "energy_margin_kj": 16.46023345453005,
+            "energy_margin_pct": 54.86744484843351
+          },
+          "truth": {
+            "front_us": 249.12525494308812,
+            "tail_us": 2267.346604619534,
+            "crest_kv": 1050.4476046472046
+          },
+          "truth_pass": true,
+          "predicted_pass": true
+        }
+      }
+    }
+  ],
+  "what_this_shows": "Whether one reduced-voltage calibration shot, through three fitted circuit parameters, improves predictions at other settings of a simulated generator that differs from the declared model. Real shots are needed to confirm it.",
+  "elapsed_seconds": 200.6
+}

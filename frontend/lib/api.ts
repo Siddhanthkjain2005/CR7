@@ -8,7 +8,7 @@ export const blankCustomProfile:Data={name:'',source:'',max_stages:null,min_stag
 export function profileInputs(values:Data,profileId:string):Data {
   const workbook=profileId==='workbook_reference_profile';
   const custom=profileId===CUSTOM_PROFILE_ID;
-  return {...values,profile_id:profileId,solver:workbook?'reference':'circuit',model_mode:workbook?'hybrid':'physics',include_base_c:!workbook,require_model_agreement:false,inventory_override:null,calibration_id:null,confirm_reference_mismatch:false,custom_profile:custom?{...blankCustomProfile,...(values.custom_profile||{})}:null};
+  return {...values,profile_id:profileId,solver:workbook?'reference':'circuit',model_mode:workbook?'hybrid':'physics',include_base_c:!workbook,require_model_agreement:false,inventory_override:null,calibration_id:null,parameter_calibration_id:null,confirm_reference_mismatch:false,custom_profile:custom?{...blankCustomProfile,...(values.custom_profile||{})}:null};
 }
 /** Missing custom-generator fields, in plain words (empty when complete). */
 export function customProfileGaps(p:Data|null|undefined):string[]{
@@ -55,7 +55,7 @@ export function stableKey(value:unknown):string{
 /** Normalizes optional request fields so that "absent" and null compare equal. */
 export function requestKey(values:Data|null|undefined):string{
   if(!values)return '';
-  const optional=['stage_min','stage_max','inventory_override','equipment_reference_kv','test_object_id','equipment_reference_source','calibration_id','custom_profile'];
+  const optional=['stage_min','stage_max','inventory_override','equipment_reference_kv','test_object_id','equipment_reference_source','calibration_id','custom_profile','parameter_calibration_id'];
   const normalized:Data={confirm_reference_mismatch:false,...values};
   optional.forEach(k=>{if(normalized[k]===undefined||normalized[k]==='')normalized[k]=null});
   return stableKey(normalized);

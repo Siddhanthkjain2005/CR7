@@ -1,5 +1,18 @@
 # ImpulseTwin AI — engineering handoff and progress
 
+## Better approach — 10 October 2026 (`codex/effective-parameter-calibration`)
+
+Built on `codex/hardening-judge-workflow`.
+
+- **New method.** Calibration shots fit three effective circuit parameters (loss scale, extra load-side capacitance, effective tail resistance). They are applied at every setting of the same generator, impulse type and layout.
+- **Why.** The existing one-shot offset only applies to identical settings within 1 % of the request, so it cannot use a reduced-voltage shot.
+- **Evidence.** The simulated model-mismatch study (`artifacts/parameter_calibration/v1`, gates declared first) passes all gates:
+  - Median errors fall from 3–4 % to below 0.03 %.
+  - Recommendations passing on the stand-in generator rise from 6/12 to 12/12.
+  - With measurement noise (`v1_measurement_noise`), errors are roughly halved and recommendations still go from 6/12 to 12/12.
+- **Safeguards.** Validation captures cannot fit parameters, and fit captures are excluded from independent evaluation.
+- **Not established.** This is simulation evidence only; read `docs/parameter_calibration.md`.
+
 ## Current task — 10 October 2026 (supersedes earlier task-specific limits)
 
 Branch `codex/hardening-judge-workflow`, based on `feat/engineering-hardening` (`efde726`).

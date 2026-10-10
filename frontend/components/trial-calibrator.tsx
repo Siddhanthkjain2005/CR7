@@ -5,6 +5,7 @@ import {ArrowRight, CheckCheck, ChevronDown, Download, FileCheck2, FlaskConical,
 import {api, apiUrl, Data, fmt, human, post, shortId, signed} from '@/lib/api';
 import {Badge, Empty, KindTag, Notice, PageHeading, Panel, Status} from './ui';
 import {useWorkspace} from './workspace';
+import {useRouter} from 'next/navigation';
 import EngineeringChart from './engineering-chart';
 import TrialQuality from './trial-quality';
 import TrialEvaluator from './trial-evaluator';
@@ -50,6 +51,8 @@ export function TrialCalibrator() {
       shot_label: '',
     });
   const [asFired, setAsFired] = useState<Data>({});
+  const [fitted, setFitted] = useState<Data | null>(null);
+  const router = useRouter();
   const [trialRun, setTrialRun] = useState<Data | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -94,6 +97,24 @@ export function TrialCalibrator() {
       setBusy(false);
     }
   }
+  async function fitParameters() {
+    if (!trial) return;
+    setBusy(true);
+    setError('');
+    try {
+      setFitted(await post('/api/parameter-calibrations', {trial_ids: [trial.id]}));
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function recommendWithFit() {
+    if (!fitted || !trialRun) return;
+    const r = await w.optimize({...trialRun.inputs, parameter_calibration_id: fitted.id, calibration_id: null});
+    if (r) router.push('/');
+  }
+  useEffect(() => setFitted(null), [trial?.id]);
   async function calibrate() {
     if (!trial) return;
     setBusy(true);
@@ -443,7 +464,46 @@ export function TrialCalibrator() {
                   <Empty title="Your next shot completes the picture">Upload actual analyzer data, or use the clearly labelled generated demo CSV to rehearse the workflow.</Empty>
                 )}
               </Panel>
-              <Panel title="3 · Apply a local correction" action={<Badge tone="cyan">Scoped</Badge>}>
+              {trial && trialRun?.inputs?.solver === 'circuit' && (
+                <Panel title="3 · Fit generator parameters" action={<Badge tone="cyan">Transfers to other settings</Badge>}>
+                  <p className="panel-note">
+                    Fits three effective circuit parameters (extra loss, extra load-side capacitance, effective tail resistance) to this calibration shot at its as-fired settings. Unlike the
+                    one-shot offset below, the fitted generator applies to every setting and voltage of this generator, so a reduced-voltage shot informs the full-voltage recommendation.
+                  </p>
+                  {trial.capture_purpose === 'validation' ? (
+                    <Notice tone="neutral">This capture is for independent validation, so it is never used to fit parameters.</Notice>
+                  ) : !fitted ? (
+                    <button className="button" disabled={busy || trial.quality?.calibration_allowed === false} onClick={fitParameters}>
+                      {busy ? <LoaderCircle className="spin" size={15} aria-hidden /> : <CheckCheck size={15} aria-hidden />} Fit generator parameters from this shot
+                    </button>
+                  ) : (
+                    <>
+                      <div className="crosscheck">
+                        <div>
+                          <span>Loss scale</span>
+                          <strong>×{fmt(fitted.parameters.loss_scale, 4)}</strong>
+                        </div>
+                        <div>
+                          <span>Extra load-side capacitance</span>
+                          <strong>{fmt(fitted.parameters.extra_load_pf, 1)} pF</strong>
+                        </div>
+                        <div>
+                          <span>Effective tail resistance</span>
+                          <strong>×{fmt(fitted.parameters.tail_scale, 4)}</strong>
+                        </div>
+                      </div>
+                      <p className="panel-note">
+                        Remaining difference on this shot: {['front_us', 'tail_us', 'crest_kv'].map((k, i) => `${metricName(i, trialRun?.inputs?.impulse_type).toLowerCase()} ${signed(fitted.fit.residual_pct[0][k], 3)}%`).join(', ')}.
+                        {fitted.fit.parameters_at_bound?.length ? ` At a fitting bound: ${fitted.fit.parameters_at_bound.join(', ')} — review the capture and settings.` : ''} {fitted.limitation}
+                      </p>
+                      <button className="button primary" disabled={w.busy} onClick={recommendWithFit}>
+                        {w.busy ? <LoaderCircle className="spin" size={15} aria-hidden /> : <RefreshCw size={15} aria-hidden />} Recommend again with the fitted generator
+                      </button>
+                    </>
+                  )}
+                </Panel>
+              )}
+              <Panel title={trialRun?.inputs?.solver === 'circuit' ? '4 · Or apply a one-shot offset' : '3 · Apply a local correction'} action={<Badge tone="cyan">Scoped</Badge>}>
                 {trial ? (
                   <>
                     <p className="panel-note">A single shot updates only the matching profile, layout, solver and hardware settings with inputs within 1%. Transfer from reduced voltage to full voltage is not inferred.</p>

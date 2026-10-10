@@ -1,0 +1,23 @@
+{
+  "recorded_at_utc": "2026-10-10T18:10:26+00:00",
+  "branch": "codex/effective-parameter-calibration",
+  "base": "codex/hardening-judge-workflow",
+  "backend_tests": "334 passed (artifacts/qa/october10_parameter_calibration_tests.xml)",
+  "frontend": {
+    "typecheck": "PASS",
+    "unit_tests": "11/11",
+    "production_build": "NOT EXECUTED here; rebuild with Node 22"
+  },
+  "browser_harness": {
+    "workflow_checks": "21/21 (branch A suite)",
+    "fit_parameters_flow": "5/5",
+    "routes": "11 routes x 390/1440 px without errors or overflow"
+  },
+  "study": {
+    "main": "artifacts/parameter_calibration/v1 (all gates pass; recommendations 6/12 -> 12/12)",
+    "measurement_noise": "artifacts/parameter_calibration/v1_measurement_noise (errors roughly halved; control gate fails as expected with noise)"
+  },
+  "evidence_type": "Simulated model-mismatch study; not laboratory evidence",
+  "cloud_spend_usd": 0,
+  "deployed": false
+}

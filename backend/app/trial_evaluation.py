@@ -97,6 +97,21 @@ def evaluate_trials(trial_ids, lookup, root):
             source_run = get(source['run_id'], 'run')
             source_candidate = candidate(source_run, source['candidate_id'])
             calibration_id = (source_candidate.get('calibration') or {}).get('id')
+        fitted_id = run['inputs'].get('parameter_calibration_id')
+        if fitted_id:
+            fitted = get(fitted_id, 'parameter_calibration')
+            used = set(fitted.get('raw_sha256', []))
+            if used & evaluation_hashes:
+                raise ValueError('An evaluation waveform was used to fit the generator parameters of this prediction. Select new shots.')
+            for source_id in fitted.get('trial_ids', []):
+                source = get(source_id, 'trial')
+                if source['id'] not in capture_cache:
+                    capture_cache[source['id']] = normalized_capture(source, get(source['run_id'], 'run'))
+                if any(same_capture(capture_cache[source['id']], capture) for capture in captures):
+                    raise ValueError('An evaluation waveform was used to fit the generator parameters of this prediction. Select new shots.')
+            if datetime.fromisoformat(fitted['created_at']) > datetime.fromisoformat(run['created_at']):
+                raise ValueError('The fitted parameters must predate the saved prediction.')
+            ancestors.append(fitted_id)
         inputs = run['inputs']
         impulse = inputs['impulse_type']
         limits = captured_limits(run)

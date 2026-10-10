@@ -20,6 +20,10 @@ class StockItem(BaseModel):
     ohm:float=Field(gt=0,le=1e7)
     count_per_stage:int=Field(ge=0,le=40)
 
+class ParameterCalibrationRequest(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    trial_ids:list[str]=Field(min_length=1,max_length=10)
+
 class InventoryOverride(BaseModel):
     front:list[StockItem]
     tail:list[StockItem]
@@ -85,8 +89,12 @@ class OptimizeRequest(BaseModel):
     confirm_reference_mismatch:bool=False
     calibration_id:str|None=None
     custom_profile:CustomGeneratorProfile|None=None
+    parameter_calibration_id:str|None=Field(default=None,max_length=64)
     @model_validator(mode='after')
     def ordered_stages(self):
+        if self.parameter_calibration_id is not None:
+            if self.solver!='circuit': raise ValueError('Fitted generator parameters apply to the circuit prediction only.')
+            if self.calibration_id: raise ValueError('Use either fitted generator parameters or a one-shot metric correction, not both.')
         if self.profile_id=='custom_generator':
             if self.custom_profile is None: raise ValueError('A custom generator needs its complete hardware ratings.')
             if self.inventory_override is None: raise ValueError('A custom generator needs an explicit resistor inventory with counts and provenance.')
