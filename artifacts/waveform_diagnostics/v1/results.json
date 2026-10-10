@@ -1,0 +1,2171 @@
+{
+ "version": "waveform-diagnostics-evaluation-v1",
+ "protocol_sha256": "ab01549f0dc0b8ddf5f221134711e79630f9c5fd9848655139c9ffa753d917a0",
+ "evidence_type": "SIMULATED AND RENDERED. Stand-in recordings come from the lumped circuit (and, for off-model cases, from added features it cannot produce or from an independent ODE of a different topology). No real machine, no laboratory recording. This evaluation does not establish real CPRI accuracy.",
+ "seed": 20261011,
+ "csv_cases": [
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1434.937839,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.204884776902337,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 52.8204057259362,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 0.3122632463415099,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": false,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.3727577519998704,
+   "residual_systematic": false,
+   "family": "no_change",
+   "name": "cpri_lightning unchanged",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.8322704120000708
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1057.121053,
+     "predicted": 1050.283157912718
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 263.5,
+     "predicted": 249.99999999409837
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 2459.511621165113,
+     "predicted": 2499.999999997859
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 0.2984932995426911,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": false,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.3930186719999256,
+   "residual_systematic": false,
+   "family": "no_change",
+   "name": "cpri_switching unchanged",
+   "setting": "cpri_switching",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.7877295380003488
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1437.793944,
+     "predicted": 1425.0787469857244
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2365063191440442,
+     "predicted": 1.199999999999946
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 49.04257641391467,
+     "predicted": 49.999999999995524
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 0.3133511526519665,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": false,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.38838299999997616,
+   "residual_systematic": false,
+   "family": "no_change",
+   "name": "workbook_lightning unchanged",
+   "setting": "workbook_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.810741040999801
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1446.774262,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 0.8586732968426318,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 51.72883291496575,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 5.432769031629198,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "front_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "front_network": {
+     "front_factor": 0.7497422741463399
+    }
+   },
+   "findings": 3,
+   "elapsed_s": 0.4244949689996247,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'front_factor': 0.75}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "front_factor": 0.75
+   },
+   "hypothesis": "front_network",
+   "wall_s": 0.7883369760002097,
+   "fit_check": {
+    "front_factor": {
+     "truth": 0.75,
+     "fitted": 0.7497422741463399,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1421.747931,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.6002198017071336,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.793088835005264,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 5.032980640476256,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "front_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "front_network": {
+     "front_factor": 1.299708340119426
+    }
+   },
+   "findings": 2,
+   "elapsed_s": 0.49874185999988185,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'front_factor': 1.3}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "front_factor": 1.3
+   },
+   "hypothesis": "front_network",
+   "wall_s": 0.8619168019999961,
+   "fit_check": {
+    "front_factor": {
+     "truth": 1.3,
+     "fitted": 1.299708340119426,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1419.030237,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.162586214521278,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 37.76802657313779,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 6.937293970620147,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "tail_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "tail_network": {
+     "tail_factor": 0.700565833699663
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.4164470959999562,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'tail_factor': 0.7}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "tail_factor": 0.7
+   },
+   "hypothesis": "tail_network",
+   "wall_s": 0.7862825449997217,
+   "fit_check": {
+    "tail_factor": {
+     "truth": 0.7,
+     "fitted": 0.700565833699663,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1445.375536,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2339043395966511,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 70.12182676305693,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 6.018663697779977,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "tail_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "tail_network": {
+     "tail_factor": 1.3495946957678808
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.42928315799963457,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'tail_factor': 1.35}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "tail_factor": 1.35
+   },
+   "hypothesis": "tail_network",
+   "wall_s": 0.7774233249997451,
+   "fit_check": {
+    "tail_factor": {
+     "truth": 1.35,
+     "fitted": 1.3495946957678808,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1390.267002,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.4871816897925378,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 54.77597285807297,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.696760281483984,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "effective_capacitance"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "effective_capacitance": {
+     "extra_load_pf": 349.9457094181887
+    }
+   },
+   "findings": 4,
+   "elapsed_s": 0.4697109580001779,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'extra_load_pf': 350.0}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "extra_load_pf": 350.0
+   },
+   "hypothesis": "effective_capacitance",
+   "wall_s": 0.8756811360003667,
+   "fit_check": {
+    "extra_load_pf": {
+     "truth": 350.0,
+     "fitted": 349.9457094181887,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1475.032413,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 0.9840821707562626,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 50.52513281304094,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.9206278951695515,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "effective_capacitance"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "effective_capacitance": {
+     "extra_load_pf": -298.6394167308197
+    }
+   },
+   "findings": 4,
+   "elapsed_s": 0.43968191900012243,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'extra_load_pf': -300.0}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "extra_load_pf": -300.0
+   },
+   "hypothesis": "effective_capacitance",
+   "wall_s": 0.8467531619999136,
+   "fit_check": {
+    "extra_load_pf": {
+     "truth": -300.0,
+     "fitted": -298.6394167308197,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1442.06825,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 0.9777639282325811,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 52.380221359813405,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 2.983468034816175,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "inductance"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "inductance": {
+     "inductance_uh": 34.92567412334101
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.39072772000008626,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_lightning {'inductance_uh': 35.0}",
+   "setting": "cpri_lightning",
+   "truth": {
+    "inductance_uh": 35.0
+   },
+   "hypothesis": "inductance",
+   "wall_s": 0.8077495110001109,
+   "fit_check": {
+    "inductance_uh": {
+     "truth": 35.0,
+     "fitted": 34.92567412334101,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1070.167391,
+     "predicted": 1050.283157912718
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 232.5,
+     "predicted": 249.99999999409837
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 2409.5652671714315,
+     "predicted": 2499.999999997859
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.255812538525604,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "front_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "front_network": {
+     "front_factor": 0.8004898255980869
+    }
+   },
+   "findings": 2,
+   "elapsed_s": 0.4415060659998744,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_switching front 0.8",
+   "setting": "cpri_switching",
+   "truth": {
+    "front_factor": 0.8
+   },
+   "hypothesis": "front_network",
+   "wall_s": 0.7960721449999255,
+   "fit_check": {
+    "front_factor": {
+     "truth": 0.8,
+     "fitted": 0.8004898255980869,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1075.087468,
+     "predicted": 1050.283157912718
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 256.5,
+     "predicted": 249.99999999409837
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 2989.7339485090392,
+     "predicted": 2499.999999997859
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.270298656728103,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "tail_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "tail_network": {
+     "tail_factor": 1.2496497921260383
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.394148591999965,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "cpri_switching tail 1.25",
+   "setting": "cpri_switching",
+   "truth": {
+    "tail_factor": 1.25
+   },
+   "hypothesis": "tail_network",
+   "wall_s": 0.8067692390000047,
+   "fit_check": {
+    "tail_factor": {
+     "truth": 1.25,
+     "fitted": 1.2496497921260383,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1447.008483,
+     "predicted": 1425.0787469857244
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 0.9099309381525714,
+     "predicted": 1.199999999999946
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 48.37449885386299,
+     "predicted": 49.999999999995524
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.3304535920719855,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Several explanations fit",
+   "limited": false,
+   "leading": [
+    "front_network",
+    "capacitance_and_inductance"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "front_network": {
+     "front_factor": 0.800758688522176
+    },
+    "capacitance_and_inductance": {
+     "extra_load_pf": -297.6999424954698,
+     "inductance_uh": 23.054081877032615
+    }
+   },
+   "findings": 3,
+   "elapsed_s": 0.45389660499995443,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "workbook_lightning front 0.8",
+   "setting": "workbook_lightning",
+   "truth": {
+    "front_factor": 0.8
+   },
+   "hypothesis": "front_network",
+   "wall_s": 0.8586467300001459,
+   "fit_check": {
+    "front_factor": {
+     "truth": 0.8,
+     "fitted": 0.800758688522176,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1442.585697,
+     "predicted": 1425.0787469857244
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2599279017991085,
+     "predicted": 1.199999999999946
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 60.390048429313985,
+     "predicted": 49.999999999995524
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.45311486581007,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "tail_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "tail_network": {
+     "tail_factor": 1.250626323818573
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.3833722479998869,
+   "residual_systematic": false,
+   "family": "single_in_model",
+   "name": "workbook_lightning tail 1.25",
+   "setting": "workbook_lightning",
+   "truth": {
+    "tail_factor": 1.25
+   },
+   "hypothesis": "tail_network",
+   "wall_s": 0.7418507120000868,
+   "fit_check": {
+    "tail_factor": {
+     "truth": 1.25,
+     "fitted": 1.250626323818573,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1445.354641,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.0108412746927458,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 62.48653702435688,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.81276395850344,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "front_and_tail"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "front_and_tail": {
+     "front_factor": 0.8493191422409041,
+     "tail_factor": 1.2004966625630165
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.44641793000027974,
+   "residual_systematic": false,
+   "family": "combined_in_model",
+   "name": "front 0.85 + tail 1.2",
+   "setting": "cpri_lightning",
+   "truth": {
+    "front_factor": 0.85,
+    "tail_factor": 1.2
+   },
+   "hypothesis": "front_and_tail",
+   "wall_s": 0.9281576270000187,
+   "fit_check": {
+    "front_factor": {
+     "truth": 0.85,
+     "fitted": 0.8493191422409041,
+     "within_5pct": true
+    },
+    "tail_factor": {
+     "truth": 1.2,
+     "fitted": 1.2004966625630165,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1400.535285,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2362895500625537,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.66171037855864,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 5.321124345709114,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "capacitance_and_inductance"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "capacitance_and_inductance": {
+     "extra_load_pf": 298.9809248941792,
+     "inductance_uh": 30.084379611476486
+    }
+   },
+   "findings": 2,
+   "elapsed_s": 0.448033045000102,
+   "residual_systematic": false,
+   "family": "combined_in_model",
+   "name": "capacitance +300 + inductance 30",
+   "setting": "cpri_lightning",
+   "truth": {
+    "extra_load_pf": 300.0,
+    "inductance_uh": 30.0
+   },
+   "hypothesis": "capacitance_and_inductance",
+   "wall_s": 0.8703020490002018,
+   "fit_check": {
+    "extra_load_pf": {
+     "truth": 300.0,
+     "fitted": 298.9809248941792,
+     "within_5pct": true
+    },
+    "inductance_uh": {
+     "truth": 30.0,
+     "fitted": 30.084379611476486,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1348.672787,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.188748395275719,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 52.66996875316254,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 4.222154213154867,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Several explanations fit",
+   "limited": false,
+   "leading": [
+    "loss_convention",
+    "gain"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "loss_convention": {
+     "efficiency_factor": 0.9399256946543839
+    },
+    "gain": {
+     "gain": 0.9399256946473966
+    }
+   },
+   "findings": 3,
+   "elapsed_s": 0.4519347789996573,
+   "residual_systematic": false,
+   "family": "ambiguous_amplitude",
+   "name": "gain 0.94, as-fired recorded",
+   "setting": "cpri_lightning",
+   "truth": {
+    "gain": 0.94
+   },
+   "hypothesis": null,
+   "wall_s": 0.8372778150001068
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1361.097239,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2084558328896944,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 52.866810020699894,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 3.514492160115436,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Several explanations fit",
+   "limited": true,
+   "leading": [
+    "gain",
+    "charge",
+    "loss_convention"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "charge": {
+     "charge_factor": 0.94989024580028
+    },
+    "loss_convention": {
+     "efficiency_factor": 0.9498902458002789
+    },
+    "gain": {
+     "gain": 0.9498902458001881
+    }
+   },
+   "findings": 4,
+   "elapsed_s": 0.43095043399989663,
+   "residual_systematic": false,
+   "family": "ambiguous_amplitude",
+   "name": "charge 0.95, as-fired not recorded",
+   "setting": "cpri_lightning",
+   "truth": {
+    "charge_factor": 0.95
+   },
+   "hypothesis": null,
+   "wall_s": 0.8520906570001898
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1461.991463,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Requires review",
+     "observed": 1.0383483393969508,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Requires review",
+     "observed": 51.04676825116279,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 2.06840805957388,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Cannot explain with the current model",
+   "limited": false,
+   "leading": [],
+   "requires_review": true,
+   "fitted": {},
+   "findings": 0,
+   "elapsed_s": 0.3826977660000921,
+   "residual_systematic": false,
+   "family": "off_model",
+   "name": "(a) 4 MHz oscillation",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.7380026480000197
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1447.443424,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.221671310764637,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 69.66022351387434,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 6.333589431515686,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Possible cause",
+   "limited": false,
+   "leading": [
+    "tail_network"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "tail_network": {
+     "tail_factor": 1.372019400944127
+    }
+   },
+   "findings": 1,
+   "elapsed_s": 0.4660146889996213,
+   "residual_systematic": false,
+   "family": "off_model",
+   "name": "(b) slow second tail component",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.8220542369999748
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1475.682736,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Requires review",
+     "observed": 1.3124157035680215,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Requires review",
+     "observed": 67.87041789061205,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 6.656734900189,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Cannot explain with the current model",
+   "limited": false,
+   "leading": [],
+   "requires_review": true,
+   "fitted": {},
+   "findings": 0,
+   "elapsed_s": 0.4587390459996641,
+   "residual_systematic": true,
+   "family": "off_model",
+   "name": "(c) oscillation and slow tail",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.8473313290000988
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1432.592708,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Requires review",
+     "observed": 1.7001792768978619,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Requires review",
+     "observed": 53.40909666056006,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 0.30633419763214753,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": true,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.3733125500002643,
+   "residual_systematic": false,
+   "family": "off_model",
+   "name": "(d) precursor 35%",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.8021141009999155
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1412.114887,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.213618374441933,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 52.82931861468362,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 1.0979675589268503,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": false,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.41408945100010897,
+   "residual_systematic": false,
+   "family": "topology_variant",
+   "name": "40% of tail at load side",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.8292855310000959
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1485.777412,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.0576325334237802,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 46.99791221797913,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 3.342277209576529,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Several explanations fit",
+   "limited": false,
+   "leading": [
+    "front_network",
+    "effective_capacitance"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "front_network": {
+     "front_factor": 0.8002291180820085
+    },
+    "effective_capacitance": {
+     "extra_load_pf": -253.54568263477017
+    }
+   },
+   "findings": 2,
+   "elapsed_s": 0.44339164099983464,
+   "residual_systematic": false,
+   "family": "noise_and_scale",
+   "name": "noise 1.5% + front 0.8",
+   "setting": "cpri_lightning",
+   "truth": {
+    "front_factor": 0.8
+   },
+   "hypothesis": "front_network",
+   "wall_s": 0.8781888660000732,
+   "fit_check": {
+    "front_factor": {
+     "truth": 0.8,
+     "fitted": 0.8002291180820085,
+     "within_5pct": true
+    }
+   }
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1477.28926,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2338884709731588,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.17898703559732,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 2.1275197306402824,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Several explanations fit",
+   "limited": false,
+   "leading": [
+    "gain",
+    "loss_convention"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "loss_convention": {
+     "efficiency_factor": 1.0299119590942463
+    },
+    "gain": {
+     "gain": 1.0299119590944315
+    }
+   },
+   "findings": 6,
+   "elapsed_s": 0.43894945200008806,
+   "residual_systematic": false,
+   "family": "noise_and_scale",
+   "name": "gain 1.03",
+   "setting": "cpri_lightning",
+   "truth": {
+    "gain": 1.03
+   },
+   "hypothesis": null,
+   "wall_s": 0.8714594380003291
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Requires review",
+     "observed": 1436.183057,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Requires review",
+     "observed": 1.2092859127775624,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Requires review",
+     "observed": 52.17562497986107,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": false,
+   "normalized_mismatch": 0.29460167553504335,
+   "plausibility": [],
+   "polarity_issue": true,
+   "investigation_refused": "Quantitative diagnosis is disabled for this waveform: The recording is negative but positive was expected. The comparison uses its magnitude and flags this; the recording is not flipped in storage.",
+   "family": "negative_polarity",
+   "name": "negative declared positive",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.21188500700009172
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Approximate",
+     "observed": 2313.558332,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Approximate",
+     "observed": 0.7497107735677362,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Approximate",
+     "observed": 1.6440977261254783,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": false,
+   "normalized_mismatch": 20.745825891688483,
+   "plausibility": [
+    "implausible_time_scale"
+   ],
+   "polarity_issue": false,
+   "investigation_refused": "Quantitative diagnosis is disabled for this waveform: The recorded time to half-value is 0.0306\u00d7 the prediction. Check the time unit and axis values first: a unit mistake looks like a huge mismatch. I",
+   "family": "ringing_in_model",
+   "name": "L 80 uH, front x0.25",
+   "setting": "cpri_lightning",
+   "truth": {
+    "inductance_uh": 80.0,
+    "front_factor": 0.25
+   },
+   "hypothesis": null,
+   "wall_s": 0.21411166000007142
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Approximate",
+     "observed": 1310.999936,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Approximate",
+     "observed": 0.8899561476158759,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Approximate",
+     "observed": 59.1309364105919,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": false,
+   "normalized_mismatch": 2.595049706799753,
+   "plausibility": [],
+   "polarity_issue": false,
+   "investigation_refused": "Quantitative diagnosis is disabled for this waveform: 1452 consecutive samples sit exactly at the maximum. The recording may be clipped by the recorder range; the crest is not a real extreme.",
+   "family": "clipping",
+   "name": "clipped at 92% of crest",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.1949584760000107
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1435.706411,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2443711244088809,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Insufficient capture",
+     "observed": null,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 0.34502632140771045,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": false,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.3280091540000285,
+   "residual_systematic": false,
+   "family": "missing_falling_limb",
+   "name": "record ends at 20 us",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.6235317940004279
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1361.435881,
+     "predicted": 1353.7499999999998
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2413538555312333,
+     "predicted": 1.186780684440294
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 52.82152767754901,
+     "predicted": 53.74352664656466
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 0.30040244776505615,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "No change needed",
+   "limited": false,
+   "leading": [],
+   "requires_review": false,
+   "fitted": {},
+   "findings": 6,
+   "elapsed_s": 0.3813845869999568,
+   "residual_systematic": false,
+   "family": "different_settings",
+   "name": "95% charge, as-fired recorded",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.7954831170000034
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1364.167815,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2212586764753741,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.249893156846724,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": true,
+   "normalized_mismatch": 3.5262107680517123,
+   "plausibility": [],
+   "polarity_issue": false,
+   "verdict": "Several explanations fit",
+   "limited": true,
+   "leading": [
+    "charge",
+    "loss_convention",
+    "gain"
+   ],
+   "requires_review": false,
+   "fitted": {
+    "charge": {
+     "charge_factor": 0.9498255638209658
+    },
+    "loss_convention": {
+     "efficiency_factor": 0.9498255638209672
+    },
+    "gain": {
+     "gain": 0.9498255638208727
+    }
+   },
+   "findings": 4,
+   "elapsed_s": 0.4925578659999701,
+   "residual_systematic": false,
+   "family": "different_settings",
+   "name": "95% charge, not recorded",
+   "setting": "cpri_lightning",
+   "truth": {
+    "charge_factor": 0.95
+   },
+   "hypothesis": null,
+   "wall_s": 0.9897734279998076
+  },
+  {
+   "metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Approximate",
+     "observed": 1437.019459,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Approximate",
+     "observed": 1217.3861014056795,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Approximate",
+     "observed": 52625.69439131525,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "quantitative_allowed": false,
+   "normalized_mismatch": 62.753297938326305,
+   "plausibility": [
+    "implausible_time_scale",
+    "implausible_time_scale"
+   ],
+   "polarity_issue": false,
+   "investigation_refused": "Quantitative diagnosis is disabled for this waveform: The recorded front time is 1.03e+03\u00d7 the prediction. Check the time unit and axis values first: a unit mistake looks like a huge mismatch. If the ",
+   "family": "unit_mistake",
+   "name": "ms labelled as us",
+   "setting": "cpri_lightning",
+   "truth": {},
+   "hypothesis": null,
+   "wall_s": 0.18402627699970253
+  }
+ ],
+ "image_cases": [
+  {
+   "family": "image",
+   "name": "clean",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.1793881896726632,
+     "error_pct": -0.6229031921904826,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.78658498048059,
+     "error_pct": 0.08011817720556813,
+     "spread_contains_truth": true
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1424.4301994301998,
+     "error_pct": -0.03998600489827364,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1424.4301994301998,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.1793881896726632,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.78658498048059,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": [],
+   "overlay_png": "manual/clean.png"
+  },
+  {
+   "family": "image",
+   "name": "low resolution",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.2005665990679835,
+     "error_pct": 1.1616227672379464,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.6936089035916,
+     "error_pct": -0.09288140561010128,
+     "spread_contains_truth": true
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1425.6410256410256,
+     "error_pct": 0.04498425551056062,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 407,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1425.6410256410256,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.2005665990679835,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.6936089035916,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": []
+  },
+  {
+   "family": "image",
+   "name": "thick trace",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.222456179415774,
+     "error_pct": 3.0060731054327494,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.746769366522955,
+     "error_pct": 0.00603369402776277,
+     "spread_contains_truth": false
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1425.6410256410259,
+     "error_pct": 0.04498425551056062,
+     "spread_contains_truth": false
+    }
+   },
+   "flags": [
+    "thick_trace"
+   ],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1425.6410256410259,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.222456179415774,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.746769366522955,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": [],
+   "overlay_png": "manual/thick_trace.png"
+  },
+  {
+   "family": "image",
+   "name": "second curve other colour",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.175563240250145,
+     "error_pct": -0.9451994237239414,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.78314939716695,
+     "error_pct": 0.07372562441267938,
+     "spread_contains_truth": true
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1424.4301994301998,
+     "error_pct": -0.03998600489827364,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1424.4301994301998,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.175563240250145,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.78314939716695,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": []
+  },
+  {
+   "family": "image",
+   "name": "second curve same colour",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.1528788220619137,
+     "error_pct": -2.856624043760514,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.76277417124938,
+     "error_pct": 0.035813661449113354,
+     "spread_contains_truth": true
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1424.4301994301998,
+     "error_pct": -0.03998600489827364,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [
+    "multiple_same_colour_curves"
+   ],
+   "quantitative_allowed": false,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Approximate",
+     "observed": 1424.4301994301998,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Approximate",
+     "observed": 1.1528788220619137,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Approximate",
+     "observed": 53.76277417124938,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": false,
+   "diagnosis_investigation_refused": "Quantitative diagnosis is disabled for this waveform: 330 of 1359 columns hold more than one stroke of the selected colour. Where the curves overlap they cannot be told apart; check the overlay and er",
+   "overlay_png": "manual/second_curve_same_colour.png"
+  },
+  {
+   "family": "image",
+   "name": "perspective photo",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.1975162589769948,
+     "error_pct": 0.9045963316899774,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.75929529657608,
+     "error_pct": 0.029340556890522507,
+     "spread_contains_truth": true
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1424.4427934621099,
+     "error_pct": -0.03910221318528251,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [
+    "ambiguous_selection"
+   ],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1308,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1424.4427934621099,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.1975162589769948,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.75929529657608,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": [],
+   "overlay_png": "manual/perspective_photo.png"
+  },
+  {
+   "family": "image",
+   "name": "oscilloscope per-division",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.1796706118276188,
+     "error_pct": -0.5991058588955989,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.74352664656537,
+     "digitized": 53.661456039635105,
+     "error_pct": -0.15270789256162098,
+     "spread_contains_truth": false
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1425.6410256410256,
+     "error_pct": 0.04498425551056062,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1425.6410256410256,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.1796706118276188,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.661456039635105,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": []
+  },
+  {
+   "family": "image",
+   "name": "clipped display",
+   "truth": {},
+   "metric_errors": {},
+   "flags": [
+    "clipping",
+    "trace_ends_early",
+    "crest_unresolved"
+   ],
+   "quantitative_allowed": false,
+   "availability": {
+    "front": false,
+    "tail": false,
+    "crest": false
+   },
+   "samples": 1129,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Insufficient capture",
+     "observed": null,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Insufficient capture",
+     "observed": null,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Insufficient capture",
+     "observed": null,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": false,
+   "diagnosis_investigation_refused": "Quantitative diagnosis is disabled for this waveform: The trace runs along the edge of the plot area for 4 columns. The waveform may be clipped by the display; values there are not real extremes. The "
+  },
+  {
+   "family": "image",
+   "name": "record ends at 20 us",
+   "truth": {},
+   "metric_errors": {
+    "front_us": {
+     "truth": 1.1867806844403421,
+     "digitized": 1.1871730040893371,
+     "error_pct": 0.03305746833754952,
+     "spread_contains_truth": null
+    },
+    "crest_kv": {
+     "truth": 1425.0000000000002,
+     "digitized": 1424.4301994301998,
+     "error_pct": -0.03998600489827364,
+     "spread_contains_truth": null
+    }
+   },
+   "flags": [
+    "metrics_incomplete",
+    "missing_falling_limb"
+   ],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": false,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1424.4301994301998,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 1.1871730040893371,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Insufficient capture",
+     "observed": null,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "No change needed",
+   "diagnosis_leading": []
+  },
+  {
+   "family": "image",
+   "name": "front x0.8 clean",
+   "truth": {
+    "front_factor": 0.8
+   },
+   "metric_errors": {
+    "front_us": {
+     "truth": 0.9067046792228686,
+     "digitized": 0.9082349846378719,
+     "error_pct": 0.16877660941541084,
+     "spread_contains_truth": true
+    },
+    "tail_us": {
+     "truth": 53.143129566313185,
+     "digitized": 53.14695964085431,
+     "error_pct": 0.007207092567540485,
+     "spread_contains_truth": true
+    },
+    "crest_kv": {
+     "truth": 1433.8002115044308,
+     "digitized": 1434.1168091168095,
+     "error_pct": 0.022081013089447765,
+     "spread_contains_truth": true
+    }
+   },
+   "flags": [
+    "ambiguous_selection"
+   ],
+   "quantitative_allowed": true,
+   "availability": {
+    "front": true,
+    "tail": true,
+    "crest": true
+   },
+   "samples": 1359,
+   "diagnosis_metrics": [
+    {
+     "metric": "crest_kv",
+     "status": "Compared",
+     "observed": 1434.1168091168095,
+     "predicted": 1425.0000000000002
+    },
+    {
+     "metric": "front_us",
+     "status": "Compared",
+     "observed": 0.9082349846378719,
+     "predicted": 1.1867806844402953
+    },
+    {
+     "metric": "tail_us",
+     "status": "Compared",
+     "observed": 53.14695964085431,
+     "predicted": 53.74352664656465
+    }
+   ],
+   "diagnosis_quantitative_allowed": true,
+   "diagnosis_verdict": "Possible cause",
+   "diagnosis_leading": [
+    "front_network"
+   ]
+  }
+ ],
+ "gates": {
+  "G1_no_change": true,
+  "G2_single_identified": {
+   "pass": true,
+   "identified_and_within_5pct": "11/11"
+  },
+  "G3_no_confident_false_cause": false,
+  "G4_amplitude_competition": true,
+  "G5_image_round_trip": {
+   "pass": true,
+   "within_limits": "9/9",
+   "spread_contains_truth": "8/9"
+  },
+  "G6_integrity": true,
+  "G7_no_extrapolation": true,
+  "G8_settings_difference": true,
+  "all_pass": false
+ },
+ "elapsed_s": 74.28370881080627,
+ "not_established": "Real CPRI accuracy, real photo digitization accuracy on laboratory screenshots, and real fault attribution remain unknown until real recordings with known causes are available.",
+ "case_revisions": [
+  {
+   "after_run": 1,
+   "cases": [
+    "cpri_switching front 0.8 (CSV)",
+    "thick trace (image)"
+   ],
+   "problem": "The investigation finished its fits but could not be saved: an identifiability value (an unbounded local uncertainty or condition number) was infinite and JSON storage refuses non-finite numbers.",
+   "fix": "Non-finite numbers are stored as null (api.finite) and the condition number is null when undefined. Fit logic, thresholds and fixtures unchanged.",
+   "effect": "Both cases now complete; their results come from the re-run."
+  },
+  {
+   "after_run": 1,
+   "cases": [
+    "(d) precursor 35% (CSV)"
+   ],
+   "problem": "The verdict 'No change needed' described only the compared impulse; the precursor before the entered onset was flagged on the front and tail metrics ('Requires review') but not repeated next to the verdict.",
+   "fix": "When the comparison carries rising-limb review flags or metrics marked 'Requires review', the verdict now states 'Requires review' and why. The verdict label and every threshold are unchanged.",
+   "effect": "Wording only; no gate outcome changes."
+  },
+  {
+   "after_run": 1,
+   "cases": [
+    "L 80 uH, front x0.25 (ringing in model)"
+   ],
+   "problem": "The unit-plausibility guard disabled the diagnosis with a message that suggested only a unit mistake, although the waveform was a strongly ringing in-model case whose half value is reached on the first swing.",
+   "fix": "Message reworded to name both possibilities. The guard and its thresholds are unchanged, so the case still is not diagnosed quantitatively; this is reported as a limitation.",
+   "effect": "Wording only."
+  }
+ ]
+}

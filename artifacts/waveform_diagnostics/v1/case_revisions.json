@@ -1,0 +1,14 @@
+[
+  {"after_run": 1, "cases": ["cpri_switching front 0.8 (CSV)", "thick trace (image)"],
+   "problem": "The investigation finished its fits but could not be saved: an identifiability value (an unbounded local uncertainty or condition number) was infinite and JSON storage refuses non-finite numbers.",
+   "fix": "Non-finite numbers are stored as null (api.finite) and the condition number is null when undefined. Fit logic, thresholds and fixtures unchanged.",
+   "effect": "Both cases now complete; their results come from the re-run."},
+  {"after_run": 1, "cases": ["(d) precursor 35% (CSV)"],
+   "problem": "The verdict 'No change needed' described only the compared impulse; the precursor before the entered onset was flagged on the front and tail metrics ('Requires review') but not repeated next to the verdict.",
+   "fix": "When the comparison carries rising-limb review flags or metrics marked 'Requires review', the verdict now states 'Requires review' and why. The verdict label and every threshold are unchanged.",
+   "effect": "Wording only; no gate outcome changes."},
+  {"after_run": 1, "cases": ["L 80 uH, front x0.25 (ringing in model)"],
+   "problem": "The unit-plausibility guard disabled the diagnosis with a message that suggested only a unit mistake, although the waveform was a strongly ringing in-model case whose half value is reached on the first swing.",
+   "fix": "Message reworded to name both possibilities. The guard and its thresholds are unchanged, so the case still is not diagnosed quantitatively; this is reported as a limitation.",
+   "effect": "Wording only."}
+]

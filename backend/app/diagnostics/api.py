@@ -52,6 +52,25 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def finite(value):
+    """Non-finite numbers (an unbounded uncertainty, a singular matrix) are stored as null."""
+    if isinstance(value, float):
+        return value if math.isfinite(value) else None
+    if isinstance(value, (np.floating,)):
+        return float(value) if np.isfinite(value) else None
+    if isinstance(value, (np.integer,)):
+        return int(value)
+    if isinstance(value, (np.bool_,)):
+        return bool(value)
+    if isinstance(value, dict):
+        return {k: finite(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [finite(v) for v in value]
+    if isinstance(value, np.ndarray):
+        return [finite(v) for v in value.tolist()]
+    return value
+
+
 def fail(error, status=422):
     raise HTTPException(status, str(error))
 
@@ -476,7 +495,7 @@ def digitize_image(sid: str, body: Digitize):
               'baseline_kv': body.baseline_kv, 'onset_us': body.onset_us, 'expected_polarity': body.expected_polarity,
               'analysis': {k: an.get(k) for k in ('metrics', 'partial', 'available', 'issues', 'notes', 'detected_polarity', 'rise_30_90_px')},
               'quality': quality, 'label': 'Digitized from image — approximate', 'evidence_class': 'image_digitized'}
-    saved = storage.put('diagnostic_digitization', uuid.uuid4().hex[:12], record)
+    saved = storage.put('diagnostic_digitization', uuid.uuid4().hex[:12], finite(record))
     advance(sid, 'Trace digitized', digitization_id=saved['id'])
     return session_view(sid)
 
@@ -531,7 +550,7 @@ def compare_waveforms(sid: str, body: CompareRequest):
                   diagnosis_limited=None if reference.get('as_fired') else
                   'The settings actually fired were not recorded. The comparison uses the recommended settings; hardware diagnosis is limited.',
                   evidence_label=source.get('label') or source['quality'].get('label'))
-    saved = storage.put('diagnostic_comparison', uuid.uuid4().hex[:12], result)
+    saved = storage.put('diagnostic_comparison', uuid.uuid4().hex[:12], finite(result))
     advance(sid, 'Compared with the circuit prediction', comparison_id=saved['id'])
     return session_view(sid)
 
@@ -569,6 +588,15 @@ def start_investigation(sid: str):
         if cancel.is_set():
             return None
         result['findings'] = make_findings(result, base, comparison, reference)
+        review = [i['message'] for i in comparison['observed_analysis']['issues']
+                  if i['code'] in ('disconnected_rising_limb', 'two_stage_rise', 'dip_after_90_percent')]
+        flagged = [r['label'] for r in comparison['metrics'] if r['status'] == 'Requires review']
+        if review or flagged:
+            result['verdict']['requires_review'] = (
+                'Requires review: ' + (', '.join(flagged) + ' ' if flagged else '') +
+                'carry review flags on the recording itself (for example a precursor or recrossing, which can lie before '
+                'the entered onset and outside the fitted window). The verdict above describes the compared impulse only.')
+            result['verdict']['review_flags'] = review
         # Fitted explanatory curves, labelled separately (only after diagnosis).
         from .inverse import model_curve
         grid = np.asarray(prediction['waveform']['time_us'])
@@ -584,7 +612,7 @@ def start_investigation(sid: str):
         result['fitted_curves'] = curves[:4]
         result.update(comparison_id=comparison['id'], reference_id=reference['id'], prediction_basis=basis,
                       circuit_args=base, diagnosis_limited=comparison.get('diagnosis_limited'))
-        saved = storage.put('diagnostic_investigation', uuid.uuid4().hex[:12], result)
+        saved = storage.put('diagnostic_investigation', uuid.uuid4().hex[:12], finite(result))
         advance(sid, 'Possible causes investigated', investigation_id=saved['id'])
         return saved['id']
     try:

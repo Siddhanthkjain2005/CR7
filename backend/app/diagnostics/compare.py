@@ -124,8 +124,10 @@ def compare(snapshot, prediction, observed, *, impulse_type, baseline_kv, onset_
             ratio = obs_m[key] / pred_m[key]
             if ratio > 20 or ratio < 1 / 20:
                 plausibility.append({'code': 'implausible_time_scale', 'message': f'The recorded {labels[key][0].lower()} is '
-                                     f'{ratio:.3g}× the prediction. Check the time unit and axis values before reading any '
-                                     'diagnosis; a unit mistake looks like a huge mismatch.'})
+                                     f'{ratio:.3g}× the prediction. Check the time unit and axis values first: a unit mistake looks '
+                                     'like a huge mismatch. If the units are right, the recording is far from the predicted '
+                                     'impulse (for example strong ringing reaches half value on its first swing) and a '
+                                     'quantitative diagnosis is not attempted.'})
     if obs_m.get('crest_kv') and pred_m.get('crest_kv'):
         ratio = obs_m['crest_kv'] / pred_m['crest_kv']
         if ratio > 5 or ratio < .2:

@@ -1,0 +1,11 @@
+{
+  "checked_by": "Developer inspection of the saved overlays (red dots = extracted samples drawn on the working image), 11 October 2026",
+  "method": "Each overlay in manual/ was opened and compared by eye with the drawn curve: does every sample sit on the selected curve, are there jumps to other objects, are gaps visible?",
+  "checks": [
+    {"overlay": "manual/clean.png", "result": "pass", "note": "Samples follow the single blue curve from the baseline through the front, crest and tail; no samples on grid lines, labels or the title."},
+    {"overlay": "manual/perspective_photo.png", "result": "pass", "note": "After rectification from the four plot corners the grid is square and the samples follow the curve. On the near-vertical front only one sample per pixel column is drawn (column centre), so the blue line shows between the red dots there; this is the intended representation, not a gap."},
+    {"overlay": "manual/thick_trace.png", "result": "pass", "note": "Samples run along the centre of the 6 px stroke over the whole record. Front error +3.0% stays inside the reported digitization spread."},
+    {"overlay": "manual/second_curve_same_colour.png", "result": "pass with flag", "note": "Samples stay on the selected (upper) curve; the lower same-colour curve is not mixed in. Where the two curves merge on the front they cannot be told apart, which is why the case is flagged 'multiple same-colour curves' and quantitative diagnosis is disabled."}
+  ],
+  "limitation": "Four overlays checked by one person on generated images. This is a sanity check of the extraction, not a measurement of accuracy on laboratory photos."
+}

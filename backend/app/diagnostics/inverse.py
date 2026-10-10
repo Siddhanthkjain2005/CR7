@@ -200,7 +200,7 @@ def identifiability(problem, names, fit, stages=None):
     jac = np.asarray(fit['jacobian'], float)
     info = jac.T @ jac * N_EFFECTIVE
     cond = float(np.linalg.cond(info)) if np.isfinite(info).all() else float('inf')
-    out = {'at_bound': at_bound, 'condition_number': cond, 'parameters': {}}
+    out = {'at_bound': at_bound, 'condition_number': cond if math.isfinite(cond) else None, 'parameters': {}}
     try:
         cov = np.linalg.inv(info)
         sd = np.sqrt(np.clip(np.diag(cov), 0, None))
@@ -229,7 +229,7 @@ def identifiability(problem, names, fit, stages=None):
     out['poorly_determined'] = weak
     out['trade_off'] = bool(len(names) > 1 and out.get('correlation') is not None and abs(out['correlation']) > .95)
     out['multiple_good_fits'] = len(fit.get('solutions', [])) > 1
-    out['unstable'] = out['multiple_good_fits'] or cond > 1e8
+    out['unstable'] = out['multiple_good_fits'] or not math.isfinite(cond) or cond > 1e8
     return out
 
 
