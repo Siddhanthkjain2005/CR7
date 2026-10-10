@@ -39,7 +39,7 @@ Recommendations still re-solve the circuit, and hardware limits still apply.
 ## Safeguards
 
 - Only captures recorded as **Calibration** (or unspecified older captures) can be used. Validation captures are refused.
-- Each capture must pass the acquisition review, its original bytes must be unchanged, and its source must be explicitly classified.
+- Each capture must pass the shared admission (`docs/capture_admission.md`): acquisition review including the declared polarity and the connected-rise check, unchanged original bytes, an explicitly classified source, and a recorded review of any out-of-rating as-fired settings.
 - All captures must come from the same generator, impulse type, layout and base-capacitance choice, and from runs that do not already use fitted parameters.
 - Any capture used for fitting, or a re-import of it, is rejected by the independent evaluation of predictions that used those parameters. The fit must also predate those predictions.
 - The fitted values are effective values of the lumped model, not measured component values. The production model is never retrained.

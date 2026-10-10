@@ -1,5 +1,19 @@
 # Continue ImpulseTwin AI
 
+## Capture admission fixes and Waveform Diagnostics — 11 October 2026
+
+Branch `codex/waveform-diagnostics` from `codex/effective-parameter-calibration`. It is local only and has not been pushed. Read `docs/capture_admission.md` and `docs/waveform_diagnostics.md`.
+
+- **Defects fixed.** Three calibration defects found by the external validation are fixed in shared backend logic, so they apply on every route, not only in the UI:
+  1. A precursor no longer shows as a nominal pass.
+  2. A polarity mismatch is blocked everywhere.
+  3. A shot fired at other settings is compared with its as-fired prediction and never corrects the original setting.
+
+  Out-of-rating as-fired settings need a recorded review.
+- **New page.** Waveform Diagnostics (Test setup) compares a CSV or a photo of a waveform with the circuit prediction at the settings actually fired. It then fits physically meaningful explanations with the existing solver. Fit scores are not fault probabilities.
+- **Evaluation.** Generated fixtures only: 7 of 8 declared gates pass, and one off-model case is wrongly attributed (G3, reported, not tuned). Real CPRI accuracy is unknown.
+- **Rebuild needed.** Rebuild `frontend/out` with Node 22 before demoing.
+
 ## Judge workflow and practical evaluation — 10 October 2026
 
 Branch `codex/hardening-judge-workflow` from `feat/engineering-hardening` (`efde726`). Read `AGENTS.md`, `docs/accuracy_report.md`, `docs/physics_audit.md` and `docs/laboratory_validation_checklist.md`.

@@ -1,5 +1,26 @@
 # ImpulseTwin AI — engineering handoff and progress
 
+## Capture admission fixes and Waveform Diagnostics — 11 October 2026 (`codex/waveform-diagnostics`)
+
+Built on `codex/effective-parameter-calibration` (`2de2d4c`). Local branch; not pushed. Read `docs/capture_admission.md` and `docs/waveform_diagnostics.md`.
+
+- [x] **External validation defects, each reproduced by a failing test on `2de2d4c` first** (`tests/test_capture_admission.py`).
+  1. **Precursor.** Precursor and recrossing fronts no longer show NOMINAL PASS. Acquisition review v4 adds a connected-rise check (noise-aware), a stalled-rise check and a dip-after-90 % check. The connected main-limb front is shown for review only, never substituted.
+  2. **Polarity.** The declared polarity is re-checked on every route: correction, parameter fit, evaluation and laboratory summary.
+  3. **Different firing settings.** A shot at other settings is compared with the as-fired prediction (`model_residual`, `configuration_difference`). It can no longer create an offset on the original setting.
+  4. **Out-of-rating settings.** Out-of-rating as-fired settings need an append-only recorded review.
+- [x] **One shared admission** (`backend/app/capture_admission.py`) used by every route. Reviews are append-only `capture_review` records (`POST /api/trials/{id}/reviews`, `GET /api/trials/{id}/admission`).
+- [x] **Waveform Diagnostics** (`/diagnostics/`, additive `/api/diagnostics`): versioned reference and as-fired snapshots, CSV or image upload with origin declaration and checksum, local digitization with recorded transforms, comparison, physics inverse analysis, findings, report, hypothetical exploration and a labelled generated demonstration. Image-derived samples never enter calibration or evaluation.
+- [x] **Solver refactor.** `circuit.response()` shares the modal solution with `simulate()`, which is bitwise identical on 3,000 random circuits. The `front_scale` and `extra_l_uh` effective keys default to no change and are set only by an explicit hypothetical exploration.
+- [x] **Evaluation.** The protocol was committed before the fixtures ran (`artifacts/waveform_diagnostics/v1`). 7 of 8 gates pass. **G3 fails:** a slow second tail component is absorbed by an effective tail resistance and reported as "Possible cause: tail network". Three post-run fixes are disclosed; no threshold or fixture changed.
+- [x] **Verification:**
+  - backend tests, frontend typecheck and 15 unit tests;
+  - harness browser checks for the new page, existing behaviours and the admission UI;
+  - protected hashes.
+
+  The Next production build could not run in this sandbox. Rebuild `frontend/out` with Node 22 (`cd frontend && npm run build -- --webpack`).
+- **Not established.** Real CPRI accuracy, and diagnosis on real photos and real faults, are unknown.
+
 ## Better approach — 10 October 2026 (`codex/effective-parameter-calibration`)
 
 Built on `codex/hardening-judge-workflow`.

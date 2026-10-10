@@ -14,13 +14,15 @@ Open **http://127.0.0.1:8000/** for the primary workflow: **Configure test → R
 
 - **Configure test:** generator profile (or a custom generator with complete ratings), impulse type, desired crest in V or kV, test-object capacitance and divider capacitance. Stray capacitance, inductance and the loss factor sit under *Circuit assumptions*. Stock, engine and equipment reference have their own sections. Every assumption is saved with the run.
 - **Results:** these lead with the waveform plot and say plainly what produced it, for example "Circuit prediction" or "Outside validated ML range; workbook-equation metrics used". The metrics shown are re-extracted from the plotted curve. Next come the conceptual 3D stack, the recommended stages and charge per stage, the front and tail resistor construction, deviations from target, the hardware and waveform verdicts and a few ranked alternatives. Detailed engineering evidence is collapsed underneath.
-- **Compare measurement:** imports a measured CSV with its purpose (independent validation or calibration), divider scale, polarity, onset, session and shot, and the settings actually fired. The unchanged circuit is re-simulated at the as-fired settings.
+- **Compare measurement:** imports a measured CSV with its purpose (independent validation or calibration), divider scale, polarity, onset, session and shot, and the settings actually fired. The unchanged circuit is re-simulated at the as-fired settings. A shared admission check decides whether the capture may be used for a one-shot offset, a parameter fit or independent evaluation. A precursor, a polarity mismatch or a different firing setting can no longer slip through on any route ([capture admission](docs/capture_admission.md)).
+- **Waveform Diagnostics** (`/diagnostics/`, or *Diagnose this waveform* on a result): compares a raw CSV or a photo or screenshot of a waveform with the circuit prediction at the settings actually fired. It then fits physically meaningful explanations with the existing solver: resistor networks, effective capacitance, inductance, charge, loss convention, measurement gain, timing or baseline. Competing explanations are kept, fit scores are not fault probabilities, and image-derived samples never enter calibration ([waveform diagnostics](docs/waveform_diagnostics.md)).
 
 What is demonstrated, and what is not, is in [docs/accuracy_report.md](docs/accuracy_report.md). The supporting documents are:
 
 - [physics audit](docs/physics_audit.md)
 - [laboratory validation checklist](docs/laboratory_validation_checklist.md)
 - the evaluation pack, which you can re-run with `python -m scripts.evaluation_pack`
+- the Waveform Diagnostics evaluation, which you can re-run with `python -m scripts.evaluate_waveform_diagnostics` (generated fixtures; protocol in `artifacts/waveform_diagnostics/v1`)
 
 The static UI must be rebuilt after a source change: `cd frontend && npm run build -- --webpack` (Node 22).
 

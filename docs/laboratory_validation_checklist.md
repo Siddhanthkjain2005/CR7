@@ -42,11 +42,16 @@ Keep calibration and validation captures separate:
   - [ ] The units, the divider scale factor and the source of that factor.
   - [ ] The expected polarity and the physical onset time.
   - [ ] The capture time, instrument, session and shot number.
-- [ ] Check the acquisition review. Resolve any of these before using the shot:
+- [ ] Check the acquisition review and the "Can this capture be used?" panel. Resolve any of these before using the shot:
   - [ ] Unresolved crest.
   - [ ] Too few samples on the rising edge.
   - [ ] Incomplete tail.
-  - [ ] Polarity mismatch.
+  - [ ] Polarity mismatch (blocks every use; it cannot be accepted by review).
+  - [ ] A rising limb that returns below 30 % (precursor or recrossing; blocks every use).
+  - [ ] A stalled rise or a dip after 90 %: a qualified reviewer may accept these with a recorded reason.
+  - [ ] Settings outside the generator ratings: these need a recorded review.
+- [ ] If the shot was fired at other settings than recommended, record them. The comparison then uses the as-fired prediction, and no one-shot offset is formed; use the parameter fit.
+- [ ] Optional: open the shot in **Waveform Diagnostics** to look for possible causes of any mismatch. Diagnoses never become corrections, and photos are lower-quality evidence than the raw CSV.
 - [ ] Keep the raw file. The application stores it byte-for-byte, with its SHA-256.
 
 ## Fitting the generator (branch `codex/effective-parameter-calibration`)
