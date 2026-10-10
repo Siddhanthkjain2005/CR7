@@ -25,6 +25,38 @@ class InventoryOverride(BaseModel):
     tail:list[StockItem]
     provenance:str=Field(min_length=3,max_length=300)
 
+class CustomGeneratorProfile(BaseModel):
+    """Complete hardware for a generator of the same series-Marx equivalent topology.
+
+    Only validated ratings are accepted. Resistor values and counts come from the
+    explicit inventory; no other circuit topology is implied.
+    """
+    model_config=ConfigDict(extra='forbid',allow_inf_nan=False)
+    name:str=Field(min_length=2,max_length=80)
+    source:str=Field(min_length=3,max_length=300)
+    max_stages:int=Field(ge=2,le=30)
+    min_stages:int=Field(default=2,ge=2,le=30)
+    stage_kv:float=Field(gt=0,le=1000)
+    stage_c_uf:float=Field(gt=0,le=100)
+    energy_stage_kj:float=Field(gt=0,le=10000)
+    energy_total_kj:float=Field(gt=0,le=100000)
+    voltage_min_kv:float=Field(default=1,gt=0,le=10000)
+    voltage_max_kv:float|None=Field(default=None,gt=0,le=10000)
+    base_c_pf:float=Field(default=0,ge=0,le=100000)
+    @model_validator(mode='after')
+    def consistent_ratings(self):
+        if self.min_stages>self.max_stages: raise ValueError('Custom generator minimum stages exceed maximum stages.')
+        stored=.5*self.stage_c_uf*1e-6*(self.stage_kv*1000)**2/1000
+        if self.energy_stage_kj>stored*1.000001:
+            raise ValueError(f'Stage energy rating {self.energy_stage_kj:g} kJ exceeds 0.5·C·V² = {stored:.4g} kJ at the stated stage voltage and capacitance; check units.')
+        if self.energy_total_kj>self.max_stages*self.energy_stage_kj*1.000001:
+            raise ValueError('Total energy rating exceeds the number of stages times the stage rating.')
+        if self.voltage_max_kv is not None and self.voltage_max_kv>self.max_stages*self.stage_kv*1.000001:
+            raise ValueError('Maximum output voltage exceeds the erected charging voltage of all stages.')
+        if self.voltage_max_kv is not None and self.voltage_min_kv>self.voltage_max_kv:
+            raise ValueError('Custom generator minimum voltage exceeds its maximum voltage.')
+        return self
+
 class OptimizeRequest(BaseModel):
     model_config=ConfigDict(extra='forbid',allow_inf_nan=False)
     profile_id:str='workbook_reference_profile'
@@ -52,8 +84,16 @@ class OptimizeRequest(BaseModel):
     equipment_reference_source:str|None=Field(default=None,max_length=300)
     confirm_reference_mismatch:bool=False
     calibration_id:str|None=None
+    custom_profile:CustomGeneratorProfile|None=None
     @model_validator(mode='after')
     def ordered_stages(self):
+        if self.profile_id=='custom_generator':
+            if self.custom_profile is None: raise ValueError('A custom generator needs its complete hardware ratings.')
+            if self.inventory_override is None: raise ValueError('A custom generator needs an explicit resistor inventory with counts and provenance.')
+            if self.solver!='circuit' or self.model_mode!='physics':
+                raise ValueError('A custom generator uses the circuit prediction; workbook residual ML is not validated for it.')
+        elif self.custom_profile is not None:
+            raise ValueError('Custom hardware ratings are only used with the custom generator profile.')
         if self.require_model_agreement and self.solver!='reference':
             raise ValueError('Agreement search uses the workbook reference and independent circuit together. Select the reference prediction engine.')
         if self.stage_min and self.stage_max and self.stage_min>self.stage_max:
@@ -67,7 +107,7 @@ class GeneratorProfile(BaseModel):
     id:str
     name:str
     version:str
-    kind:Literal['synthetic_reference','specified_hardware','incomplete']
+    kind:Literal['synthetic_reference','specified_hardware','incomplete','custom_hardware']
     source:str
     voltage_min_kv:float|None=Field(default=None,gt=0)
     voltage_max_kv:float=Field(gt=0)

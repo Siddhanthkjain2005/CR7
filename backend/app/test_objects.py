@@ -47,7 +47,7 @@ def validate_request(req, profile, data=None):
     mismatch = level is not None and abs(req.test_kv / level - 1) > data['mismatch_fraction']
     message = (f'Requested {req.test_kv:g} kV differs from recorded reference {level:g} kV. Source: {source}. Confirm the entered level is intentional.'
                if mismatch else 'Requested level matches the recorded reference within the application review threshold.'
-               if level is not None else 'No verified reference is stored for this equipment. Generator feasibility can be evaluated; the correct equipment test level remains unknown.')
+               if level is not None else 'Equipment test-level reference unavailable. The entered target voltage is used.')
     return {'catalog_version': data['version'], 'test_object_id': req.test_object_id,
             'status': status, 'reference_kv': level, 'source': source,
             'source_version': obj.get('source_version') if obj and status != 'operator_provided' else None,

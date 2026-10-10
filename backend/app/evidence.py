@@ -40,6 +40,38 @@ def evidence_record(trial, run, quality=None):
             'origin_assurance': 'Operator declaration and embedded provenance, not authenticated laboratory origin.'}
 
 
+def reviewed_calibration_origin(calibration, lookup, root):
+    """Recheck a calibration's original source without rewriting saved audit records."""
+    declared = source_type(calibration)
+    trial_id = calibration.get('trial_id')
+    try:
+        trial = lookup(trial_id, 'trial')
+        run = lookup(trial['run_id'], 'run')
+        origin = source_type(trial)
+        if declared not in ('generated_demo', 'measured_lab') or origin not in ('generated_demo', 'measured_lab'):
+            raise ValueError('Calibration source is not an explicitly classified trial waveform.')
+        raw = (Path(root) / trial['raw_path']).resolve()
+        if not raw.is_relative_to(Path(root).resolve()) or not raw.is_file() or hashlib.sha256(raw.read_bytes()).hexdigest() != trial['raw_sha256']:
+            raise ValueError('Original calibration CSV is missing or changed.')
+        if not any(c['id'] == trial['candidate_id'] for c in run['candidates']):
+            raise ValueError('Original calibration candidate is missing.')
+        normalized_capture(trial, run)
+        # Neither the calibration label nor its source record can upgrade a demo.
+        resolved = 'generated_demo' if 'generated_demo' in (declared, origin) else 'measured_lab'
+        normalized = 'generated_stress_test' if resolved == 'generated_demo' else resolved
+        status = 'DOWNGRADED' if declared == 'measured_lab' and resolved == 'generated_demo' else 'VERIFIED'
+        message = ('Generated source provenance overrides the historical measured-calibration label.'
+                   if status == 'DOWNGRADED' else 'Original source, saved candidate, CSV hash and acquisition review verified.')
+    except (KeyError, ValueError, TypeError, OSError) as exc:
+        normalized, status = 'unknown', 'UNVERIFIABLE'
+        message = f'Calibration origin requires review: {exc}'
+    return {**calibration, 'source_type': normalized,
+            'source_review': {'status': status, 'declared_source_type': calibration.get('source_type'),
+                              'trial_id': trial_id, 'message': message,
+                              'audit_record_changed': False,
+                              'scope': 'Source classification and file/acquisition checks; laboratory origin remains operator-declared.'}}
+
+
 def recommendation_evidence(candidate, evaluation_ids=()):
     nominal = candidate.get('compliance', {}).get('nominal_pass') is True
     cross = (candidate.get('circuit_crosscheck') or {}).get('compliance', {}).get('nominal_pass')

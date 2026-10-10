@@ -8,8 +8,10 @@ import numpy as np
 from .physics.compliance import RULES
 
 
-VERSION = 'waveform-acquisition-review-v2'
+VERSION = 'waveform-acquisition-review-v3'
 MIN_RISING_INTERVALS = 4
+MIN_POST_HALF_INTERVALS = 4
+MIN_POST_HALF_TAIL_FRACTION = .02
 RESOLUTION_HALFWIDTH_FRACTION = .25
 DEFINITION_TYPES = {
     'virtual front/origin': 'Lightning',
@@ -100,6 +102,28 @@ def assess_waveform(time_us, voltage_kv, measured, *, impulse_type=None, rules=N
         metrics.update(half_value_bracket_indices=[half_index, half_index + 1],
                        half_value_bracket_times_us=[float(t[half_index]), float(t[half_index + 1])],
                        half_value_bracket_span_us=half_span)
+        # A falling threshold at the record boundary can be a capture transition,
+        # rather than an acquired impulse tail. Retain enough samples and time
+        # after it for review; never extrapolate or change extracted metrics.
+        tail = float(measured['tail_us'])
+        half_time = float(measured['t50_us'])
+        if not np.isfinite([tail, half_time]).all() or tail <= 0:
+            raise ValueError('Positive finite tail metadata required.')
+        post_intervals = len(t) - half_index - 2
+        post_span = float(t[-1] - half_time)
+        required_span = MIN_POST_HALF_TAIL_FRACTION * tail
+        metrics.update(post_half_value_intervals=post_intervals,
+                       minimum_post_half_value_intervals=MIN_POST_HALF_INTERVALS,
+                       post_half_value_span_us=post_span,
+                       minimum_post_half_value_span_us=required_span,
+                       minimum_post_half_tail_fraction=MIN_POST_HALF_TAIL_FRACTION)
+        if post_intervals < MIN_POST_HALF_INTERVALS or post_span + 1e-10 < required_span:
+            issues.append({'code': 'incomplete_falling_limb', 'message':
+                'The falling half-value crossing is too close to the capture boundary. '
+                f'Acquire at least {MIN_POST_HALF_INTERVALS} further intervals and '
+                f'{required_span:g} µs beyond it (2% of the extracted tail) before '
+                'calibration or accuracy evaluation. A record-end transition cannot '
+                'establish a complete impulse tail.'})
         if context:
             if peak_span > context['maximum_peak_neighbor_span_us'] + 1e-10:
                 issues.append({'code': 'unresolved_peak', 'message':
@@ -134,5 +158,8 @@ def assess_waveform(time_us, voltage_kv, measured, *, impulse_type=None, rules=N
             'scope': 'Acquisition heuristics only, not IEC certification or an instrument uncertainty estimate. '
                      'Peak-neighbor and falling half-value bracket spans must not exceed 25% of their '
                      'selected challenge timing tolerance half-widths. These limits are application review '
-                     'preferences, not waveform error bounds. No resampling, smoothing or changes to raw '
+                     'preferences, not waveform error bounds. At least four acquired intervals and '
+                     '2% of the extracted tail duration must remain beyond the falling half-value '
+                     'crossing; this is a capture-completeness heuristic, not waveform classification. '
+                     'No resampling, smoothing or changes to raw '
                      'samples or extracted metrics. Passing does not establish laboratory accuracy.'}

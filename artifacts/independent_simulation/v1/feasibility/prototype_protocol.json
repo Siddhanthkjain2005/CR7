@@ -1,0 +1,72 @@
+{
+  "source": "independent_generated_simulation",
+  "fit_anything": false,
+  "scope": "solver feasibility only, not a fresh physical holdout",
+  "cases": [
+    [
+      "Lightning",
+      2,
+      80.0,
+      30.0,
+      520.0,
+      800.0,
+      0.0
+    ],
+    [
+      "Lightning",
+      11,
+      180.0,
+      30.0,
+      520.0,
+      1500.0,
+      12.0
+    ],
+    [
+      "Lightning",
+      12,
+      180.0,
+      465.0,
+      520.0,
+      4000.0,
+      30.0
+    ],
+    [
+      "Switching",
+      2,
+      80.0,
+      3700.0,
+      22000.0,
+      800.0,
+      0.0
+    ],
+    [
+      "Switching",
+      11,
+      180.0,
+      3700.0,
+      22000.0,
+      1500.0,
+      12.0
+    ],
+    [
+      "Switching",
+      12,
+      180.0,
+      465.0,
+      22000.0,
+      4000.0,
+      30.0
+    ]
+  ],
+  "solvers": [
+    [
+      "Radau",
+      1e-09
+    ],
+    [
+      "BDF",
+      1e-10
+    ]
+  ],
+  "no_production_imports": true
+}

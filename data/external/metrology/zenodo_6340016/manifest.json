@@ -1,0 +1,27 @@
+{
+  "retrieved_on": "2026-10-07",
+  "record_url": "https://zenodo.org/records/6340016",
+  "doi": "10.5281/zenodo.6340016",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "source_kind": "measured_step_response",
+  "intended_use": "Independent capture-admission investigation; not impulse predictor training or six-output reference labels.",
+  "source_file": "dataset_2022_08_03.xlsx",
+  "size_bytes": 1585194,
+  "source_md5": "62b08bf71bd6af952b5c7b8c16a68fde",
+  "downloaded_md5": "62b08bf71bd6af952b5c7b8c16a68fde",
+  "sha256": "0ffeb8fe6b9268c9db09024e0efa1fb72c563a96a4a42a8e8868a678e2e7b826",
+  "metadata_file": "source_metadata.json",
+  "sheets": {
+    "50ohm_16meter": 22000,
+    "1Mohm_16meter": 22000,
+    "50ohm_1.5meter": 22000
+  },
+  "units_review": {
+    "time_column": "seconds",
+    "recorded_voltage_column": "volts at divider output",
+    "supported_by": "5ns samples and output ~0.45/0.9V described in associated VTT paper; not generator voltage"
+  },
+  "reference_parameter_labels_available": false,
+  "usable_for_final_challenge_6_of_6": false
+}

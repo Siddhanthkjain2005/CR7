@@ -1,0 +1,23 @@
+{
+  "doi": "10.5281/zenodo.20539246",
+  "url": "https://zenodo.org/records/20539246",
+  "title": "Observation and statistical analysis data for positive leader branching in long air gaps",
+  "publisher": "Zenodo; Guo, Lili",
+  "license": "CC-BY-4.0",
+  "license_verified_from": "https://zenodo.org/api/records/20539246",
+  "source_type": "measured_voltage_trace",
+  "review": "Downloaded Figure 2 voltage data, linked in the article availability statement. One trace; 9987 rows. Numeric time column -39.124 to 360.32, spacing about 0.04; signal peak 847.86 at 93.316. Sharp decay requires chopped/breakdown review. No stages, stage capacitance, Rf, Rt, charging setting or load/parasitic circuit mapping per shot. Preserve as external waveform audit material, not six-target labels.",
+  "files": [
+    {
+      "path": "data/external/zenodo_20539246/figure2_voltage.csv",
+      "bytes": 138906,
+      "sha256": "369c6eb1c0ea446b1cd48c1ae37481c62e16fa5aaf15bb85b356d9447bef11f6",
+      "publisher_md5": "cf62f71ddffe313f439b63a1c6f4c271",
+      "publisher_md5_matches": true
+    }
+  ],
+  "eligible_for_six_output_training": false,
+  "eligible_for_final_test_six_of_six_claim": false,
+  "downloaded_on": "2026-10-07",
+  "usage": "Quarantined external reference; no model fitting or accuracy claim"
+}

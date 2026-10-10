@@ -157,7 +157,9 @@ def test_stored_record_recomputes_and_excludes_all_forbidden_ids():
     expected = {k: v for k, v in protocol['preserved_sha256'].items() if not k.endswith('/.DS_Store')}
     actual = {k.replace(chr(92), '/'): v for k, v in v5.preserved_artifacts().items()
               if not k.replace(chr(92), '/').endswith('/.DS_Store')}
-    assert expected == actual
+    # Independently named later studies can add files. Every artifact registered
+    # by V5 must still exist with exactly its recorded bytes.
+    assert expected.items() <= actual.items()
     frames = v5.load_fit_frames({'fit_ids': protocol['fit_ids'],
                                  'calibration_ids': protocol['excluded_calibration_ids']})
     baseline, candidate, gains = [], [], []

@@ -13,12 +13,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from .schemas import OptimizeRequest,SimulationRequest,ComplianceRequest,TrialEvaluationRequest,SetupTransitionRequest,SensitivityRequest
-from .optimization.engine import optimize, profile_for, PROFILES, physics
+from .optimization.engine import optimize, profile_for, custom_profile, CUSTOM_ID, PROFILES, physics
 from .physics.waveform_metrics import analyze,waveform_from_metrics
 from .physics.compliance import check,RULES
 from .data.workbook_reference import calculate
 from .ml.reference_knn import WorkbookKNN
 from .ml.registry import registry
+from .ml.benchmark_scorecard import scorecard
 from . import storage
 from .reports import report_html
 from .run_evidence import summarize_evidence
@@ -29,7 +30,7 @@ from .trial_evaluation import evaluate_trials
 from .setup_transition import plan_transition
 from .transition_report import transition_report
 from .sensitivity import compare_sensitivity
-from .evidence import evidence_record, laboratory_summary, recommendation_evidence, validated_evaluation_ids, SOURCES
+from .evidence import evidence_record, laboratory_summary, recommendation_evidence, validated_evaluation_ids, reviewed_calibration_origin, SOURCES
 from .hardware_integrity import hardware_integrity
 from .test_objects import catalog, validate_request
 from .experiment_timeline import timeline
@@ -41,6 +42,9 @@ app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:3000','http:/
 def saved(id,kind):
     try:return storage.get(id,kind)
     except KeyError:raise HTTPException(404,f'{kind} not found')
+
+def resolve_profile(req):
+    return custom_profile(req) if req.profile_id==CUSTOM_ID else profile_for(req.profile_id)
 
 def selected_candidate(run,candidate_id=''):
     if not candidate_id:return run['candidates'][0]
@@ -97,7 +101,7 @@ def test_objects():return catalog()
 
 @app.post('/api/test-objects/validate')
 def validate_test_object(req:OptimizeRequest):
-    try:return validate_request(req,profile_for(req.profile_id))
+    try:return validate_request(req,resolve_profile(req))
     except ValueError as e:raise HTTPException(422,str(e))
 
 @app.get('/api/experiment-timeline')
@@ -115,10 +119,32 @@ def laboratory_evidence():
 @app.get('/api/runs/{id}/judge')
 def judge_run(id:str):
     run=saved(id,'run'); evaluations=storage.list_records('evaluation',None)
+    calibration_views={}
+    def origin_view(calibration_id):
+        if calibration_id not in calibration_views:
+            try:
+                calibration=storage.get(calibration_id,'calibration')
+                calibration_views[calibration_id]=reviewed_calibration_origin(calibration,storage.get,ROOT)
+            except KeyError:
+                calibration_views[calibration_id]={'source_type':'unknown','source_review':{
+                    'status':'UNVERIFIABLE','message':'Original calibration audit record is missing.',
+                    'audit_record_changed':False}}
+        return calibration_views[calibration_id]
     candidates=[]
     for candidate in run['candidates']:
         ids=validated_evaluation_ids(run,candidate,evaluations,storage.get,ROOT)
-        candidates.append({**candidate,'evidence':recommendation_evidence(candidate,ids)})
+        view={**candidate}
+        if (candidate.get('calibration') or {}).get('id'):
+            reviewed=origin_view(candidate['calibration']['id'])
+            view['calibration']={**candidate['calibration'],'source_type':reviewed['source_type'],
+                                 'source_review':reviewed['source_review']}
+            view['ood']={**candidate.get('ood',{}),'lab_calibrated':reviewed['source_type']=='measured_lab'}
+        candidates.append({**view,'evidence':recommendation_evidence(view,ids)})
+    calibration_review=run.get('calibration_review')
+    if calibration_review and calibration_review.get('id'):
+        reviewed=origin_view(calibration_review['id'])
+        calibration_review={**calibration_review,'source_type':reviewed['source_type'],
+                            'source_review':reviewed['source_review']}
     alternatives=[]
     for label,key in [('Best waveform match',lambda c:c['accuracy_cost']),
                       ('Fewest components',lambda c:c['setup_component_count']),
@@ -132,7 +158,7 @@ def judge_run(id:str):
         if not any(a['candidate']['id']==candidate['id'] for a in alternatives):
             alternatives.append({'labels':[f"Ranked alternative {candidate['rank']}"],'candidate':candidate})
     trials=[{**t,'evidence':evidence_record(t,run)} for t in storage.list_records('trial',None) if t['run_id']==id]
-    return {**run,'candidates':candidates,'alternatives':alternatives,'trials':trials,
+    return {**run,'candidates':candidates,'calibration_review':calibration_review,'alternatives':alternatives,'trials':trials,
             'alternative_scope':'Trade-offs among the returned shortlist; fewest components is not fewest changes from an existing setup. Nominal failures remain diagnostic.',
             'laboratory':laboratory_evidence()}
 
@@ -155,6 +181,9 @@ def reference(impulse_type:str='Lightning'):
 def run_optimize(req:OptimizeRequest):
     try:
         cal=saved(req.calibration_id,'calibration') if req.calibration_id else None
+        if cal:
+            cal=reviewed_calibration_origin(cal,storage.get,ROOT)
+            if cal['source_type']=='unknown':raise ValueError(cal['source_review']['message'])
         result=optimize(req,cal)
     except ValueError as e:raise HTTPException(422,str(e))
     id=uuid.uuid4().hex[:12]; result['run_id']=id
@@ -163,7 +192,7 @@ def run_optimize(req:OptimizeRequest):
 @app.post('/api/simulate')
 def run_simulate(body:SimulationRequest):
     try:
-        req=body.inputs; p=profile_for(req.profile_id); s=body.settings.model_dump()
+        req=body.inputs; p=resolve_profile(req); s=body.settings.model_dump()
         n=s['stages']; q=s['charge_kv_stage']
         if not p['enabled'] or not p['min_stages']<=n<=p['max_stages'] or not 0<q<=p['stage_kv']:raise ValueError('Settings exceed profile ratings.')
         stage_energy_kj=.5*p['stage_c_uf']*1e-6*(q*1000)**2/1000
@@ -199,7 +228,40 @@ def models():
     if v5.exists():
         study=json.loads(v5.read_text(encoding="utf-8"))
         result['experiment_v5']={k:study[k] for k in ['version','scope','macro_improvement_pct','control_macro_improvement_pct','improvement_vs_matched_control_pct','worst_target_improvement_pct','promotion_eligible','decision','hidden_test_evaluated','calibration_evaluated','validation_evaluated','elapsed_seconds','nested_cv']}
+    result['benchmark_scorecard']=scorecard(result['hidden_test'],result.get('experiment_v2'))
+    independent=ROOT/'artifacts/independent_simulation/v1/summary.json'
+    if independent.exists():
+        result['independent_circuit_verification']=json.loads(independent.read_text(encoding='utf-8'))
     return result
+
+def saved_json(relative):
+    path=ROOT/relative
+    if not path.is_file():raise HTTPException(404,'This evaluation has not been recorded yet.')
+    return json.loads(path.read_text(encoding='utf-8'))
+
+@app.get('/api/evaluation-pack')
+def evaluation_pack(records:bool=False):
+    """Saved evaluation-pack results; reads the artifact, never re-runs the cases."""
+    result=saved_json('artifacts/evaluation_pack/v1/results.json')
+    return result if records else {k:v for k,v in result.items() if k!='records'}
+
+@app.get('/api/verification/physics-audit')
+def physics_audit():return saved_json('artifacts/physics_audit/v1/audit.json')
+
+@app.get('/api/verification/surrogate')
+def surrogate_study():
+    summary=saved_json('artifacts/models/circuit_surrogate_v1/summary.json')
+    protocol=saved_json('artifacts/models/circuit_surrogate_v1/protocol.json')
+    manifest=saved_json('data/generated/circuit_dataset_v1/manifest.json')
+    curve_path=ROOT/'data/generated/circuit_dataset_v1/learning_curve.json'
+    return {'summary':summary,'protocol':protocol,'dataset':{k:manifest[k] for k in ['version','rows','configurations','circuit_model','split','summary','surrogate_warning','provenance_classes']},
+            'learning_curve':json.loads(curve_path.read_text(encoding='utf-8')) if curve_path.is_file() else None}
+
+@app.get('/api/verification/independent-circuit')
+def independent_circuit_verification():
+    path=ROOT/'artifacts/independent_simulation/v1/summary.json'
+    if not path.is_file():raise HTTPException(404,'Independent circuit verification is not recorded.')
+    return json.loads(path.read_text(encoding='utf-8'))
 
 @app.get('/api/models/{id}/metrics')
 def model_metrics(id:str):
@@ -264,12 +326,47 @@ def demo_waveform(id:str,candidate_id:str=''):
     writer=csv.writer(stream); writer.writerow(['time_us','voltage_kv']); writer.writerows(zip(wave['time_us'],wave['voltage_kv']))
     return Response(stream.getvalue(),media_type='text/csv',headers={'Content-Disposition':'attachment; filename="generated_stress_test_trial.csv"'})
 
+def predict_as_fired(run,candidate,as_fired):
+    """Re-simulate the unchanged circuit at the settings actually fired.
+
+    Uses the saved profile and request; no measured information enters the model.
+    """
+    from .physics.circuit import simulate as circuit_simulate
+    inputs=run['inputs']; p=run['profile']; s=candidate['settings']
+    settings={k:as_fired.get(k,s[k]) for k in ['stages','charge_kv_stage','front_r_stage','tail_r_stage']}
+    circuit={k:as_fired.get(k,inputs[k]) for k in ['load_c_pf','divider_c_pf','stray_c_pf','l_uh']}
+    if not p['min_stages']<=settings['stages']<=p['max_stages']:raise ValueError('As-fired stage count is outside the generator profile.')
+    if min(settings['charge_kv_stage'],settings['front_r_stage'],settings['tail_r_stage'],circuit['load_c_pf'])<=0 or min(circuit['divider_c_pf'],circuit['stray_c_pf'],circuit['l_uh'])<0:
+        raise ValueError('As-fired values must be positive.')
+    total=circuit['load_c_pf']+circuit['divider_c_pf']+circuit['stray_c_pf']+((p.get('base_c_pf') or 0) if inputs.get('include_base_c') else 0)
+    result=circuit_simulate(settings['stages'],settings['charge_kv_stage'],settings['front_r_stage'],settings['tail_r_stage'],
+        p['stage_c_uf'],total,circuit['l_uh'],inputs['efficiency'],inputs['impulse_type'],True)
+    return {'settings':settings,'circuit_inputs':circuit,'changed_fields':sorted(as_fired),
+            'prediction':{k:result[k] for k in ['front_us','tail_us','crest_kv']},'waveform':result['waveform'],
+            'model':result['diagnostics']['model'],
+            'note':'Circuit prediction recomputed at the as-fired settings with the unchanged model and assumptions; no measured data was used.'}
+
 @app.post('/api/trials/upload')
 async def upload_trial(file:UploadFile=File(...),run_id:str=Form(...),candidate_id:str=Form(''),
     time_column:str=Form('time_us'),voltage_column:str=Form('voltage_kv'),time_unit:str=Form('us'),
     voltage_unit:str=Form('kV'),baseline_kv:float=Form(0),source_type:str=Form('generated_stress_test'),time_origin_us:float=Form(0),
-    captured_at:str|None=Form(None),measurement_instrument:str|None=Form(None),operator_notes:str|None=Form(None)):
+    captured_at:str|None=Form(None),measurement_instrument:str|None=Form(None),operator_notes:str|None=Form(None),
+    capture_purpose:str=Form('unspecified'),voltage_scale:float=Form(1.0),voltage_scale_source:str|None=Form(None),
+    expected_polarity:str=Form('auto'),session_id:str|None=Form(None),shot_label:str|None=Form(None),
+    as_fired_stages:int|None=Form(None),as_fired_charge_kv_stage:float|None=Form(None),
+    as_fired_front_r_stage:float|None=Form(None),as_fired_tail_r_stage:float|None=Form(None),
+    as_fired_load_c_pf:float|None=Form(None),as_fired_divider_c_pf:float|None=Form(None),
+    as_fired_stray_c_pf:float|None=Form(None),as_fired_l_uh:float|None=Form(None)):
     run=saved(run_id,'run'); candidate=selected_candidate(run,candidate_id)
+    if capture_purpose not in ('validation','calibration','unspecified'):
+        raise HTTPException(422,'Capture purpose must be validation (independent check, never used for correction), calibration or unspecified.')
+    if not (np.isfinite(voltage_scale) and voltage_scale>0):raise HTTPException(422,'Voltage scale factor must be a positive finite number.')
+    if voltage_scale!=1 and not (voltage_scale_source or '').strip():
+        raise HTTPException(422,'Give the source of the voltage scale factor (for example the divider calibration certificate).')
+    if expected_polarity not in ('auto','positive','negative'):raise HTTPException(422,'Expected polarity must be auto, positive or negative.')
+    as_fired={k:v for k,v in {'stages':as_fired_stages,'charge_kv_stage':as_fired_charge_kv_stage,
+        'front_r_stage':as_fired_front_r_stage,'tail_r_stage':as_fired_tail_r_stage,'load_c_pf':as_fired_load_c_pf,
+        'divider_c_pf':as_fired_divider_c_pf,'stray_c_pf':as_fired_stray_c_pf,'l_uh':as_fired_l_uh}.items() if v is not None}
     if source_type not in SOURCES:raise HTTPException(422,'Source type must identify synthetic benchmark, generated demo or measured laboratory data.')
     if source_type=='generated_demo':source_type='generated_stress_test'
     if captured_at:
@@ -286,12 +383,18 @@ async def upload_trial(file:UploadFile=File(...),run_id:str=Form(...),candidate_
         elif embedded=='synthetic_benchmark':source_type='synthetic_benchmark'
         df=pd.read_csv(io.StringIO(text),comment='#')
         ts={'us':1,'µs':1,'ms':1000,'s':1e6,'ns':.001}[time_unit]
-        vs={'kV':1,'V':.001,'MV':1000}[voltage_unit]
+        vs={'kV':1,'V':.001,'MV':1000}[voltage_unit]*voltage_scale
         t=df[time_column].to_numpy(float)*ts; v=df[voltage_column].to_numpy(float)*vs
         measured=analyze(t,v,run['inputs']['impulse_type'],baseline_kv,time_origin_us)
         limits=captured_limits(run)
     except (UnicodeError,ValueError,KeyError,TypeError) as e:raise HTTPException(422,f'CSV validation failed: {e}')
     quality=assess_waveform(t,v,measured,impulse_type=run['inputs']['impulse_type'],rules=run.get('rules',{}))
+    detected='positive' if measured['polarity']>0 else 'negative'
+    if expected_polarity!='auto' and expected_polarity!=detected:
+        quality={**quality,'calibration_allowed':False,'issues':[*quality['issues'],{'code':'polarity_mismatch','message':
+            f'The capture is {detected} but the operator expected {expected_polarity}. Check divider polarity and channel wiring; the waveform was not flipped to hide this.'}]}
+    try: as_fired_prediction=predict_as_fired(run,candidate,as_fired) if as_fired else None
+    except (ValueError,KeyError) as e:raise HTTPException(422,f'As-fired settings could not be simulated: {e}')
     id=uuid.uuid4().hex[:12]; path=ROOT/'artifacts/trials'/f'{id}.csv'; path.parent.mkdir(exist_ok=True,parents=True); path.write_bytes(content)
     bias=[measured[k]-candidate['hybrid'][k] for k in ['front_us','tail_us','crest_kv']]
     calibration_bias,lineage=trial_correction(measured,candidate)
@@ -307,7 +410,14 @@ async def upload_trial(file:UploadFile=File(...),run_id:str=Form(...),candidate_
             'voltage_kv':((v-baseline_kv)*measured['polarity']).tolist(),'kind':source_type,
             'note':'Positive magnitude after explicit baseline subtraction; time relative to entered physical onset. Original samples and raw file retained separately.'},
         'compliance':extracted_compliance([measured[k] for k in ['front_us','tail_us','crest_kv']],limits,quality)}
-    result.update(captured_at=captured_at,measurement_instrument=measurement_instrument,operator_notes=operator_notes)
+    result.update(captured_at=captured_at,measurement_instrument=measurement_instrument,operator_notes=operator_notes,
+        capture_purpose=capture_purpose,session_id=session_id,shot_label=shot_label,
+        instrument={'voltage_scale':voltage_scale,'voltage_scale_source':voltage_scale_source,
+                    'expected_polarity':expected_polarity,'detected_polarity':detected,'time_unit':time_unit,'voltage_unit':voltage_unit,
+                    'onset_us':time_origin_us,'baseline_kv':baseline_kv},
+        as_fired=as_fired_prediction)
+    result['processing']['steps']=[*result['processing']['steps'],
+        *([f'Voltage multiplied by stated scale factor {voltage_scale:g} ({voltage_scale_source})'] if voltage_scale!=1 else [])]
     result['evidence']=evidence_record({**result,'id':id,'created_at':datetime.now(timezone.utc).isoformat()},run)
     return storage.put('trial',id,result)
 
@@ -331,7 +441,10 @@ def evaluation_json(id:str):
 @app.post('/api/trials/{id}/calibrate')
 def calibrate(id:str):
     trial=saved(id,'trial'); run=saved(trial['run_id'],'run'); c=selected_candidate(run,trial['candidate_id'])
-    if evidence_record(trial,run)['source_type'] not in ('generated_demo','measured_lab'):
+    if trial.get('capture_purpose')=='validation':
+        raise HTTPException(422,'This capture was recorded for independent validation. Validation captures are never used to correct predictions; upload a separate calibration capture.')
+    classified=evidence_record(trial,run)['source_type']
+    if classified not in ('generated_demo','measured_lab'):
         raise HTTPException(422,'Only explicitly classified trial waveforms can create a local correction.')
     raw=(ROOT/trial['raw_path']).resolve()
     if not raw.is_relative_to(ROOT.resolve()) or not raw.is_file() or hashlib.sha256(raw.read_bytes()).hexdigest()!=trial['raw_sha256']:
@@ -353,7 +466,10 @@ def calibrate(id:str):
         'generator_profile':run['profile'],'rules_version':run['rules']['version'],
         'front_topology':c['front_network']['topology'],'tail_topology':c['tail_network']['topology'],
         **{k:c['settings'][k] for k in ['stages','front_r_stage','tail_r_stage','charge_kv_stage']}}
-    return storage.put('calibration',uuid.uuid4().hex[:12],{'trial_id':id,'source_type':trial['source_type'],
+    # Preserve the existing demo-calibration label after provenance downgrades;
+    # historical operator labels must never turn a generated source into measured evidence.
+    calibration_source='generated_stress_test' if classified=='generated_demo' else classified
+    return storage.put('calibration',uuid.uuid4().hex[:12],{'trial_id':id,'source_type':calibration_source,
         'bias':total_bias,'scope':scope,'production_model_changed':False,
         'observed_residual':trial['bias'],'calibration_lineage':lineage,'quality':quality,
         'retraining_queue':'Stored for later engineer-reviewed retraining; no automatic training',
@@ -361,7 +477,7 @@ def calibrate(id:str):
 
 @app.get('/api/documents/{name}')
 def document(name:str):
-    paths={'source_reconciliation':ROOT/'docs/source_reconciliation.md','data_audit':ROOT/'reports/data_audit.html','assumptions':ROOT/'docs/assumptions.md','accuracy_v2_results':ROOT/'docs/accuracy_v2_results.md','accuracy_v4_results':ROOT/'docs/accuracy_v4_results.md','accuracy_v5_results':ROOT/'docs/accuracy_v5_results.md','judging_criteria':ROOT/'docs/judging_criteria_evidence.md','capture_resolution':ROOT/'docs/capture_resolution_review.md'}
+    paths={'source_reconciliation':ROOT/'docs/source_reconciliation.md','data_audit':ROOT/'reports/data_audit.html','assumptions':ROOT/'docs/assumptions.md','accuracy_v2_results':ROOT/'docs/accuracy_v2_results.md','accuracy_v4_results':ROOT/'docs/accuracy_v4_results.md','accuracy_v5_results':ROOT/'docs/accuracy_v5_results.md','judging_criteria':ROOT/'docs/judging_criteria_evidence.md','capture_resolution':ROOT/'docs/capture_resolution_review.md','independent_simulation_results':ROOT/'docs/independent_simulation_results.md','trusted_waveform_data_search':ROOT/'docs/trusted_waveform_data_search.md','physics_audit':ROOT/'docs/physics_audit.md','laboratory_validation_checklist':ROOT/'docs/laboratory_validation_checklist.md','accuracy_report':ROOT/'docs/accuracy_report.md'}
     p=paths.get(name)
     if p is None or not p.exists():raise HTTPException(404,'Document not found')
     return FileResponse(p,media_type='text/html' if p.suffix=='.html' else 'text/plain')

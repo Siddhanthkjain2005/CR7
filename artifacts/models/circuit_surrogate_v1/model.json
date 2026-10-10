@@ -1,0 +1,37 @@
+{
+  "version": "circuit-surrogate-v1",
+  "layers": 3,
+  "hidden": [
+    96,
+    96
+  ],
+  "activation": "tanh",
+  "inputs": [
+    "log(Cg/Cl)",
+    "log(Rt_total/Rf_total)",
+    "log(L/(Rf_total^2 Cseries)) floored at 1e-12",
+    "switching flag"
+  ],
+  "outputs": [
+    "log(front_us/(Rf_total Cl))",
+    "log(tail_us/(Rt_total (Cg+Cl)))",
+    "crest/(n charge efficiency)"
+  ],
+  "trained_on": "data/generated/circuit_dataset_v1",
+  "train_rows": 31010,
+  "feature_domain": {
+    "lower": [
+      0.19233029427123963,
+      -3.433409161864206,
+      -27.631021115928547
+    ],
+    "upper": [
+      7.395417175749099,
+      4.750351384403303,
+      1.267123821332205
+    ],
+    "definition": "Central 99% box of the training features (log Cg/Cl, log Rt/Rf, log L/(Rf^2 Cs))."
+  },
+  "reproduces": "lumped RLC Marx equivalent v2.1",
+  "surrogate_of_solver": true
+}

@@ -1,0 +1,68 @@
+{
+  "version": "circuit-dataset-v1",
+  "seed": 23,
+  "configurations": 40000,
+  "rows": 59903,
+  "generator": "scripts/generate_circuit_dataset.py",
+  "generator_sha256": "46911f12ee2a8389c9dc8aea89d43d331939ee8076533d35d6596329e0219d9a",
+  "circuit_model": "lumped RLC Marx equivalent v2.1",
+  "challenge_rules_version": "1.0.0",
+  "labels": "Simulated outcomes of the production lumped circuit at the sampled settings; never requested targets.",
+  "provenance_classes": {
+    "supplied_workbook_data": "data/processed/synthetic_dataset.csv (not included here)",
+    "independently_simulated": "this dataset",
+    "measured": "none",
+    "measurement_noise_stress_tests": "separate; not included here"
+  },
+  "surrogate_warning": "Models trained on these labels reproduce the circuit solver. This does not improve physical accuracy.",
+  "split": {
+    "method": "Deterministic hash of the configuration group (all inputs except charge voltage); amplitude-scaled members share a split.",
+    "fractions": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "counts": {
+      "train": 42050,
+      "validation": 8957,
+      "test": 8896
+    },
+    "test_group_count": 5974,
+    "test_groups_sha256": "623d19749d6bf6b6f943c18751dd63067a7a421a4ccad690d3c5d9afab5dd572",
+    "frozen_before_model_selection": true
+  },
+  "waveform_grid": "Voltage/crest at time = grid \u00d7 t50 (dimensionless grid stored in waveforms.npz).",
+  "summary": {
+    "status": {
+      "ok": 59822,
+      "unresolved": 81
+    },
+    "family": {
+      "cpri": 24146,
+      "workbook": 17898,
+      "custom": 17859
+    },
+    "impulse_type": {
+      "Lightning": 30044,
+      "Switching": 29859
+    },
+    "sampling_regime": {
+      "near_target": 20900,
+      "tight_target": 15036,
+      "wide": 13784,
+      "stock_network": 8308,
+      "extreme": 1875
+    },
+    "hardware_feasible_fraction": 0.8923426205699214,
+    "timing_compliant_fraction_of_resolved": 0.15487613252649526,
+    "ringing_fraction_of_resolved": 0.1418207348467119
+  },
+  "files": {
+    "dataset.csv.gz": "56c0009715e1ba6098bf408156102370f7f523da58a0f64ee3e2f0210129f7ef",
+    "waveforms.npz": "fb9092875df7f36421a20f39d51c8e929210fc0e56eb4c619ee685bbe39f39fc"
+  },
+  "elapsed_seconds": 92.8,
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5"
+}

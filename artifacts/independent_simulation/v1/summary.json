@@ -1,0 +1,85 @@
+{
+  "version": "independent-circuit-verification-v1",
+  "evidence_type": "GENERATED NUMERICAL VERIFICATION",
+  "channels": [
+    {
+      "impulse_type": "Lightning",
+      "metric": "front_us",
+      "unit": "\u00b5s",
+      "requested_evaluation_cases": 40,
+      "accepted_prediction_cases": 40,
+      "rmse": 7.430891551109337e-11,
+      "p95_relative_error_pct": 1.0609454785117092e-09,
+      "worst_relative_error_pct": 2.1051031825245054e-09,
+      "numerical_agreement_pass": true
+    },
+    {
+      "impulse_type": "Lightning",
+      "metric": "tail_us",
+      "unit": "\u00b5s",
+      "requested_evaluation_cases": 40,
+      "accepted_prediction_cases": 40,
+      "rmse": 8.609286292393847e-11,
+      "p95_relative_error_pct": 2.1033615692715402e-10,
+      "worst_relative_error_pct": 2.7808933520863506e-10,
+      "numerical_agreement_pass": true
+    },
+    {
+      "impulse_type": "Lightning",
+      "metric": "crest_kv",
+      "unit": "kV",
+      "requested_evaluation_cases": 40,
+      "accepted_prediction_cases": 40,
+      "rmse": 4.2273285187057106e-10,
+      "p95_relative_error_pct": 1.2333000494357336e-10,
+      "worst_relative_error_pct": 1.5709045001030958e-10,
+      "numerical_agreement_pass": true
+    },
+    {
+      "impulse_type": "Switching",
+      "metric": "front_us",
+      "unit": "\u00b5s",
+      "requested_evaluation_cases": 40,
+      "accepted_prediction_cases": 40,
+      "rmse": 1.82826878525505e-09,
+      "p95_relative_error_pct": 1.0773340522776692e-08,
+      "worst_relative_error_pct": 1.2346838782152908e-08,
+      "numerical_agreement_pass": true
+    },
+    {
+      "impulse_type": "Switching",
+      "metric": "tail_us",
+      "unit": "\u00b5s",
+      "requested_evaluation_cases": 40,
+      "accepted_prediction_cases": 40,
+      "rmse": 3.4028201528637635e-09,
+      "p95_relative_error_pct": 2.2941737636345464e-10,
+      "worst_relative_error_pct": 4.549863558903503e-10,
+      "numerical_agreement_pass": true
+    },
+    {
+      "impulse_type": "Switching",
+      "metric": "crest_kv",
+      "unit": "kV",
+      "requested_evaluation_cases": 40,
+      "accepted_prediction_cases": 40,
+      "rmse": 4.0295019949101587e-10,
+      "p95_relative_error_pct": 1.287569816627857e-10,
+      "worst_relative_error_pct": 1.332649683820597e-10,
+      "numerical_agreement_pass": true
+    }
+  ],
+  "passing_channels": 6,
+  "expected_channels": 6,
+  "requested_cases": 240,
+  "reference_accepted_cases": 240,
+  "scope": "Independent integrator versus production modal solver of the same assumed CPRI lumped topology. Evaluation cases were fixed before labels. Numerical agreement is neither physical validation nor V1/V2-versus-kNN accuracy. It cannot change the preserved workbook final-test 5/6 result.",
+  "model_weights_changed": false,
+  "old_test_predictions_evaluated": false,
+  "laboratory_accuracy_established": false,
+  "cloud_spend_usd": 0,
+  "protocol_sha256": "1d41117d91f2f1f04ea4c85ce8478906341dfeac9fee7ee4d116ad624051c9c9",
+  "reference_labels_sha256": "ca2fd3f0712afab33795d1bad5e7fc4cf822d7aba36477a8e92d2c676ae82bca",
+  "elapsed_seconds": 120.53331970795989,
+  "preserved_artifacts_verified": true
+}

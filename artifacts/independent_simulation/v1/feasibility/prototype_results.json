@@ -1,0 +1,218 @@
+[
+  {
+    "case": [
+      "Lightning",
+      2,
+      80.0,
+      30.0,
+      520.0,
+      800.0,
+      0.0
+    ],
+    "radau": {
+      "front_us": 0.15131199903081374,
+      "tail_us": 46.050798994937644,
+      "crest_kv": 130.43865034106554,
+      "seconds": 0.07477866701083258,
+      "steps": 719,
+      "nfev": 5028,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "bdf": {
+      "front_us": 0.15131199927844377,
+      "tail_us": 46.05079907452497,
+      "crest_kv": 130.43865026466432,
+      "seconds": 0.04415408399654552,
+      "steps": 706,
+      "nfev": 1415,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "relative_difference": {
+      "front_us": 1.6365524821597071e-09,
+      "tail_us": 1.728250652221023e-09,
+      "crest_kv": 5.857253287248202e-10
+    }
+  },
+  {
+    "case": [
+      "Lightning",
+      11,
+      180.0,
+      30.0,
+      520.0,
+      1500.0,
+      12.0
+    ],
+    "radau": {
+      "front_us": 1.1867806845564344,
+      "tail_us": 53.743526639633004,
+      "crest_kv": 1410.0938178474369,
+      "seconds": 0.08677079097833484,
+      "steps": 939,
+      "nfev": 6568,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "bdf": {
+      "front_us": 1.1867806854206466,
+      "tail_us": 53.74352670069172,
+      "crest_kv": 1410.093817620734,
+      "seconds": 0.061147957982029766,
+      "steps": 931,
+      "nfev": 1870,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "relative_difference": {
+      "front_us": 7.281987890080558e-10,
+      "tail_us": 1.1361128950491545e-09,
+      "crest_kv": 1.6077151763330568e-10
+    }
+  },
+  {
+    "case": [
+      "Lightning",
+      12,
+      180.0,
+      465.0,
+      520.0,
+      4000.0,
+      30.0
+    ],
+    "radau": {
+      "front_us": 25.555665133807594,
+      "tail_us": 120.53877895976582,
+      "crest_kv": 852.576504181158,
+      "seconds": 0.06899666698882356,
+      "steps": 696,
+      "nfev": 4880,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "bdf": {
+      "front_us": 25.55566512892029,
+      "tail_us": 120.53877900432603,
+      "crest_kv": 852.5765032194678,
+      "seconds": 0.04799079097574577,
+      "steps": 718,
+      "nfev": 1454,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "relative_difference": {
+      "front_us": 1.9124154106367624e-10,
+      "tail_us": 3.6967530390512656e-10,
+      "crest_kv": 1.1279811922225113e-09
+    }
+  },
+  {
+    "case": [
+      "Switching",
+      2,
+      80.0,
+      3700.0,
+      22000.0,
+      800.0,
+      0.0
+    ],
+    "radau": {
+      "front_us": 36.11920527359175,
+      "tail_us": 1972.5758673646249,
+      "crest_kv": 129.4287623466453,
+      "seconds": 0.0703518339432776,
+      "steps": 703,
+      "nfev": 4916,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "bdf": {
+      "front_us": 36.11920696723287,
+      "tail_us": 1972.5758707179207,
+      "crest_kv": 129.4287622679435,
+      "seconds": 0.0467270000372082,
+      "steps": 698,
+      "nfev": 1396,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "relative_difference": {
+      "front_us": 4.689032065627853e-08,
+      "tail_us": 1.6999578467958834e-09,
+      "crest_kv": 6.080703142844896e-10
+    }
+  },
+  {
+    "case": [
+      "Switching",
+      11,
+      180.0,
+      3700.0,
+      22000.0,
+      1500.0,
+      12.0
+    ],
+    "radau": {
+      "front_us": 222.29989634058632,
+      "tail_us": 2439.3632141320663,
+      "crest_kv": 1348.7964011281317,
+      "seconds": 0.07274391700048,
+      "steps": 723,
+      "nfev": 5076,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "bdf": {
+      "front_us": 222.29989955654466,
+      "tail_us": 2439.363217663817,
+      "crest_kv": 1348.7963997379627,
+      "seconds": 0.056952084007207304,
+      "steps": 754,
+      "nfev": 1515,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "relative_difference": {
+      "front_us": 1.446675593201557e-08,
+      "tail_us": 1.4478166740232433e-09,
+      "crest_kv": 1.0306737302680357e-09
+    }
+  },
+  {
+    "case": [
+      "Switching",
+      12,
+      180.0,
+      465.0,
+      22000.0,
+      4000.0,
+      30.0
+    ],
+    "radau": {
+      "front_us": 88.3794229956564,
+      "tail_us": 2746.9379297237515,
+      "crest_kv": 1263.6271814935965,
+      "seconds": 0.07826900004874915,
+      "steps": 781,
+      "nfev": 5475,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "bdf": {
+      "front_us": 88.37942608851924,
+      "tail_us": 2746.937934762343,
+      "crest_kv": 1263.6271804684136,
+      "seconds": 0.054146209033206105,
+      "steps": 827,
+      "nfev": 1678,
+      "local_maxima": 1,
+      "source": "independent_generated_simulation"
+    },
+    "relative_difference": {
+      "front_us": 3.499528211058349e-08,
+      "tail_us": 1.8342575193833068e-09,
+      "crest_kv": 8.113017016411741e-10
+    }
+  }
+]

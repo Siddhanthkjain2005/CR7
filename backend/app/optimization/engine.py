@@ -15,15 +15,46 @@ from .networks import nearest_networks
 from .verification import verify_settings
 from ..test_objects import validate_request
 from ..evidence import recommendation_evidence
+from ..physics.consistency import waveform_consistency
 
 ROOT=Path(__file__).resolve().parents[3]
 PROFILES=[GeneratorProfile.model_validate(p).model_dump() for p in json.loads((ROOT/'config/generator_profiles.json').read_text(encoding="utf-8"))]
+METRIC_KEYS=('front_us','tail_us','crest_kv')
 WEIGHTS=json.loads((ROOT/'config/optimization.json').read_text(encoding="utf-8"))
 
 def profile_for(pid):
     for p in PROFILES:
         if p['id']==pid: return p
     raise ValueError('Unknown generator profile.')
+
+CUSTOM_ID='custom_generator'
+
+def custom_profile(req):
+    """Profile record for operator-supplied hardware of the same supported topology."""
+    c=req.custom_profile; inv=req.inventory_override
+    tails=sorted({i.ohm for i in inv.tail})
+    record={'id':CUSTOM_ID,'name':f'Custom generator — {c.name}','version':'custom-1','source':c.source,
+        'kind':'custom_hardware','voltage_min_kv':c.voltage_min_kv,
+        'voltage_max_kv':c.voltage_max_kv if c.voltage_max_kv is not None else c.max_stages*c.stage_kv,
+        'min_stages':c.min_stages,'max_stages':c.max_stages,'stage_kv':c.stage_kv,'stage_c_uf':c.stage_c_uf,
+        'energy_stage_kj':c.energy_stage_kj,'energy_total_kj':c.energy_total_kj,
+        'energy_provenance':'Operator-supplied rating: '+c.source,
+        'front_values':sorted({i.ohm for i in inv.front}),'lightning_tail_values':tails,'switching_tail_values':tails,
+        'units_per_value_per_stage':None,'base_c_pf':c.base_c_pf,'enabled':True,
+        'notes':['Operator-supplied ratings for a series Marx equivalent. Other circuit topologies are not supported.',
+                 'Workbook residual ML is not validated for this hardware; circuit prediction only.']}
+    return GeneratorProfile.model_validate(record).model_dump()
+
+DISPLAY_ONLY=('name','notes')
+
+def same_hardware(saved,current):
+    """Profiles match when every rating and value matches; display names may change."""
+    if not isinstance(saved,dict) or not isinstance(current,dict): return False
+    strip=lambda p:{k:v for k,v in p.items() if k not in DISPLAY_ONLY}
+    return strip(saved)==strip(current)
+
+def resolve_profile(req):
+    return custom_profile(req) if req.profile_id==CUSTOM_ID else profile_for(req.profile_id)
 
 def stock_for(req,p):
     if req.inventory_override:
@@ -87,8 +118,8 @@ def final_rank(c):
             -(agreement.get('sampled_both_pass_pct',0)),not c['compliance']['robust_pass'],c['score'])
     return (not c['compliance']['nominal_pass'],not c['compliance']['robust_pass'],c['score'])
 
-def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None):
-    p=profile_for(req.profile_id)
+def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None,_network_selector=None):
+    p=resolve_profile(req)
     reference_review=validate_request(req,p)
     if reference_review['confirmation_required']:
         raise ValueError(reference_review['message'])
@@ -129,6 +160,10 @@ def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None):
         provider=_benchmark_networks or nearest_networks
         fronts=provider(front_stock,rf_target,req.max_components_per_network,5)
         tails=provider(tail_stock,rt_target,req.max_components_per_network,5)
+        if _network_selector is not None:
+            # Evaluation hook: an alternative shortlist (e.g. exhaustive or surrogate
+            # screened) of constructible networks. Every pair is still circuit-solved.
+            fronts,tails=_network_selector(req,p,n,charge,front_stock,tail_stock,rf_target,rt_target)
         if req.require_model_agreement and _benchmark_networks is None:
             # Broaden the shortlist around both the reference front and shorter
             # circuit front; every emitted value still comes from counted stock.
@@ -234,14 +269,27 @@ def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None):
             c['explanation'].append('Both nominal model checks and sampled agreement are ranked before interval containment and weighted cost. Neither model has laboratory validation.')
         if req.solver=='reference':
             try:
-                c['waveform']=waveform_from_metrics(*c['prediction'],req.impulse_type)
-                c['physics_waveform']=waveform_from_metrics(c['physics']['front_us'],c['physics']['tail_us'],c['physics']['crest_kv'],req.impulse_type)
+                c['waveform']={**waveform_from_metrics(*c['prediction'],req.impulse_type),
+                    'label':'Shape reconstructed from predicted metrics'}
+                c['physics_waveform']={**waveform_from_metrics(c['physics']['front_us'],c['physics']['tail_us'],c['physics']['crest_kv'],req.impulse_type),
+                    'label':'Shape reconstructed from workbook-equation metrics'}
             except ValueError: c['waveform']=None; c['physics_waveform']=None
             circuit=simulate(s['stages'],s['charge_kv_stage'],s['front_r_stage'],s['tail_r_stage'],p['stage_c_uf'],c2*1e12,req.l_uh,req.efficiency,req.impulse_type)
             c['circuit_crosscheck']={**circuit,'compliance':check(req.impulse_type,req.test_kv,circuit)}
         else:
             circuit=physics(req,p,s['stages'],s['charge_kv_stage'],s['front_r_stage'],s['tail_r_stage'],True)
             c['waveform']=circuit['waveform']; c['physics_waveform']=circuit['waveform']; c['circuit_crosscheck']=None
+            # Report the metrics of the final solve at the recommended charge, i.e. of
+            # the plotted curve itself, instead of the search-time crest assignment.
+            final={k:v for k,v in circuit.items() if k!='waveform'}
+            delta=np.array([final[k]-c['physics'][k] for k in METRIC_KEYS])
+            c['physics']=final
+            c['prediction']=(np.array(c['prediction'])+delta).tolist()
+            c['uncertainty']['lower']=(np.array(c['uncertainty']['lower'])+delta).tolist()
+            c['uncertainty']['upper']=(np.array(c['uncertainty']['upper'])+delta).tolist()
+            c['hybrid']=dict(zip(METRIC_KEYS,c['prediction']))
+            c['compliance']=check(req.impulse_type,req.test_kv,c['hybrid'],c['uncertainty'])
+        c['waveform_consistency']=waveform_consistency(c,req.impulse_type,req.test_kv)
         c['verification']=verify_settings(req,p,c,mode,calibration)
         c['evidence']=recommendation_evidence(c)
         c['pareto_optimal']=not any(other is not c and other['accuracy_cost']<=c['accuracy_cost'] and other['setup_component_count']<=c['setup_component_count'] and other['settings']['stage_utilization']<=s['stage_utilization'] and (other['accuracy_cost']<c['accuracy_cost'] or other['setup_component_count']<c['setup_component_count']) for other in selected)
@@ -256,7 +304,8 @@ def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None):
     if any(c['ood']['trust_weight']<1 for c in selected): warnings.append('Some hardware settings lie outside training support. Their correction is reduced or disabled and intervals have no calibrated coverage claim.')
     if not selected[0]['compliance']['nominal_pass']: warnings.append('No nominally compliant candidate was found in the bounded search. Listed settings are diagnostic alternatives, not recommended passes.')
     return {'profile':p,'rules':RULES,'inputs':req.model_dump(),'model_version':ml[0]['model_version'],
-        'candidates':selected,'target_waveform':waveform_from_metrics(rule['front_target_us'],rule['tail_target_us'],req.test_kv,req.impulse_type),
+        'candidates':selected,'target_waveform':{**waveform_from_metrics(rule['front_target_us'],rule['tail_target_us'],req.test_kv,req.impulse_type),
+            'label':'Target shape','note':'Double-exponential shape through the requested challenge targets; a reference, not a prediction.'},
         'search':{'evaluated':examined,'hardware_feasible':len(candidates),'rejected':rejected,
             'agreement_feasible':sum(c.get('model_agreement',{}).get('both_nominal_pass',False) for c in candidates) if req.require_model_agreement else None,
             'search_kind':'Bounded stock network search across five front and four tail target neighborhoods; raw workbook/circuit crest balancing; 20-candidate scenario shortlist, not global optimization.' if req.require_model_agreement else 'Bounded series DP + four-part series/parallel trees (six parts for small catalogs) and identical parallel banks; nearest five front/tail choices per stage, not exhaustive global optimization.'},
@@ -267,7 +316,7 @@ def optimize(req:OptimizeRequest,calibration=None,*,_benchmark_networks=None):
 
 def calibration_matches(cal,req,c):
     scope=cal['scope']; s=c['settings']
-    return (scope.get('generator_profile')==profile_for(req.profile_id)
+    return (same_hardware(scope.get('generator_profile'),resolve_profile(req))
         and scope.get('physics_version','workbook-reference-v1' if req.solver=='reference' else 'lumped RLC Marx equivalent v1')==('workbook-reference-v1' if req.solver=='reference' else CIRCUIT_VERSION)
         and scope.get('rules_version')==RULES['version']
         and scope.get('front_topology')==c['front_network']['topology']

@@ -1,0 +1,226 @@
+{
+  "version": "circuit-surrogate-v1",
+  "protocol_sha256": "3753f59b29292d84aa34f8a610093b6f346fdd28796ee55c6b24acd86a5309ba",
+  "out_of_support_test": {
+    "rows": 2262,
+    "fraction_rejected_by_domain_gate": 0.5327144120247569,
+    "note": "Wide/extreme regimes are outside validated support; the domain gate is expected to reject most of them."
+  },
+  "selected_architecture": [
+    96,
+    96
+  ],
+  "model_selection": [
+    {
+      "hidden": [
+        32,
+        32
+      ],
+      "validation_mean_p95_pct": 0.25352830055559405,
+      "iterations": 4000,
+      "validation": {
+        "Lightning": {
+          "front_us": {
+            "n": 3247,
+            "median_pct": 0.13511542834054868,
+            "p95_pct": 0.4921919001522145,
+            "worst_pct": 7.6223325733863145
+          },
+          "tail_us": {
+            "n": 3247,
+            "median_pct": 0.06260869434193683,
+            "p95_pct": 0.3854085834172515,
+            "worst_pct": 924.4079616415835
+          },
+          "crest_kv": {
+            "n": 3247,
+            "median_pct": 0.046494379334305336,
+            "p95_pct": 0.1867503055996732,
+            "worst_pct": 3.368874897427243
+          }
+        },
+        "Switching": {
+          "front_us": {
+            "n": 3356,
+            "median_pct": 0.04821305633903039,
+            "p95_pct": 0.21648005767296308,
+            "worst_pct": 1.3220120231645982
+          },
+          "tail_us": {
+            "n": 3356,
+            "median_pct": 0.040404980399022516,
+            "p95_pct": 0.15739306532643604,
+            "worst_pct": 7.161903063735142
+          },
+          "crest_kv": {
+            "n": 3356,
+            "median_pct": 0.01735481819710727,
+            "p95_pct": 0.08294589116502604,
+            "worst_pct": 1.1266808008971507
+          }
+        }
+      }
+    },
+    {
+      "hidden": [
+        64,
+        64
+      ],
+      "validation_mean_p95_pct": 0.2234692943366228,
+      "iterations": 4000,
+      "validation": {
+        "Lightning": {
+          "front_us": {
+            "n": 3247,
+            "median_pct": 0.11225525472196018,
+            "p95_pct": 0.4588110907876808,
+            "worst_pct": 13.723206018579814
+          },
+          "tail_us": {
+            "n": 3247,
+            "median_pct": 0.06967528180380489,
+            "p95_pct": 0.2683638545134844,
+            "worst_pct": 922.2310811704297
+          },
+          "crest_kv": {
+            "n": 3247,
+            "median_pct": 0.042385202765893304,
+            "p95_pct": 0.1555531638329133,
+            "worst_pct": 11.149164952752743
+          }
+        },
+        "Switching": {
+          "front_us": {
+            "n": 3356,
+            "median_pct": 0.05202872121778945,
+            "p95_pct": 0.24776567595430898,
+            "worst_pct": 5.021677177378104
+          },
+          "tail_us": {
+            "n": 3356,
+            "median_pct": 0.026464517707863733,
+            "p95_pct": 0.11459331400145989,
+            "worst_pct": 2.06905672930785
+          },
+          "crest_kv": {
+            "n": 3356,
+            "median_pct": 0.016508496415612584,
+            "p95_pct": 0.09572866692988957,
+            "worst_pct": 0.7549776102541816
+          }
+        }
+      }
+    },
+    {
+      "hidden": [
+        96,
+        96
+      ],
+      "validation_mean_p95_pct": 0.175195244110103,
+      "iterations": 4000,
+      "validation": {
+        "Lightning": {
+          "front_us": {
+            "n": 3247,
+            "median_pct": 0.08662562290577824,
+            "p95_pct": 0.36988644681000604,
+            "worst_pct": 15.437606735191945
+          },
+          "tail_us": {
+            "n": 3247,
+            "median_pct": 0.04687580013039705,
+            "p95_pct": 0.25916269249131924,
+            "worst_pct": 886.6764722390861
+          },
+          "crest_kv": {
+            "n": 3247,
+            "median_pct": 0.02682023344475759,
+            "p95_pct": 0.11779705122104465,
+            "worst_pct": 2.546488327146823
+          }
+        },
+        "Switching": {
+          "front_us": {
+            "n": 3356,
+            "median_pct": 0.041734470486293196,
+            "p95_pct": 0.14302681753235735,
+            "worst_pct": 1.3671124901603604
+          },
+          "tail_us": {
+            "n": 3356,
+            "median_pct": 0.02307332793726191,
+            "p95_pct": 0.09515693419525073,
+            "worst_pct": 0.8017742671082351
+          },
+          "crest_kv": {
+            "n": 3356,
+            "median_pct": 0.011125217880403326,
+            "p95_pct": 0.06614152241063986,
+            "worst_pct": 0.46926713298511835
+          }
+        }
+      }
+    }
+  ],
+  "test_rows_total": 6631,
+  "test_rows_inside_domain": 6505,
+  "test_errors_vs_circuit": {
+    "Lightning": {
+      "front_us": {
+        "n": 3182,
+        "median_pct": 0.08314158719775477,
+        "p95_pct": 0.33985196205035473,
+        "worst_pct": 1.223706664545543
+      },
+      "tail_us": {
+        "n": 3182,
+        "median_pct": 0.04569760914646115,
+        "p95_pct": 0.20352957083454573,
+        "worst_pct": 1.5406776677100442
+      },
+      "crest_kv": {
+        "n": 3182,
+        "median_pct": 0.024212931485495526,
+        "p95_pct": 0.1113642684379812,
+        "worst_pct": 0.39155501821749317
+      }
+    },
+    "Switching": {
+      "front_us": {
+        "n": 3323,
+        "median_pct": 0.04029879709146478,
+        "p95_pct": 0.13187170233837087,
+        "worst_pct": 0.9066503271058624
+      },
+      "tail_us": {
+        "n": 3323,
+        "median_pct": 0.02280736768829339,
+        "p95_pct": 0.08412011144890644,
+        "worst_pct": 0.7254763581026169
+      },
+      "crest_kv": {
+        "n": 3323,
+        "median_pct": 0.01136398038221742,
+        "p95_pct": 0.05882242485503841,
+        "worst_pct": 0.489063470065898
+      }
+    }
+  },
+  "test_timing_decisions": {
+    "rows": 6505,
+    "timing_decision_disagreement_pct": 0.03074558032283292,
+    "circuit_fail_rows": 5091,
+    "false_pass_rows": 2,
+    "false_pass_pct_of_circuit_fails": 0.03928501276762915
+  },
+  "accuracy_gate_pass": true,
+  "classification_gate_pass": true,
+  "screening_use_allowed": true,
+  "runtime_ms_per_setting": {
+    "circuit_solver": 1.031605910000053,
+    "surrogate_batched": 0.001814593902104285,
+    "speedup": 568.5051122478458
+  },
+  "what_this_shows": "How closely a fast surrogate reproduces the circuit solver on unseen configuration groups. It is not evidence of physical or laboratory accuracy.",
+  "elapsed_seconds": 928.2
+}

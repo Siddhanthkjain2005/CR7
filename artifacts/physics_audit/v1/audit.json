@@ -1,0 +1,346 @@
+{
+  "version": "physics-audit-v1",
+  "cases": [
+    {
+      "case": {
+        "name": "CPRI Lightning 1425 kV",
+        "profile": "cpri_problem_brief_profile",
+        "impulse_type": "Lightning",
+        "stages": 11,
+        "charge_kv_stage": 181.90279,
+        "front_r_stage": 30,
+        "tail_r_stage": 520,
+        "load_c_pf": 650,
+        "divider_c_pf": 250,
+        "stray_c_pf": 55,
+        "base_c_pf": 545,
+        "l_uh": 12,
+        "efficiency": 0.83
+      },
+      "metrics": {
+        "production_lumped_circuit": {
+          "front_us": 1.186780684440342,
+          "tail_us": 53.743526646565364,
+          "crest_kv": 1424.99999794985
+        },
+        "independent_integrator_same_equations": {
+          "front_us": 1.186780684276261,
+          "tail_us": 53.74352665573922,
+          "crest_kv": 1424.9999979511704
+        },
+        "ode_check_same_topology": {
+          "front_us": 1.1867830386335667,
+          "tail_us": 53.74354408454233,
+          "crest_kv": 1424.9999785993496
+        },
+        "workbook_equations_different_model": {
+          "front_us": 0.8993612858579136,
+          "tail_us": 50.99093999999999,
+          "crest_kv": 1660.7724727
+        },
+        "tail_resistor_on_load_side_diagnostic": {
+          "front_us": 1.1419304779782198,
+          "tail_us": 55.929524713539976,
+          "crest_kv": 1367.0341321469625
+        },
+        "hypothetical_charging_resistor_discharge_path": {
+          "front_us": 1.1865011904333622,
+          "tail_us": 53.54629378480856,
+          "crest_kv": 1424.8692492805444
+        }
+      },
+      "difference_vs_production_pct": {
+        "independent_integrator_same_equations": {
+          "front_us": -1.3825718347959537e-08,
+          "tail_us": 1.7069679003611782e-08,
+          "crest_kv": 9.265921363521556e-11
+        },
+        "ode_check_same_topology": {
+          "front_us": 0.0001983680098405216,
+          "tail_us": 3.244665554014148e-05,
+          "crest_kv": -1.3579298574484255e-06
+        },
+        "workbook_equations_different_model": {
+          "front_us": -24.218408872905496,
+          "tail_us": -5.121708265754998,
+          "crest_kv": 16.545436848375882
+        },
+        "tail_resistor_on_load_side_diagnostic": {
+          "front_us": -3.7791486708660393,
+          "tail_us": 4.067463010662542,
+          "crest_kv": -4.067780062195303
+        },
+        "hypothetical_charging_resistor_discharge_path": {
+          "front_us": -0.023550602958410938,
+          "tail_us": -0.3669890572196133,
+          "crest_kv": -0.009175345227629972
+        }
+      },
+      "compliance": {
+        "production_lumped_circuit": true,
+        "independent_integrator_same_equations": true,
+        "ode_check_same_topology": true,
+        "workbook_equations_different_model": false,
+        "tail_resistor_on_load_side_diagnostic": false,
+        "hypothetical_charging_resistor_discharge_path": true
+      },
+      "units": {
+        "erected_capacitance_nf": 11.363636363636363,
+        "load_side_capacitance_pf": 1500,
+        "total_front_ohm": 330,
+        "total_tail_ohm": 5720,
+        "erected_charge_kv": 2000.9306900000001,
+        "stored_energy_kj": 22.748429694226573,
+        "energy_rating_total_kj": 30,
+        "maximum_energy_ratio": 0.9999999999999998
+      },
+      "efficiency": {
+        "assumed_extra_loss_factor": 0.83,
+        "circuit_voltage_utilization": 0.8580344516628199,
+        "overall_crest_per_erected_kv": 0.7121685948801405,
+        "charge_needed_without_extra_loss_kv_stage": 150.9793157,
+        "note": "The circuit already loses voltage to the Cg/Cl divider and tail discharge. The efficiency input is applied on top as an extra, unmodelled loss. If the operator means the workbook overall efficiency, losses are counted twice and the recommended charge is too high by 1/efficiency."
+      },
+      "definitions": {
+        "lightning_front": "1.67 \u00d7 (t90 \u2212 t30) on the rising edge",
+        "virtual_origin": "t30 \u2212 0.5 \u00d7 (t90 \u2212 t30)",
+        "lightning_tail": "t50 \u2212 virtual origin",
+        "switching_peak": "time from true origin (t = 0 in simulation) to crest, challenge convention",
+        "switching_tail": "t50 from true origin, challenge convention",
+        "rising_30_90_interval_us": 0.7106471164313425,
+        "note": "Standards editions define switching time-to-peak differently; the challenge targets and definitions are kept."
+      },
+      "base_capacitance_effect_pct": {
+        "front_us": -35.65727088155146,
+        "tail_us": -5.740781060240274,
+        "crest_kv": 5.343894237663238
+      }
+    },
+    {
+      "case": {
+        "name": "CPRI Switching 1050 kV",
+        "profile": "cpri_problem_brief_profile",
+        "impulse_type": "Switching",
+        "stages": 11,
+        "charge_kv_stage": 141.116226,
+        "front_r_stage": 4165,
+        "tail_r_stage": 22000,
+        "load_c_pf": 650,
+        "divider_c_pf": 250,
+        "stray_c_pf": 55,
+        "base_c_pf": 545,
+        "l_uh": 12,
+        "efficiency": 0.83
+      },
+      "metrics": {
+        "production_lumped_circuit": {
+          "front_us": 243.44007389742353,
+          "tail_us": 2468.016748673587,
+          "crest_kv": 1049.9999982188522
+        },
+        "independent_integrator_same_equations": {
+          "front_us": 243.4400736237503,
+          "tail_us": 2468.0167488702373,
+          "crest_kv": 1049.9999983108485
+        },
+        "ode_check_same_topology": {
+          "front_us": 243.33848462115535,
+          "tail_us": 2468.016852223444,
+          "crest_kv": 1049.999969389309
+        },
+        "workbook_equations_different_model": {
+          "front_us": 114.76712176285781,
+          "tail_us": 2157.3089999999997,
+          "crest_kv": 1288.3911433800001
+        },
+        "tail_resistor_on_load_side_diagnostic": {
+          "front_us": 225.66733692037238,
+          "tail_us": 2761.130606750477,
+          "crest_kv": 928.9582640803017
+        },
+        "hypothetical_charging_resistor_discharge_path": {
+          "front_us": 234.80417270993027,
+          "tail_us": 2157.1258759358534,
+          "crest_kv": 1039.6587160998915
+        }
+      },
+      "difference_vs_production_pct": {
+        "independent_integrator_same_equations": {
+          "front_us": -1.1241914066317804e-07,
+          "tail_us": 7.967959625432286e-09,
+          "crest_kv": 8.761547043434348e-09
+        },
+        "ode_check_same_topology": {
+          "front_us": -0.041730712056464725,
+          "tail_us": 4.1956707663715065e-06,
+          "crest_kv": -2.7456707907269617e-06
+        },
+        "workbook_equations_different_model": {
+          "front_us": -52.85610954455413,
+          "tail_us": -12.589369534893724,
+          "crest_kv": 22.703918625289354
+        },
+        "tail_resistor_on_load_side_diagnostic": {
+          "front_us": -7.300662003799719,
+          "tail_us": 11.87649387851284,
+          "crest_kv": -11.527784223226423
+        },
+        "hypothetical_charging_resistor_discharge_path": {
+          "front_us": -3.5474443665885924,
+          "tail_us": -12.596789422309184,
+          "crest_kv": -0.9848840130002756
+        }
+      },
+      "compliance": {
+        "production_lumped_circuit": true,
+        "independent_integrator_same_equations": true,
+        "ode_check_same_topology": true,
+        "workbook_equations_different_model": false,
+        "tail_resistor_on_load_side_diagnostic": false,
+        "hypothetical_charging_resistor_discharge_path": true
+      },
+      "units": {
+        "erected_capacitance_nf": 11.363636363636363,
+        "load_side_capacitance_pf": 1500,
+        "total_front_ohm": 45815,
+        "total_tail_ohm": 242000,
+        "erected_charge_kv": 1552.2784860000002,
+        "stored_energy_kj": 13.690730102832118,
+        "energy_rating_total_kj": 30,
+        "maximum_energy_ratio": 1.0000000000000007
+      },
+      "efficiency": {
+        "assumed_extra_loss_factor": 0.83,
+        "circuit_voltage_utilization": 0.814969897623057,
+        "overall_crest_per_erected_kv": 0.6764250150271374,
+        "charge_needed_without_extra_loss_kv_stage": 117.12646758000001,
+        "note": "The circuit already loses voltage to the Cg/Cl divider and tail discharge. The efficiency input is applied on top as an extra, unmodelled loss. If the operator means the workbook overall efficiency, losses are counted twice and the recommended charge is too high by 1/efficiency."
+      },
+      "definitions": {
+        "lightning_front": "1.67 \u00d7 (t90 \u2212 t30) on the rising edge",
+        "virtual_origin": "t30 \u2212 0.5 \u00d7 (t90 \u2212 t30)",
+        "lightning_tail": "t50 \u2212 virtual origin",
+        "switching_peak": "time from true origin (t = 0 in simulation) to crest, challenge convention",
+        "switching_tail": "t50 from true origin, challenge convention",
+        "rising_30_90_interval_us": 96.25696453844444,
+        "note": "Standards editions define switching time-to-peak differently; the challenge targets and definitions are kept."
+      },
+      "base_capacitance_effect_pct": {
+        "front_us": -27.73983809623409,
+        "tail_us": -7.406183492804597,
+        "crest_kv": 6.589660724851987
+      }
+    },
+    {
+      "case": {
+        "name": "Workbook Lightning 1425 kV (calculator settings)",
+        "profile": "workbook_reference_profile",
+        "impulse_type": "Lightning",
+        "stages": 9,
+        "charge_kv_stage": 193.08943089430895,
+        "front_r_stage": 50,
+        "tail_r_stage": 25,
+        "load_c_pf": 850,
+        "divider_c_pf": 500,
+        "stray_c_pf": 150,
+        "base_c_pf": 0,
+        "l_uh": 18.5,
+        "efficiency": 0.82
+      },
+      "metrics": {
+        "production_lumped_circuit": {
+          "front_us": 1.8192641882332532,
+          "tail_us": 56.215217760253914,
+          "crest_kv": 1362.5837415266385
+        },
+        "independent_integrator_same_equations": {
+          "front_us": 1.8192641883351377,
+          "tail_us": 56.21521775998043,
+          "crest_kv": 1362.5837415238389
+        },
+        "ode_check_same_topology": {
+          "front_us": 1.819267195277968,
+          "tail_us": 56.215247037183616,
+          "crest_kv": 1362.5837099797923
+        },
+        "workbook_equations_different_model": {
+          "front_us": 1.2100299583068181,
+          "tail_us": 52.208887499999996,
+          "crest_kv": 1424.9999999999998
+        },
+        "tail_resistor_on_load_side_diagnostic": {
+          "front_us": 0.6700870666781689,
+          "tail_us": 157.8109788409889,
+          "crest_kv": 471.75282255596784
+        }
+      },
+      "difference_vs_production_pct": {
+        "independent_integrator_same_equations": {
+          "front_us": 5.60032020757717e-09,
+          "tail_us": -4.864886271604973e-10,
+          "crest_kv": -2.0546897516737772e-10
+        },
+        "ode_check_same_topology": {
+          "front_us": 0.00016528906214841044,
+          "tail_us": 5.2080078782879013e-05,
+          "crest_kv": -2.315222558113561e-06
+        },
+        "workbook_equations_different_model": {
+          "front_us": -33.487947152858666,
+          "tail_us": -7.126771753051065,
+          "crest_kv": 4.5807282569972685
+        },
+        "tail_resistor_on_load_side_diagnostic": {
+          "front_us": -63.16713806536739,
+          "tail_us": 180.72643872700013,
+          "crest_kv": -65.37806755073885
+        }
+      },
+      "compliance": {
+        "production_lumped_circuit": false,
+        "independent_integrator_same_equations": false,
+        "ode_check_same_topology": false,
+        "workbook_equations_different_model": false,
+        "tail_resistor_on_load_side_diagnostic": false
+      },
+      "units": {
+        "erected_capacitance_nf": 333.3333333333333,
+        "load_side_capacitance_pf": 1500,
+        "total_front_ohm": 450,
+        "total_tail_ohm": 225,
+        "erected_charge_kv": 1737.8048780487804,
+        "stored_energy_kj": 503.32763236168944,
+        "energy_rating_total_kj": 900,
+        "maximum_energy_ratio": 1.0
+      },
+      "efficiency": {
+        "assumed_extra_loss_factor": 0.82,
+        "circuit_voltage_utilization": 0.9561991168607991,
+        "overall_crest_per_erected_kv": 0.7840832758258551,
+        "charge_needed_without_extra_loss_kv_stage": 158.33333333333331,
+        "note": "The circuit already loses voltage to the Cg/Cl divider and tail discharge. The efficiency input is applied on top as an extra, unmodelled loss. If the operator means the workbook overall efficiency, losses are counted twice and the recommended charge is too high by 1/efficiency."
+      },
+      "definitions": {
+        "lightning_front": "1.67 \u00d7 (t90 \u2212 t30) on the rising edge",
+        "virtual_origin": "t30 \u2212 0.5 \u00d7 (t90 \u2212 t30)",
+        "lightning_tail": "t50 \u2212 virtual origin",
+        "switching_peak": "time from true origin (t = 0 in simulation) to crest, challenge convention",
+        "switching_tail": "t50 from true origin, challenge convention",
+        "rising_30_90_interval_us": 1.0893797534330858,
+        "note": "Standards editions define switching time-to-peak differently; the challenge targets and definitions are kept."
+      }
+    }
+  ],
+  "evidence_levels": {
+    "numerical_agreement_same_equations": "Independent charge/flux Radau integrator and a separate state-space ODE solve.",
+    "agreement_between_circuit_models": "Workbook equations and topology variants; differences are model-form sensitivity, not error.",
+    "agreement_with_measurements": "None available. No measured generator waveform with known settings has been supplied."
+  },
+  "omitted_effects": [
+    "Spark-gap resistance, arc inductance and firing jitter (no circuit information supplied).",
+    "Distributed stage-to-ground stray capacitance and stage inductance (values not supplied).",
+    "Charging, potential and grounding resistor paths during the pulse (connections not supplied; bounded above as a hypothetical).",
+    "Divider internal damping and lead geometry beyond the single lumped inductance."
+  ],
+  "scope": "Software and model-form audit. It does not establish physical accuracy of the generator."
+}

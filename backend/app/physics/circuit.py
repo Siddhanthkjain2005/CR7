@@ -37,9 +37,26 @@ def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
         vectors=np.array([[1-rf*cl*alpha,1-rf*cl*beta],[1.,1.]])
     else:
         eigen,vectors=eig(a)
-    coefficients=np.linalg.solve(vectors,z)
-    if not np.isfinite(eigen).all() or np.any(eigen.real>=0):
+    resolved=np.isfinite(eigen).all() and np.all(eigen.real<0)
+    if resolved and out_index==2:
+        # A stable-looking eig result can still lose the slow pole when the
+        # passive circuit spans many orders of magnitude. Verify every pole
+        # against the independently formed nodal characteristic polynomial.
+        # Scaling the polynomial avoids comparing the slow-pole error with the
+        # much larger fast matrix entries, which would hide a wrong tail.
+        g=1/(rt*cg); r=rf/l
+        scale=max(float(np.max(np.abs(eigen))),g,r)
+        x=eigen/scale; gs=g/scale; rs=r/scale
+        ls=1/l/scale; cgs=1/cg/scale; cls=1/cl/scale
+        terms=np.array([x**3,(gs+rs)*x*x,
+                        (ls*(cgs+cls)+gs*rs)*x,
+                        np.full_like(x,gs*ls*cls)])
+        denominator=np.sum(np.abs(terms),axis=0)
+        residual=np.abs(np.sum(terms,axis=0))/denominator
+        resolved=np.isfinite(residual).all() and np.all(residual<=1e-8)
+    if not resolved:
         raise ValueError('Could not resolve finite stable decay modes of the passive equivalent circuit. Review extreme circuit ratios; no waveform result returned.')
+    coefficients=np.linalg.solve(vectors,z)
     slow=1/min(-eigen.real); fast=max(rf*cl,np.sqrt(l_uh*1e-6*cl),1e-10)
     t=np.unique(np.r_[np.linspace(0,min(20*fast,slow),550),np.geomspace(max(fast*.001,1e-12),12*slow,650)])
     if out_index==1:
@@ -67,7 +84,7 @@ def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
     def voltage(time):
         return float(np.real(np.sum(vectors[out_index,:]*coefficients*np.exp(eigen*time))))
     peak=int(np.searchsorted(t,analytic_peak_time)) if out_index==1 else int(np.argmax(v))
-    crest=float(v[peak])
+    crest=float(v[peak]); t_peak_seconds=float(t[peak])
     def exact_crossing(fraction,rising):
         level=crest*fraction
         first,last=(0,peak) if rising else (peak,len(t)-1)
@@ -77,6 +94,11 @@ def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
         return brentq(lambda time:voltage(time)-level,t[index],t[index+1],xtol=root_tolerance(t[index],t[index+1]))*1e6
     t30=exact_crossing(.3,True);t90=exact_crossing(.9,True);t50=exact_crossing(.5,False)
     virtual=t30-.5*(t90-t30)
+    # Put the refined 30/90/50% points on the returned curve itself, so metrics
+    # re-extracted from the displayed samples reproduce the reported metrics.
+    t=np.unique(np.r_[t,np.array([t30,t90,t50])*1e-6])
+    v=np.real((vectors[out_index,:]*coefficients)@np.exp(eigen[:,None]*t[None,:])); v[0]=0.
+    peak=int(np.searchsorted(t,t_peak_seconds))
     result.update(crest_kv=crest,peak_time_us=float(t[peak]*1e6),
         t30_us=t30,t90_us=t90,t50_us=t50,virtual_origin_us=virtual,
         front_us=1.67*(t90-t30) if impulse_type=='Lightning' else float(t[peak]*1e6),
@@ -95,5 +117,7 @@ def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
         'limitations':'No spark-gap dynamics, distributed capacitances, electromagnetic fields or pulse-rating model. Needs lab validation.',
         'maximum_energy_ratio':float(energy_ratios.max()),
         'maximum_energy_increase_ratio':float(max(0,np.diff(energy_ratios).max()))}
-    if include_waveform: result['waveform']={'time_us':(t*1e6).tolist(),'voltage_kv':v.tolist(),'kind':'equivalent_circuit'}
+    if include_waveform: result['waveform']={'time_us':(t*1e6).tolist(),'voltage_kv':v.tolist(),'kind':'equivalent_circuit',
+        'label':'Circuit prediction','metric_points_included':True,
+        'note':'Samples of the lumped-circuit solution, including the refined crest and 30/90/50% crossing points used for the reported metrics.'}
     return result

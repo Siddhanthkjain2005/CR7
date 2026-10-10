@@ -1,5 +1,15 @@
 # ImpulseTwin AI project state
 
+## Judge workflow and practical evaluation — 10 October 2026
+
+Branch `codex/hardening-judge-workflow` from `feat/engineering-hardening` (`efde726`). Read `AGENTS.md`, `docs/accuracy_report.md`, `docs/physics_audit.md` and `docs/laboratory_validation_checklist.md`.
+
+- **Waveforms.** Every plotted waveform is labelled, and its metrics are re-extracted from the plotted samples.
+- **New tools.** A custom generator profile (complete ratings, same topology), measured import with purpose, scale, polarity and as-fired re-simulation, a versioned simulation dataset, a gated circuit surrogate (not promoted for search) and a 36-request evaluation pack.
+- **Interface.** The primary interface is `/`. The seven-step walkthrough remains at `/judge/`.
+- **Rebuild needed.** Rebuild `frontend/out` with Node 22 before running the app; the committed export predates this branch.
+- **Not established.** No measured accuracy; see the checklist.
+
 ## Engineering hardening — 6 October 2026
 
 Current work starts from main commit `047841f587c4b00bc8d018d5174961d3356eebbf` on `feat/engineering-hardening`. Its scope is correctness, numerical stability, bounded-search/runtime efficiency, source clarity and restrained UI polish. No new product features, deployment, model training or Hidden Test tuning are part of this pass. The task record is in `AGENTS.md`; the final rationale and measured comparison are in `OPTIMIZATION_REPORT.md` and `artifacts/optimization_report.json`.

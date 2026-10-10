@@ -1,0 +1,68 @@
+{
+  "version": "circuit-dataset-v1",
+  "seed": 11,
+  "configurations": 2000,
+  "rows": 2971,
+  "generator": "scripts/generate_circuit_dataset.py",
+  "generator_sha256": "46911f12ee2a8389c9dc8aea89d43d331939ee8076533d35d6596329e0219d9a",
+  "circuit_model": "lumped RLC Marx equivalent v2.1",
+  "challenge_rules_version": "1.0.0",
+  "labels": "Simulated outcomes of the production lumped circuit at the sampled settings; never requested targets.",
+  "provenance_classes": {
+    "supplied_workbook_data": "data/processed/synthetic_dataset.csv (not included here)",
+    "independently_simulated": "this dataset",
+    "measured": "none",
+    "measurement_noise_stress_tests": "separate; not included here"
+  },
+  "surrogate_warning": "Models trained on these labels reproduce the circuit solver. This does not improve physical accuracy.",
+  "split": {
+    "method": "Deterministic hash of the configuration group (all inputs except charge voltage); amplitude-scaled members share a split.",
+    "fractions": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "counts": {
+      "train": 2007,
+      "validation": 499,
+      "test": 465
+    },
+    "test_group_count": 307,
+    "test_groups_sha256": "9cfb37694d7ae6bb2175550de418682be07aff4fa4f9c43fa175ee4256fbadd4",
+    "frozen_before_model_selection": true
+  },
+  "waveform_grid": "Voltage/crest at time = grid \u00d7 t50 (dimensionless grid stored in waveforms.npz).",
+  "summary": {
+    "status": {
+      "ok": 2964,
+      "unresolved": 7
+    },
+    "family": {
+      "cpri": 1210,
+      "custom": 900,
+      "workbook": 861
+    },
+    "impulse_type": {
+      "Switching": 1543,
+      "Lightning": 1428
+    },
+    "sampling_regime": {
+      "near_target": 1048,
+      "tight_target": 737,
+      "wide": 704,
+      "stock_network": 408,
+      "extreme": 74
+    },
+    "hardware_feasible_fraction": 0.8869067653988556,
+    "timing_compliant_fraction_of_resolved": 0.14811066126855602,
+    "ringing_fraction_of_resolved": 0.13326585695006748
+  },
+  "files": {
+    "dataset.csv.gz": "65efa0d46b49d5e447d9931ff84250c7a4da132af69ccfc5c0ee9e55835da27a",
+    "waveforms.npz": "b1a9fc56f214689771458be99cf5caa036ab66a59667e4d465de4158d33e603a"
+  },
+  "elapsed_seconds": 5.2,
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5"
+}

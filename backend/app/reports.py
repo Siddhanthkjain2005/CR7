@@ -64,13 +64,14 @@ def report_html(run):
     chart = '<p class="muted">A curve could not be reconstructed for these metrics. The numeric results below remain the basis for compliance.</p>'
     if wave:
         xmax = rule['tail_target_us'] * 1.4
-        curves = [(wave, 'Prediction', '#087f8c', '')]
+        primary_label = 'Circuit prediction' if wave['kind'] == 'equivalent_circuit' else 'Shape reconstructed from predicted metrics'
+        curves = [(wave, primary_label, '#087f8c', '' if wave['kind'] == 'equivalent_circuit' else '7 4')]
         if c.get('physics_waveform') and inputs['solver'] == 'reference':
-            curves.append((c['physics_waveform'], 'Reference physics', '#6173a5', '5 4'))
+            curves.append((c['physics_waveform'], 'Workbook-equation metrics (reconstructed shape)', '#6173a5', '5 4'))
         if run.get('target_waveform'):
-            curves.append((run['target_waveform'], 'Challenge target', '#7d8991', '3 5'))
+            curves.append((run['target_waveform'], 'Target shape', '#7d8991', '3 5'))
         if cross and cross.get('waveform'):
-            curves.append((cross['waveform'], 'Independent circuit', '#bd5141', ''))
+            curves.append((cross['waveform'], 'Circuit simulation (cross-check)', '#bd5141', ''))
         ymax = max(max(w['voltage_kv']) for w, _, _, _ in curves) * 1.12
         lines, legend, grid = [], [], []
         for curve, label, color, dash in curves:
@@ -80,7 +81,15 @@ def report_html(run):
         for j in range(5):
             x, y = 70 + j * 890 / 4, 250 - j * 210 / 4
             grid.append(f'<path d="M{x:.2f} 40V250 M70 {y:.2f}H960" stroke="#e1e8ec" stroke-width="1"/><text x="{x:.2f}" y="270" text-anchor="middle">{number(xmax*j/4, 1)}</text><text x="60" y="{y+4:.2f}" text-anchor="end">{number(ymax*j/4, 0)}</text>')
-        kind = 'Metric reconstruction from prediction' if wave['kind'] == 'metric_reconstruction' else 'Numerical lumped-circuit waveform'
+        kind = ('Shape reconstructed from three predicted metrics; it is not an independently simulated waveform'
+                if wave['kind'] == 'metric_reconstruction' else 'Lumped-circuit simulation at the recommended settings')
+        consistency = c.get('waveform_consistency') or {}
+        if consistency.get('primary') and consistency['primary'].get('metrics'):
+            worst = max(row['relative_difference'] for row in consistency['primary']['metrics'].values())
+            kind += (f'. Metrics re-extracted from the plotted samples differ from the reported metrics by at most {worst * 100:.4f}%'
+                     + (' (within documented tolerance)' if consistency.get('consistent') else ' (OUTSIDE documented tolerance — review)'))
+            if consistency.get('relationship') == 'locally_corrected_metrics_shown_separately':
+                kind += '. Locally corrected metrics are listed below and are not drawn as a curve'
         chart = f'''<figure class="waveform"><div class="chart-legend">{''.join(legend)}</div><svg viewBox="0 0 1000 305" role="img" aria-label="Predicted impulse voltage plotted against time">{''.join(grid)}<path d="M70 40V250H960" fill="none" stroke="#70838f"/>{''.join(lines)}<text x="515" y="297" text-anchor="middle">Time (µs)</text><text x="70" y="25">Voltage (kV)</text></svg><figcaption>{e(kind)}. Compliance is calculated from numeric metrics, not from this chart. The plot shows the first {number(xmax, 1)} µs.</figcaption></figure>'''
 
     compliance = table(['Metric', 'Target', 'Prediction', 'Allowed range', 'Deviation', 'Nominal result'], [

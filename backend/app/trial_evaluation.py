@@ -54,6 +54,8 @@ def evaluate_trials(trial_ids, lookup, root):
     capture_cache = {}
     evaluation_hashes = {trial['raw_sha256'] for trial in trials}
     for trial in trials:
+        if trial.get('capture_purpose') == 'calibration':
+            raise ValueError(f"Trial {trial['id']} was recorded as a calibration capture; independent evaluation needs validation captures.")
         if classified_source(trial) != 'measured_lab':
             raise ValueError('Synthetic demos cannot enter the laboratory accuracy review.')
         path = (Path(root) / trial['raw_path']).resolve()

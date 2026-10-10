@@ -1,5 +1,64 @@
 # ImpulseTwin AI — engineering handoff and progress
 
+## Current task — 10 October 2026 (supersedes earlier task-specific limits)
+
+Branch `codex/hardening-judge-workflow`, based on `feat/engineering-hardening` (`efde726`).
+The organizer clarification allows other datasets and appropriately generated
+synthetic data; correctness, practical evaluation and a simple judge interface
+come first. New training and UI redesign are authorized. Historical datasets,
+model artifacts and experiment results are preserved; the saved Hidden Test is
+not used for tuning. Keep CPRI (12 stages, 0.125 µF/stage) and workbook
+(15 stages, 3 µF/stage) parameters separate. Stage capacitance is not stray
+capacitance; available stages are an input, active stages an output.
+
+Progress (updated as work lands):
+
+- [x] Baseline on `efde726`: 263/263 backend tests pass (Linux sandbox, Python 3.13).
+- [x] Waveform audit: every plotted curve is labelled (circuit prediction, shape
+  reconstructed from metrics, target shape, measured). Metrics are re-extracted
+  from the exact plotted samples and checked against the displayed metrics
+  (`waveform_consistency`); circuit metrics come from the final solve at the
+  recommended charge. Locally corrected metrics are never drawn on an
+  uncorrected curve.
+- [x] Physics audit (`scripts/physics_audit.py`): independent integrator agrees
+  to ~1e-6 %; workbook equations and alternative topologies differ by several
+  to tens of percent; the efficiency input stacks on top of the circuit's own
+  voltage utilisation (see `docs/physics_audit.md`).
+- [x] Ported from `codex/switching-crest-review`: slow-pole verification fix,
+  acquisition review v3, calibration-origin review, external data review
+  (incl. Zenodo 8435957) and the independent numerical verification.
+- [x] Custom generator profile (complete ratings, same series-Marx topology,
+  circuit only); profiles renamed; equipment-reference message replaced.
+- [x] Measured import: capture purpose (validation never calibrates; calibration
+  never evaluates), divider scale with source, expected polarity, session/shot,
+  as-fired re-simulation.
+- [x] Versioned simulation dataset `data/generated/circuit_dataset_v1` (59,903 rows from
+  40,000 configurations; CPRI, workbook and custom families; failures, ringing and
+  infeasible settings kept; grouped split; test frozen by hash). Labels are circuit
+  outcomes, never targets. Learning curve plateaus near 4,000 rows.
+- [x] Circuit surrogate `artifacts/models/circuit_surrogate_v1` (numpy weights, protocol
+  declared before the single test scoring): frozen-test p95 error <= 0.34 %, worst
+  1.54 %, ~570x faster. Used only for screening; surrogate-screened search was
+  equal-or-better in 24/24 requests but strictly better in only 1 at ~4 % more runtime,
+  so it is NOT promoted and the default search is unchanged.
+- [x] Evaluation pack `scripts/evaluation_pack.py`: 36 requests, 36/36 expected outcomes,
+  0 false passes on the circuit path, 14/14 bounded = exhaustive; workbook-equation
+  engine shows 9/9 passes that fail in the circuit (kept as a labelled benchmark);
+  workbook calculator settings pass 0/27 in the circuit.
+- [x] Judge UI: Configure test -> Recommend settings -> Inspect waveform -> Compare
+  measurement; 3D generator stack and resistor schematics; V/kV crest; custom
+  generator; evidence collapsed; Model lab leads with what is demonstrated.
+- [x] Reports: `docs/accuracy_report.md`, `docs/physics_audit.md`,
+  `docs/laboratory_validation_checklist.md`; QA in `artifacts/qa/october10_*`.
+- [x] Verification: 327 backend tests, 45 protected hashes, registry, external checksums,
+  frontend typecheck and 11 unit tests, harness render/hydration/behaviour checks.
+  The Next production build could not run in this sandbox: rebuild `frontend/out`
+  with Node 22 (`cd frontend && npm run build -- --webpack`) before demoing.
+
+Open questions for the team (they move predictions the most): whether the 0.83
+efficiency input is an extra loss or the overall efficiency; whether 545 pF is already
+inside the divider capacitance; how the tail and charging resistors are connected.
+
 ## Current task — 6 October 2026
 
 Work from `feat/engineering-hardening`, based on current main commit

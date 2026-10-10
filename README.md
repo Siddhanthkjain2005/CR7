@@ -8,6 +8,22 @@ The engineering UI and Judge Mode now start with the **CPRI physical profile and
 
 **Hardening verification:** final verification pending. The current change rationale, before/after checks and remaining limits will be recorded in [OPTIMIZATION_REPORT.md](OPTIMIZATION_REPORT.md) and `artifacts/optimization_report.json`. Earlier dated release reports remain historical evidence.
 
+## Judge workflow (10 October 2026)
+
+Open **http://127.0.0.1:8000/** for the primary workflow: **Configure test → Recommend settings → Inspect waveform → Compare measurement**.
+
+- **Configure test:** generator profile (or a custom generator with complete ratings), impulse type, desired crest in V or kV, test-object capacitance and divider capacitance. Stray capacitance, inductance and the loss factor sit under *Circuit assumptions*. Stock, engine and equipment reference have their own sections. Every assumption is saved with the run.
+- **Results:** these lead with the waveform plot and say plainly what produced it, for example "Circuit prediction" or "Outside validated ML range; workbook-equation metrics used". The metrics shown are re-extracted from the plotted curve. Next come the conceptual 3D stack, the recommended stages and charge per stage, the front and tail resistor construction, deviations from target, the hardware and waveform verdicts and a few ranked alternatives. Detailed engineering evidence is collapsed underneath.
+- **Compare measurement:** imports a measured CSV with its purpose (independent validation or calibration), divider scale, polarity, onset, session and shot, and the settings actually fired. The unchanged circuit is re-simulated at the as-fired settings.
+
+What is demonstrated, and what is not, is in [docs/accuracy_report.md](docs/accuracy_report.md). The supporting documents are:
+
+- [physics audit](docs/physics_audit.md)
+- [laboratory validation checklist](docs/laboratory_validation_checklist.md)
+- the evaluation pack, which you can re-run with `python -m scripts.evaluation_pack`
+
+The static UI must be rebuilt after a source change: `cd frontend && npm run build -- --webpack` (Node 22).
+
 ## Architecture
 
 ```mermaid
@@ -52,7 +68,7 @@ python -m pip install -r requirements.txt
 python scripts/dev.py
 ```
 
-Open **http://127.0.0.1:8000/judge/**. For exact Windows PowerShell, macOS and Linux installation/build commands, see [local setup and release readiness](docs/release_readiness.md). Setup needs internet for dependencies; inference runs locally after preparation.
+Open **http://127.0.0.1:8000/** (the guided seven-step walkthrough remains at `/judge/`). For exact Windows PowerShell, macOS and Linux installation/build commands, see [local setup and release readiness](docs/release_readiness.md). Setup needs internet for dependencies; inference runs locally after preparation.
 
 ## Demo and engineering views
 

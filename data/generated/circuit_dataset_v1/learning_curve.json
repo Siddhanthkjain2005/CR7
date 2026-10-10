@@ -1,0 +1,130 @@
+[
+  {
+    "train_rows": 250,
+    "iterations": 1034,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 2.5462,
+        "tail_us": 1.9057,
+        "crest_kv": 0.9934
+      },
+      "Switching": {
+        "front_us": 1.4581,
+        "tail_us": 1.0828,
+        "crest_kv": 0.5223
+      }
+    }
+  },
+  {
+    "train_rows": 500,
+    "iterations": 1665,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 1.3484,
+        "tail_us": 1.3225,
+        "crest_kv": 0.4313
+      },
+      "Switching": {
+        "front_us": 0.5208,
+        "tail_us": 0.4091,
+        "crest_kv": 0.2717
+      }
+    }
+  },
+  {
+    "train_rows": 1000,
+    "iterations": 1691,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 0.7193,
+        "tail_us": 0.4766,
+        "crest_kv": 0.2761
+      },
+      "Switching": {
+        "front_us": 0.2931,
+        "tail_us": 0.2139,
+        "crest_kv": 0.1394
+      }
+    }
+  },
+  {
+    "train_rows": 2000,
+    "iterations": 1889,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 0.6681,
+        "tail_us": 0.3847,
+        "crest_kv": 0.2322
+      },
+      "Switching": {
+        "front_us": 0.2133,
+        "tail_us": 0.1427,
+        "crest_kv": 0.095
+      }
+    }
+  },
+  {
+    "train_rows": 4000,
+    "iterations": 2319,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 0.4587,
+        "tail_us": 0.3414,
+        "crest_kv": 0.1805
+      },
+      "Switching": {
+        "front_us": 0.1804,
+        "tail_us": 0.0949,
+        "crest_kv": 0.0909
+      }
+    }
+  },
+  {
+    "train_rows": 8000,
+    "iterations": 3034,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 0.5074,
+        "tail_us": 0.3225,
+        "crest_kv": 0.1791
+      },
+      "Switching": {
+        "front_us": 0.2183,
+        "tail_us": 0.1567,
+        "crest_kv": 0.0798
+      }
+    }
+  },
+  {
+    "train_rows": 16000,
+    "iterations": 3411,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 0.4943,
+        "tail_us": 0.2749,
+        "crest_kv": 0.1542
+      },
+      "Switching": {
+        "front_us": 0.1778,
+        "tail_us": 0.1128,
+        "crest_kv": 0.0884
+      }
+    }
+  },
+  {
+    "train_rows": 31010,
+    "iterations": 4000,
+    "validation_p95_pct": {
+      "Lightning": {
+        "front_us": 0.4982,
+        "tail_us": 0.2742,
+        "crest_kv": 0.1793
+      },
+      "Switching": {
+        "front_us": 0.1955,
+        "tail_us": 0.1421,
+        "crest_kv": 0.0922
+      }
+    }
+  }
+]

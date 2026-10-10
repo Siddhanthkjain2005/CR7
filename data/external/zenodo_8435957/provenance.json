@@ -1,0 +1,23 @@
+{
+  "doi": "10.5281/zenodo.8435957",
+  "url": "https://zenodo.org/records/8435957",
+  "title": "Dataset for Linearity Extension of UHV Class Lightning Impulse Dividers up to 3000 kV",
+  "publisher": "Zenodo; VTT/RISE/VSL/PTB and partner institutes",
+  "license": "CC-BY-4.0",
+  "license_verified_from": "https://zenodo.org/api/records/8435957",
+  "source_type": "measured_derived_reference_data",
+  "review": "Workbook sheets Info, Fig. 3, Fig. 4, Fig. 6, Fig. 7, Fig. 8, Fig. 9. Impulse calibration errors, normalized divider comparisons and slow charging traces. No raw impulse traces or complete per-shot generator inputs. Reference context only.",
+  "files": [
+    {
+      "path": "data/external/zenodo_8435957/linearity_extension_li_dividers.xlsx",
+      "bytes": 61668,
+      "sha256": "af3acb8d8f111dcb6c4756fcd5b1cbb7c4c3916d2cab244159135ac5357b2dbc",
+      "publisher_md5": "d45634ec2da1645dfd7d6cd7c22536b6",
+      "publisher_md5_matches": true
+    }
+  ],
+  "eligible_for_six_output_training": false,
+  "eligible_for_final_test_six_of_six_claim": false,
+  "downloaded_on": "2026-10-07",
+  "usage": "Quarantined external reference; no model fitting or accuracy claim"
+}

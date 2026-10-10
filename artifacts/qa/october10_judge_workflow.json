@@ -1,0 +1,44 @@
+{
+  "recorded_at_utc": "2026-10-10T17:44:20+00:00",
+  "branch": "codex/hardening-judge-workflow",
+  "base": "efde726 (feat/engineering-hardening)",
+  "environment": "Linux x86_64 sandbox, Python 3.13, scikit-learn 1.9.1, pytest 9 from source; frontend TypeScript 6.0.3 in the sandbox and 5.9.3 with real Next types on the owner machine VM",
+  "baseline": {
+    "backend_tests": 263,
+    "failures": 0,
+    "note": "Unchanged efde726"
+  },
+  "backend": {
+    "tests_final": "see october10_backend_tests.xml",
+    "integrity_45_files": "PASS",
+    "configuration_and_registry": "PASS",
+    "external_source_checksums": "PASS"
+  },
+  "frontend": {
+    "typecheck": "PASS",
+    "unit_tests": "11/11",
+    "production_build": "NOT EXECUTED in this session (Next SWC binary unavailable); rebuild on the Mac: cd frontend && npm run build -- --webpack"
+  },
+  "browser_harness": {
+    "description": "Real backend app with the frontend bundled by esbuild (not Next), headless Chromium with SwiftShader WebGL",
+    "routes_x_widths": "11 routes x 390/768/1440 px: no console or page errors, no horizontal overflow",
+    "server_render_and_hydration": "11/11 routes",
+    "behaviour_checks": "21/21 (stock guard, kV/V unit, plain prediction basis, metrics re-extracted from curve, no duplicate trace, hardware/waveform verdicts, collapsed evidence, stale request, impossible request rejected, custom generator, validation capture cannot calibrate, model lab evidence)",
+    "screenshots": [
+      "artifacts/qa/october10-results-desktop.jpg",
+      "artifacts/qa/october10-results-mobile.jpg",
+      "artifacts/qa/october10-configure-mobile.jpg",
+      "artifacts/qa/october10-model-lab-desktop.jpg"
+    ]
+  },
+  "evaluation_pack": "artifacts/evaluation_pack/v1/results.json (36/36 expected outcomes; 0 false passes on the circuit path; 14/14 bounded = exhaustive)",
+  "surrogate": "artifacts/models/circuit_surrogate_v1/summary.json (gate passed for screening; search use not promoted)",
+  "physics_audit": "artifacts/physics_audit/v1/audit.json",
+  "not_executed": [
+    "next build / static export",
+    "real GPU, Safari, Firefox, touch devices",
+    "measured generator shots"
+  ],
+  "cloud_spend_usd": 0,
+  "deployed": false
+}

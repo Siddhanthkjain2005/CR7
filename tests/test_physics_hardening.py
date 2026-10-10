@@ -3,6 +3,7 @@ import numpy as np
 import pytest
 from scipy.optimize import brentq
 
+from backend.app.physics import circuit
 from backend.app.physics.circuit import simulate
 from backend.app.physics.compliance import check
 
@@ -97,6 +98,65 @@ def test_tiny_inductance_is_retained_when_front_resistance_makes_it_significant(
     assert low['diagnostics']['maximum_energy_ratio']<=1+1e-8
 
 
-def test_unresolved_extreme_decay_reports_numeric_limitation_of_passive_model():
+def independent_extreme_rlc_solution():
+    # Solve the physical voltage ODE, without a matrix eigendecomposition.
+    # Its slow root is bracketed after scaling by the discharge RC time;
+    # deflation then recovers the two fast roots without subtractive loss.
+    cg=.125e-6/2; cl=.001e-12; rf=60.; rt=2e8; l=1.01e-14
+    initial=2*180*.83; g=1/(rt*cg)
+    rc=rt*(cg+cl)+rf*cl
+    quadratic=(rf*cl+l*cl*g)/g/rc**2
+    cubic=l*cl/g/rc**3
+    slow=brentq(lambda x:1-x+quadratic*x*x-cubic*x*x*x,
+                 .5,1.5,xtol=1e-14)/rc
+    pair=g/(l*cl)/slow; remaining=g+rf/l-slow
+    fast=(remaining+np.sqrt(remaining**2-4*pair))/2
+    middle=pair/fast
+    poles=-np.array([slow,middle,fast])
+    residues=np.array([initial/(l*cl)/np.prod(poles[i]-np.delete(poles,i))
+                       for i in range(3)])
+    # Residues sum to zero. Subtract the fastest exponential explicitly so
+    # the initial-voltage cancellation cannot contaminate the reference.
+    voltage=lambda t:np.sum(residues[:2]*(np.exp(poles[:2]*t)-np.exp(poles[2]*t)))
+    derivative=lambda x:np.sum(residues*poles*np.exp(poles*x/middle))/middle
+    peak=brentq(derivative,1,100,xtol=1e-12)/middle
+    crest=voltage(peak)
+    half=brentq(lambda x:voltage(x/slow)/crest-.5,
+                peak*slow,20,xtol=1e-12)/slow
+    return poles, np.array([peak*1e6,half*1e6,crest])
+
+
+def test_extreme_decay_is_independently_correct_or_reports_numeric_limitation():
+    # LAPACK platforms differ in whether they resolve this 17-order pole
+    # separation. Either an accurate result or an explicit limitation is valid;
+    # finite negative eigenvalues alone cannot establish numerical accuracy.
+    _,expected=independent_extreme_rlc_solution()
+    try:
+        result=simulate(2,180,30,1e8,.125,.001,1.01e-8,.83,'Switching',False)
+    except ValueError as exc:
+        assert 'resolve' in str(exc) and 'stable decay' in str(exc)
+    else:
+        np.testing.assert_allclose([result[k] for k in ['front_us','tail_us','crest_kv']],
+                                   expected,rtol=2e-7)
+
+
+def test_inaccurate_stable_slow_pole_reports_numeric_limitation(monkeypatch):
+    original=circuit.eig
+    def inaccurate_modes(a):
+        poles,vectors=original(a)
+        poles[np.argmin(np.abs(poles))]*=1.75
+        return poles,vectors
+    monkeypatch.setattr(circuit,'eig',inaccurate_modes)
     with pytest.raises(ValueError,match='resolve.*stable decay'):
         simulate(2,180,30,1e8,.125,.001,1.01e-8,.83,'Switching',False)
+
+
+def test_independently_resolved_extreme_modes_are_accepted(monkeypatch):
+    poles,expected=independent_extreme_rlc_solution()
+    cl=.001e-12; rf=60.; l=1.01e-14
+    # Independent modal vectors follow Vl'=I/Cl and Vg=Vl+Rf*I+L*I'.
+    vectors=np.array([1+rf*cl*poles+l*cl*poles*poles,cl*poles,np.ones(3)])
+    monkeypatch.setattr(circuit,'eig',lambda a:(poles,vectors))
+    result=simulate(2,180,30,1e8,.125,.001,1.01e-8,.83,'Switching',False)
+    np.testing.assert_allclose([result[k] for k in ['front_us','tail_us','crest_kv']],
+                               expected,rtol=2e-7)

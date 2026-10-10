@@ -1,0 +1,47 @@
+{
+  "version": "circuit-surrogate-v1-protocol",
+  "declared_at": "2026-10-10T17:11:06.778558+00:00",
+  "dataset": "data/generated/circuit_dataset_v1",
+  "dataset_manifest_sha256": "5b31b862ecf2b26f9cd4057626a5294c8fbb32eac26e45b8546344fac1eba086",
+  "test_groups_sha256": "623d19749d6bf6b6f943c18751dd63067a7a421a4ccad690d3c5d9afab5dd572",
+  "architectures": [
+    [
+      32,
+      32
+    ],
+    [
+      64,
+      64
+    ],
+    [
+      96,
+      96
+    ]
+  ],
+  "selection": "Lowest mean validation p95 relative error over the six type/output channels.",
+  "training_support": [
+    "tight_target",
+    "near_target",
+    "stock_network"
+  ],
+  "solver": "lbfgs",
+  "gate": {
+    "scope": "Frozen test rows that the circuit resolved and that lie inside the surrogate feature domain.",
+    "accuracy": {
+      "p95_relative_error_pct_max": {
+        "front_us": 1.0,
+        "tail_us": 1.0,
+        "crest_kv": 0.5
+      },
+      "worst_relative_error_pct_max": 5.0,
+      "by": "impulse type and output"
+    },
+    "classification": {
+      "timing_decision_disagreement_pct_max": 2.0,
+      "false_pass_pct_of_circuit_fails_max": 2.0
+    },
+    "use_if_passed": "Screening of constructible settings only. Every shortlisted setting is re-simulated with the circuit; surrogate metrics are never shown as predictions.",
+    "search_promotion": "Separately decided by the evaluation pack: equal-or-better top-1 versus the current bounded search in >=95% of cases AND (strictly better in >=10% of cases OR median runtime <= 80%)."
+  },
+  "trainer_sha256": "c4f1c6e7edb738a4384b963fd4a99160fa320b0c6eb934ae8a3250ddba5766be"
+}

@@ -1,0 +1,64 @@
+{
+  "id": "6g9cccrvvc",
+  "version": 1,
+  "name": "Single level impulse generator ",
+  "description": "Voltage Vs Time data taken from numerical computing environment after simulating single level impulse generator circuit. Peak voltage in this data-set achieved 4.2 Megavolts of voltage according to lightning properties published in various literature. It is giving a perfect and smooth plot of lightning impulse.",
+  "doi": "10.17632/6g9cccrvvc.1",
+  "publish_date": "2019-10-27T08:37:32.975Z",
+  "last_modification_date": "2019-10-27T08:36:47.970Z",
+  "is_confidential": false,
+  "customer": {
+    "id": "7377952c-6404-4428-bbfc-77242cfc301e",
+    "name": "Mendeley Guests",
+    "chief_id": 810289,
+    "config": {
+      "repository_id": "MENDELEY_DATA",
+      "dataset_size_limit": 10737418240,
+      "doi_prefix": "10.17632"
+    },
+    "is_user_mendeley_admin": false,
+    "customer_roles": [],
+    "is_guest": true,
+    "is_user_customer_moderator": false
+  },
+  "owner": {
+    "id": "ce64b3b5-afb1-3ed5-8a7f-df7a5c35a5f8",
+    "first_name": "Suman",
+    "last_name": "Jana",
+    "display_name": "Suman Jana",
+    "$ref": "/profiles/ce64b3b5-afb1-3ed5-8a7f-df7a5c35a5f8"
+  },
+  "categories": [
+    {
+      "id": "data.elsevier.com/vocabulary/OmniScience/Concept-252577673",
+      "label": "Lightning"
+    }
+  ],
+  "licence": {
+    "id": "01d9c749-3c4d-4431-9df3-620b2dcfe144",
+    "short_name": "CC BY 4.0",
+    "full_name": "Creative Commons Attribution 4.0 International",
+    "description": "You can share, copy and modify this dataset so long as you give appropriate credit, provide a link to the CC BY license, and indicate if changes were made, but you may not do so in a way that suggests the rights holder has endorsed you or your use of the dataset. Note that further permission may be required for any content within the dataset that is identified as belonging to a third party.",
+    "url": "http://creativecommons.org/licenses/by/4.0",
+    "category": "Creative",
+    "customer_id": null
+  },
+  "institutions": [
+    {
+      "id": "d4d3ebc1-d1fd-5b99-8182-04e15fdb753d",
+      "name": "National Institute of Technology Mizoram"
+    }
+  ],
+  "organisational_unit_names": [],
+  "contributors": [
+    {
+      "id": "ce64b3b5-afb1-3ed5-8a7f-df7a5c35a5f8",
+      "first_name": "Suman",
+      "last_name": "Jana",
+      "$ref": "/profiles/ce64b3b5-afb1-3ed5-8a7f-df7a5c35a5f8"
+    }
+  ],
+  "related_links": [],
+  "custom_metadata": {},
+  "is_metadata_only": false
+}
