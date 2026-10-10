@@ -155,9 +155,13 @@ def extract(rgb, seed, *, plot_box=None, tolerance=28., edits=None):
     colour = trace_colour(rgb, seed)
     if not 5 <= float(tolerance) <= 80:
         raise ValueError('Colour tolerance must be between 5 and 80 (CIE ΔE).')
-    distance = np.linalg.norm(_lab(rgb) - _lab(colour[None, :])[0], axis=-1)
+    # Colour distance only inside the plot area, in float32, to bound memory on large images.
+    target = _lab(colour[None, :])[0].astype(np.float32)
     mask = np.zeros((h, w), bool)
-    mask[by0:by1, bx0:bx1] = distance[by0:by1, bx0:bx1] <= tolerance
+    for r0 in range(by0, by1, 256):
+        r1 = min(by1, r0 + 256)
+        block = _lab(rgb[r0:r1, bx0:bx1].astype(np.float32)).astype(np.float32)
+        mask[r0:r1, bx0:bx1] = np.linalg.norm(block - target, axis=-1) <= tolerance
     flags, notes = [], []
     # Straight same-colour lines spanning most of the plot are grid or axis lines.
     removed_rows = [int(r) for r in range(by0, by1) if mask[r, bx0:bx1].sum() > LINE_FRACTION * (bx1 - bx0)]

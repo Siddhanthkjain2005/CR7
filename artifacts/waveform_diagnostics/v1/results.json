@@ -2166,6 +2166,15 @@
    "problem": "The unit-plausibility guard disabled the diagnosis with a message that suggested only a unit mistake, although the waveform was a strongly ringing in-model case whose half value is reached on the first swing.",
    "fix": "Message reworded to name both possibilities. The guard and its thresholds are unchanged, so the case still is not diagnosed quantitatively; this is reported as a limitation.",
    "effect": "Wording only."
+  },
+  {
+   "after_run": 3,
+   "cases": [
+    "all"
+   ],
+   "problem": "Code review found that the colour match converted the whole working image to CIE Lab in float64, which could use over 1 GB of memory on a 4000-pixel image.",
+   "fix": "The colour distance is computed only inside the plot area, in 256-row blocks of float32, and the background colour and suggestions sample at most about one megapixel.",
+   "effect": "Re-running the full evaluation gave identical case results and gates (checked case by case; only run times differ). results.json is the run before this change."
   }
  ]
 }

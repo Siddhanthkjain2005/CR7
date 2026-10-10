@@ -171,11 +171,12 @@ def gray(rgb):
 
 def background_color(rgb):
     """Most common colour (quantized), taken as the plot background."""
-    q = (rgb // 16).reshape(-1, 3)
+    step = max(1, int(np.sqrt(rgb.shape[0] * rgb.shape[1] / 1_000_000)))  # sample at most ~1 Mpx
+    sample = rgb[::step, ::step].reshape(-1, 3)
+    q = sample // 16
     keys = q[:, 0].astype(np.int32) * 256 + q[:, 1].astype(np.int32) * 16 + q[:, 2]
     mode = np.bincount(keys).argmax()
-    sel = rgb.reshape(-1, 3)[keys == mode]
-    return np.median(sel, axis=0)
+    return np.median(sample[keys == mode], axis=0)
 
 
 def deskew(rgb, limit=8., step=.25):

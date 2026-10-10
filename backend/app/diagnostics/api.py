@@ -403,7 +403,8 @@ def suggestions(work):
     if len(sx) >= 4 and sx.std() / max(sx.mean(), 1e-9) > .25:
         log_hint = True
     # Candidate colours: saturated pixels clustered coarsely.
-    flat = work.reshape(-1, 3).astype(int)
+    step = max(1, int(np.sqrt(work.shape[0] * work.shape[1] / 1_000_000)))
+    flat = work[::step, ::step].reshape(-1, 3).astype(np.int32)
     sat = flat.max(axis=1) - flat.min(axis=1)
     coloured = flat[sat > 60]
     palette = []
