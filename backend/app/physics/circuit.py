@@ -6,8 +6,8 @@ from .waveform_metrics import analyze
 
 VERSION = 'lumped RLC Marx equivalent v2.1'
 
-def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
-             total_c_pf,l_uh,efficiency,impulse_type='Lightning',include_waveform=True):
+def _modes(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,total_c_pf,l_uh,efficiency):
+    """Modal solution of the lumped circuit shared by simulate() and response()."""
     cg=stage_c_uf*1e-6/stages; cl=total_c_pf*1e-12; rf=front_r_stage*stages; rt=tail_r_stage*stages
     if min(cg,cl,rf,rt,charge_kv_stage,efficiency)<=0 or l_uh<0: raise ValueError('Nonphysical circuit inputs.')
     initial=stages*charge_kv_stage*efficiency
@@ -57,6 +57,27 @@ def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
     if not resolved:
         raise ValueError('Could not resolve finite stable decay modes of the passive equivalent circuit. Review extreme circuit ratios; no waveform result returned.')
     coefficients=np.linalg.solve(vectors,z)
+    return {'cg':cg,'cl':cl,'rf':rf,'rt':rt,'initial':initial,'use_inductance':use_inductance,
+            'l':l_uh*1e-6,'out_index':out_index,'eigen':eigen,'vectors':vectors,'coefficients':coefficients,
+            'alpha':alpha if out_index==1 else None,'beta':beta if out_index==1 else None}
+
+def response(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,total_c_pf,l_uh,efficiency,times_us):
+    """Load voltage (kV) of the same modal solution at requested times (µs; zero before t=0).
+
+    No metrics are extracted; this is the circuit curve itself, for fitting.
+    """
+    m=_modes(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,total_c_pf,l_uh,efficiency)
+    t=np.asarray(times_us,float)*1e-6
+    v=np.real((m['vectors'][m['out_index'],:]*m['coefficients'])@np.exp(m['eigen'][:,None]*np.clip(t,0,None)[None,:]))
+    return np.where(t>0,v,0.)
+
+def simulate(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,
+             total_c_pf,l_uh,efficiency,impulse_type='Lightning',include_waveform=True):
+    m=_modes(stages,charge_kv_stage,front_r_stage,tail_r_stage,stage_c_uf,total_c_pf,l_uh,efficiency)
+    cg,cl,rf,rt,initial=m['cg'],m['cl'],m['rf'],m['rt'],m['initial']
+    use_inductance,out_index,eigen,vectors,coefficients=m['use_inductance'],m['out_index'],m['eigen'],m['vectors'],m['coefficients']
+    if out_index==1: alpha,beta=m['alpha'],m['beta']
+    if use_inductance: l=m['l']
     slow=1/min(-eigen.real); fast=max(rf*cl,np.sqrt(l_uh*1e-6*cl),1e-10)
     t=np.unique(np.r_[np.linspace(0,min(20*fast,slow),550),np.geomspace(max(fast*.001,1e-12),12*slow,650)])
     if out_index==1:

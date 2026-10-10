@@ -24,6 +24,14 @@ class ParameterCalibrationRequest(BaseModel):
     model_config=ConfigDict(extra='forbid')
     trial_ids:list[str]=Field(min_length=1,max_length=10)
 
+class CaptureReviewRequest(BaseModel):
+    """A qualified reviewer's recorded decision on a saved capture (append-only)."""
+    model_config=ConfigDict(extra='forbid')
+    decision:Literal['accept_flags','exclude','reinstate']
+    codes:list[str]=Field(default_factory=list,max_length=20)
+    reviewer:str=Field(min_length=2,max_length=120)
+    reason:str=Field(min_length=10,max_length=1000)
+
 class InventoryOverride(BaseModel):
     front:list[StockItem]
     tail:list[StockItem]

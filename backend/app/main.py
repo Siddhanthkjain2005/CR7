@@ -12,7 +12,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse, Response
 from fastapi.staticfiles import StaticFiles
-from .schemas import OptimizeRequest,SimulationRequest,ComplianceRequest,TrialEvaluationRequest,SetupTransitionRequest,SensitivityRequest,ParameterCalibrationRequest
+from .schemas import OptimizeRequest,SimulationRequest,ComplianceRequest,TrialEvaluationRequest,SetupTransitionRequest,SensitivityRequest,ParameterCalibrationRequest,CaptureReviewRequest
 from .physics.parameter_calibration import fit as fit_parameters, VERSION as PARAMETER_CALIBRATION_VERSION
 from .physics.circuit import VERSION as CIRCUIT_VERSION
 from .optimization.engine import optimize, profile_for, custom_profile, CUSTOM_ID, PROFILES, physics, same_hardware as same_hardware_profile
@@ -26,6 +26,7 @@ from . import storage
 from .reports import report_html
 from .run_evidence import summarize_evidence
 from .trial_quality import assess_waveform
+from .capture_admission import admit, explain as admission_message, setting_review, rating_flags, REVIEW_DECISIONS
 from .decision_metrics import captured_limits, extracted_compliance
 from .trial_provenance import validate_csv_provenance
 from .trial_evaluation import evaluate_trials
@@ -37,9 +38,12 @@ from .hardware_integrity import hardware_integrity
 from .test_objects import catalog, validate_request
 from .experiment_timeline import timeline
 
+from .diagnostics.api import router as diagnostics_router
+
 ROOT=Path(__file__).resolve().parents[2]
 app=FastAPI(title='ImpulseTwin AI',version='1.0.0',description='Offline physics-guided impulse-generator decision support. No hardware control.',docs_url=None,redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:3000','http://127.0.0.1:3000','http://localhost:8000','http://127.0.0.1:8000'],allow_methods=['GET','POST'],allow_headers=['*'])
+app.include_router(diagnostics_router)
 
 def saved(id,kind):
     try:return storage.get(id,kind)
@@ -350,11 +354,12 @@ def predict_as_fired(run,candidate,as_fired):
         raise ValueError('As-fired values must be positive.')
     total=circuit['load_c_pf']+circuit['divider_c_pf']+circuit['stray_c_pf']+((p.get('base_c_pf') or 0) if inputs.get('include_base_c') else 0)
     fitted=p.get('effective_parameters') or {}
-    result=circuit_simulate(settings['stages'],settings['charge_kv_stage'],settings['front_r_stage'],settings['tail_r_stage']*fitted.get('tail_scale',1.),
-        p['stage_c_uf'],total+fitted.get('extra_load_pf',0.),circuit['l_uh'],inputs['efficiency']*fitted.get('loss_scale',1.),inputs['impulse_type'],True)
+    result=circuit_simulate(settings['stages'],settings['charge_kv_stage'],settings['front_r_stage']*fitted.get('front_scale',1.),settings['tail_r_stage']*fitted.get('tail_scale',1.),
+        p['stage_c_uf'],total+fitted.get('extra_load_pf',0.),circuit['l_uh']+fitted.get('extra_l_uh',0.),inputs['efficiency']*fitted.get('loss_scale',1.),inputs['impulse_type'],True)
     return {'settings':settings,'circuit_inputs':circuit,'changed_fields':sorted(as_fired),
             'prediction':{k:result[k] for k in ['front_us','tail_us','crest_kv']},'waveform':result['waveform'],
-            'model':result['diagnostics']['model'],
+            'model':result['diagnostics']['model'],'rating_flags':rating_flags(p,settings),
+            'effective_parameters_applied':bool(fitted),
             'note':'Circuit prediction recomputed at the as-fired settings with the unchanged model and assumptions; no measured data was used.'}
 
 @app.post('/api/trials/upload')
@@ -399,22 +404,43 @@ async def upload_trial(file:UploadFile=File(...),run_id:str=Form(...),candidate_
         measured=analyze(t,v,run['inputs']['impulse_type'],baseline_kv,time_origin_us)
         limits=captured_limits(run)
     except (UnicodeError,ValueError,KeyError,TypeError) as e:raise HTTPException(422,f'CSV validation failed: {e}')
-    quality=assess_waveform(t,v,measured,impulse_type=run['inputs']['impulse_type'],rules=run.get('rules',{}))
+    # The declared polarity is part of the shared acquisition review, so every
+    # later route (correction, parameter fit, evaluation) re-applies it.
+    quality=assess_waveform(t,v,measured,impulse_type=run['inputs']['impulse_type'],rules=run.get('rules',{}),expected_polarity=expected_polarity)
     detected='positive' if measured['polarity']>0 else 'negative'
-    if expected_polarity!='auto' and expected_polarity!=detected:
-        quality={**quality,'calibration_allowed':False,'issues':[*quality['issues'],{'code':'polarity_mismatch','message':
-            f'The capture is {detected} but the operator expected {expected_polarity}. Check divider polarity and channel wiring; the waveform was not flipped to hide this.'}]}
-    try: as_fired_prediction=predict_as_fired(run,candidate,as_fired) if as_fired else None
+    try:
+        as_fired_prediction=predict_as_fired(run,candidate,as_fired) if as_fired else None
+        # Same model at the recommended settings, so the configuration effect is like-for-like.
+        recommended_recomputed=predict_as_fired(run,candidate,{}) if as_fired else None
     except (ValueError,KeyError) as e:raise HTTPException(422,f'As-fired settings could not be simulated: {e}')
     id=uuid.uuid4().hex[:12]; path=ROOT/'artifacts/trials'/f'{id}.csv'; path.parent.mkdir(exist_ok=True,parents=True); path.write_bytes(content)
-    bias=[measured[k]-candidate['hybrid'][k] for k in ['front_us','tail_us','crest_kv']]
-    calibration_bias,lineage=trial_correction(measured,candidate)
+    keys=['front_us','tail_us','crest_kv']
+    # Difference from the prediction saved for the recommended settings (kept for history).
+    bias=[measured[k]-candidate['hybrid'][k] for k in keys]
+    settings_check=setting_review({'as_fired':as_fired_prediction},run,candidate)
+    if as_fired_prediction and not settings_check['same_as_recommended']:
+        # Model error is judged only against the prediction at the settings actually fired.
+        model_residual={'basis':'circuit prediction at the as-fired settings',
+            'values':[measured[k]-as_fired_prediction['prediction'][k] for k in keys]}
+        configuration_difference={'basis':'circuit prediction at the as-fired settings minus the same circuit at the recommended settings',
+            'values':[as_fired_prediction['prediction'][k]-recommended_recomputed['prediction'][k] for k in keys]}
+        calibration_bias,lineage=None,None
+        withheld='Settings actually fired differ from the recommendation, so no one-shot offset is formed for the original setup. '\
+                 'The difference from the saved prediction is mostly the changed settings; see the as-fired comparison.'
+    else:
+        model_residual={'basis':'saved prediction at the recommended settings','values':bias}
+        configuration_difference=None
+        calibration_bias,lineage=trial_correction(measured,candidate)
+        withheld=None
     result={'run_id':run_id,'candidate_id':candidate['id'],'source_type':source_type,'original_filename':file.filename,
         'raw_sha256':hashlib.sha256(content).hexdigest(),'raw_path':str(path.relative_to(ROOT)),
         'provenance':provenance,
         'processing':{'time_column':time_column,'voltage_column':voltage_column,'time_unit':time_unit,'voltage_unit':voltage_unit,'baseline_kv':baseline_kv,'time_origin_us':time_origin_us,'polarity':measured['polarity'],'steps':['Units converted without changing raw file','Explicit baseline subtracted only for analysis','Polarity normalized for metric extraction','Linear interpolation at crossings']},
         'measured':measured,'predicted':candidate['hybrid'],'physics':candidate['physics'],'bias':bias,
-        'calibration_bias':calibration_bias,'calibration_lineage':lineage,
+        'bias_basis':'measured minus the prediction saved for the recommended settings',
+        'model_residual':model_residual,'configuration_difference':configuration_difference,
+        'calibration_bias':calibration_bias,'calibration_lineage':lineage,'calibration_bias_withheld':withheld,
+        'settings_review':{k:settings_check[k] for k in ['as_fired_recorded','same_as_recommended','differences','rating_flags','stock_note']},
         'quality':quality,
         'waveform':{'time_us':t.tolist(),'voltage_kv':v.tolist(),'kind':source_type},
         'comparison_waveform':{'time_us':(t-time_origin_us).tolist(),
@@ -430,7 +456,45 @@ async def upload_trial(file:UploadFile=File(...),run_id:str=Form(...),candidate_
     result['processing']['steps']=[*result['processing']['steps'],
         *([f'Voltage multiplied by stated scale factor {voltage_scale:g} ({voltage_scale_source})'] if voltage_scale!=1 else [])]
     result['evidence']=evidence_record({**result,'id':id,'created_at':datetime.now(timezone.utc).isoformat()},run)
+    # Snapshot of the shared admission at upload; every use re-checks it.
+    preview={**result,'id':id}
+    result['admission']={use:summarize_admission(admit(preview,run,use,root=ROOT,reviews=[])) for use in ('local_correction','parameter_fit','evaluation')}
     return storage.put('trial',id,result)
+
+def summarize_admission(a):
+    return {'admitted':a['admitted'],'blocking':a['blocking'],'awaiting_review':a['awaiting_review'],
+            'accepted_by_review':a['accepted_by_review'],'version':a['version']}
+
+def admission_for(trial,run,use):
+    return admit(trial,run,use,root=ROOT)
+
+@app.get('/api/trials/{id}/admission')
+def trial_admission(id:str):
+    """Current admission of a saved capture for each use, with its review history."""
+    trial=saved(id,'trial'); run=saved(trial['run_id'],'run')
+    uses={use:admission_for(trial,run,use) for use in ('local_correction','parameter_fit','evaluation')}
+    first=next(iter(uses.values()))
+    return {'trial_id':id,'uses':{k:summarize_admission(v) for k,v in uses.items()},'quality':first['quality'],
+            'settings':first['settings'],'review':first['review'],'version':first['version'],'scope':first['scope']}
+
+@app.post('/api/trials/{id}/reviews')
+def review_capture(id:str,body:CaptureReviewRequest):
+    """Append a qualified reviewer's decision; the capture and its metrics are never rewritten."""
+    trial=saved(id,'trial'); run=saved(trial['run_id'],'run')
+    current=admission_for(trial,run,'parameter_fit')
+    reviewable={i['code'] for i in current['awaiting_review']+current['accepted_by_review']}
+    if body.decision=='accept_flags':
+        if not body.codes:raise HTTPException(422,'List the review flags being accepted.')
+        hard={i['code'] for i in current['blocking']}
+        refused=[c for c in body.codes if c not in reviewable]
+        if refused:
+            raise HTTPException(422,f"These issues cannot be accepted by review: {', '.join(refused)}. "
+                                +('They block every use; correct the capture or its records instead.' if set(refused)&hard else 'They are not open on this capture.'))
+    record={'trial_id':id,'decision':body.decision,'codes':body.codes if body.decision=='accept_flags' else [],
+            'reviewer':body.reviewer.strip(),'reason':body.reason.strip(),'raw_sha256':trial['raw_sha256'],
+            'quality_version':current['quality']['version'],
+            'scope':'Recorded review decision. It does not change the capture, its samples or its extracted metrics, and it is not proof of laboratory origin.'}
+    return storage.put('capture_review',uuid.uuid4().hex[:12],record)
 
 @app.get('/api/trials')
 def trials():return storage.list_records('trial',50)
@@ -452,19 +516,13 @@ def evaluation_json(id:str):
 @app.post('/api/trials/{id}/calibrate')
 def calibrate(id:str):
     trial=saved(id,'trial'); run=saved(trial['run_id'],'run'); c=selected_candidate(run,trial['candidate_id'])
-    if trial.get('capture_purpose')=='validation':
-        raise HTTPException(422,'This capture was recorded for independent validation. Validation captures are never used to correct predictions; upload a separate calibration capture.')
     classified=evidence_record(trial,run)['source_type']
-    if classified not in ('generated_demo','measured_lab'):
-        raise HTTPException(422,'Only explicitly classified trial waveforms can create a local correction.')
-    raw=(ROOT/trial['raw_path']).resolve()
-    if not raw.is_relative_to(ROOT.resolve()) or not raw.is_file() or hashlib.sha256(raw.read_bytes()).hexdigest()!=trial['raw_sha256']:
-        raise HTTPException(422,'Original trial CSV is missing or changed. Restore its original bytes before calibration.')
-    wave=trial.get('waveform') or {}
-    quality=assess_waveform(wave.get('time_us'),wave.get('voltage_kv'),trial['measured'],
-                            impulse_type=run['inputs']['impulse_type'],rules=run.get('rules',{}))
-    if not quality['calibration_allowed']:
-        raise HTTPException(422,'Capture review required: '+' '.join(item['message'] for item in quality['issues']))
+    admission=admission_for(trial,run,'local_correction')
+    if not admission['admitted']:
+        codes={i['code'] for i in admission['blocking']}
+        prefix='' if codes&{'validation_purpose','unclassified_source','raw_bytes_changed','as_fired_settings_differ'} else 'Capture review required: '
+        raise HTTPException(422,prefix+admission_message(admission))
+    quality=admission['quality']
     total_bias,lineage=trial_correction(trial['measured'],c)
     if any(abs(b)>abs(p)*.3 for b,p in zip(trial['bias'],c['prediction'])):
         raise HTTPException(422,'The shot differs by more than 30%. Review units, setup and waveform before local calibration.')
@@ -483,6 +541,7 @@ def calibrate(id:str):
     return storage.put('calibration',uuid.uuid4().hex[:12],{'trial_id':id,'source_type':calibration_source,
         'bias':total_bias,'scope':scope,'production_model_changed':False,
         'observed_residual':trial['bias'],'calibration_lineage':lineage,'quality':quality,
+        'admission':summarize_admission(admission),
         'retraining_queue':'Stored for later engineer-reviewed retraining; no automatic training',
         'limitation':'Applies only to same profile, layout, solver and hardware settings with inputs within 1%. Reduced-voltage transfer to a higher-voltage shot is not inferred.'})
 
@@ -510,13 +569,12 @@ def create_parameter_calibration(body:ParameterCalibrationRequest):
                 raise ValueError(f'Capture {tid} was recorded for independent validation; it cannot be used to fit parameters.')
             run=saved(trial['run_id'],'run')
             source=evidence_record(trial,run)['source_type']
-            if source not in ('generated_demo','measured_lab'):raise ValueError('Only explicitly classified captures can fit generator parameters.')
-            raw=(ROOT/trial['raw_path']).resolve()
-            if not raw.is_relative_to(ROOT.resolve()) or not raw.is_file() or hashlib.sha256(raw.read_bytes()).hexdigest()!=trial['raw_sha256']:
-                raise ValueError('Original capture CSV is missing or changed.')
-            wave=trial.get('waveform') or {}
-            quality=assess_waveform(wave.get('time_us'),wave.get('voltage_kv'),trial['measured'],impulse_type=run['inputs']['impulse_type'],rules=run.get('rules',{}))
-            if not quality['calibration_allowed']:raise ValueError('Capture review required: '+' '.join(x['message'] for x in quality['issues']))
+            admission=admission_for(trial,run,'parameter_fit')
+            if not admission['admitted']:
+                codes={i['code'] for i in admission['blocking']}
+                if 'unclassified_source' in codes:raise ValueError('Only explicitly classified captures can fit generator parameters.')
+                if 'raw_bytes_changed' in codes:raise ValueError('Original capture CSV is missing or changed.')
+                raise ValueError(f'Capture {tid}: capture review required: '+admission_message(admission))
             run,shot=calibration_shot(trial); shots.append(shot); runs.append(run); sources.append(source); hashes.append(trial['raw_sha256'])
         if len(set(hashes))!=len(hashes):raise ValueError('The same waveform was selected twice.')
         first=runs[0]
@@ -540,7 +598,7 @@ def get_parameter_calibration(id:str):return saved(id,'parameter_calibration')
 
 @app.get('/api/documents/{name}')
 def document(name:str):
-    paths={'source_reconciliation':ROOT/'docs/source_reconciliation.md','data_audit':ROOT/'reports/data_audit.html','assumptions':ROOT/'docs/assumptions.md','accuracy_v2_results':ROOT/'docs/accuracy_v2_results.md','accuracy_v4_results':ROOT/'docs/accuracy_v4_results.md','accuracy_v5_results':ROOT/'docs/accuracy_v5_results.md','judging_criteria':ROOT/'docs/judging_criteria_evidence.md','capture_resolution':ROOT/'docs/capture_resolution_review.md','independent_simulation_results':ROOT/'docs/independent_simulation_results.md','trusted_waveform_data_search':ROOT/'docs/trusted_waveform_data_search.md','physics_audit':ROOT/'docs/physics_audit.md','laboratory_validation_checklist':ROOT/'docs/laboratory_validation_checklist.md','accuracy_report':ROOT/'docs/accuracy_report.md','parameter_calibration':ROOT/'docs/parameter_calibration.md'}
+    paths={'source_reconciliation':ROOT/'docs/source_reconciliation.md','data_audit':ROOT/'reports/data_audit.html','assumptions':ROOT/'docs/assumptions.md','accuracy_v2_results':ROOT/'docs/accuracy_v2_results.md','accuracy_v4_results':ROOT/'docs/accuracy_v4_results.md','accuracy_v5_results':ROOT/'docs/accuracy_v5_results.md','judging_criteria':ROOT/'docs/judging_criteria_evidence.md','capture_resolution':ROOT/'docs/capture_resolution_review.md','independent_simulation_results':ROOT/'docs/independent_simulation_results.md','trusted_waveform_data_search':ROOT/'docs/trusted_waveform_data_search.md','physics_audit':ROOT/'docs/physics_audit.md','laboratory_validation_checklist':ROOT/'docs/laboratory_validation_checklist.md','accuracy_report':ROOT/'docs/accuracy_report.md','parameter_calibration':ROOT/'docs/parameter_calibration.md','waveform_diagnostics':ROOT/'docs/waveform_diagnostics.md','capture_admission':ROOT/'docs/capture_admission.md'}
     p=paths.get(name)
     if p is None or not p.exists():raise HTTPException(404,'Document not found')
     return FileResponse(p,media_type='text/html' if p.suffix=='.html' else 'text/plain')

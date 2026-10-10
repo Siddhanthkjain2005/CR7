@@ -30,3 +30,11 @@ def list_records(kind,limit=100):
     with engine.connect() as c:
         rows=c.execute(select(records.c.payload).where(records.c.kind==kind).order_by(records.c.created_at.desc()).limit(limit)).all()
     return [json.loads(r[0]) for r in rows]
+
+def list_prefix(kind,prefix,limit=1000):
+    """Records of one kind whose id starts with prefix, oldest id first (revision histories)."""
+    escaped=prefix.replace('\\','\\\\').replace('%','\\%').replace('_','\\_')
+    with engine.connect() as c:
+        rows=c.execute(select(records.c.payload).where(records.c.kind==kind)
+                       .where(records.c.id.like(escaped+'%',escape='\\')).order_by(records.c.id).limit(limit)).all()
+    return [json.loads(r[0]) for r in rows]

@@ -4,7 +4,7 @@ from datetime import datetime
 import hashlib
 from pathlib import Path
 
-from .trial_quality import assess_waveform
+from .capture_admission import open_quality_issues, setting_review
 from .trial_evaluation import normalized_capture, same_capture, evaluate_trials
 from .trial_provenance import classified_source
 
@@ -120,12 +120,17 @@ def laboratory_summary(trials, calibrations, lookup, root):
         reasons = []
         try:
             run = lookup(trial['run_id'], 'run')
-            wave = trial.get('waveform') or {}
-            quality = assess_waveform(wave.get('time_us'), wave.get('voltage_kv'), trial['measured'],
-                                     impulse_type=run['inputs']['impulse_type'], rules=run.get('rules', {}))
+            # Shared acquisition review (declared polarity included); reviewable
+            # flags stay open until a recorded review accepts them.
+            quality, open_issues = open_quality_issues(trial, run)
             record = evidence_record(trial, run, quality)
-            if not quality['evaluation_allowed']:
-                reasons.extend(i['message'] for i in quality['issues'])
+            record['eligible_for_calibration'] = (record['source_type'] in ('generated_demo', 'measured_lab')
+                                                  and not open_issues)
+            if open_issues:
+                reasons.extend(i['message'] for i in open_issues)
+            candidate = next((c for c in run['candidates'] if c['id'] == trial['candidate_id']), None)
+            if candidate is not None and not setting_review(trial, run, candidate)['same_as_recommended']:
+                reasons.append('Fired at settings different from the saved recommendation.')
             path = (Path(root) / trial['raw_path']).resolve()
             if not path.is_relative_to(Path(root).resolve()) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != trial['raw_sha256']:
                 reasons.append('Original CSV missing or hash changed.')
@@ -135,7 +140,7 @@ def laboratory_summary(trials, calibrations, lookup, root):
                 record['eligible_for_calibration'] = False
             if datetime.fromisoformat(run['created_at']) > datetime.fromisoformat(trial['created_at']):
                 reasons.append('Prediction was not saved before upload.')
-            if quality['evaluation_allowed']:
+            if not open_issues:
                 capture = normalized_capture(trial, run)
                 if any(trial['raw_sha256'] == h or same_capture(capture, other) for h, other in captures):
                     reasons.append('Duplicate capture; repeated imports are not independent shots.')

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .trial_quality import assess_waveform
+from .capture_admission import admit, explain, open_quality_issues
 from .trial_provenance import classified_source
 from .decision_metrics import captured_limits, nominal_decision, saved_envelope_decision, summarize_decisions
 
@@ -18,9 +18,10 @@ def normalized_capture(trial, run):
     wave = trial.get('waveform') or {}
     processing = trial.get('processing') or {}
     measured = trial.get('measured') or {}
-    quality = assess_waveform(wave.get('time_us'), wave.get('voltage_kv'), measured,
-                              impulse_type=run['inputs']['impulse_type'], rules=run.get('rules', {}))
-    if not quality['calibration_allowed']:
+    # Shared acquisition review, including the declared polarity; reviewable
+    # flags count only after a recorded review accepted them.
+    _, issues = open_quality_issues(trial, run)
+    if issues:
         raise ValueError(f"Trial {trial['id']} needs capture review before evaluation.")
     return (np.asarray(wave['time_us']) - float(processing.get('time_origin_us', 0)),
             (np.asarray(wave['voltage_kv']) - float(measured.get('baseline_kv', 0)))
@@ -52,6 +53,7 @@ def evaluate_trials(trial_ids, lookup, root):
     trials = [get(identifier, 'trial') for identifier in trial_ids]
     captures = []
     capture_cache = {}
+    admissions = {}
     evaluation_hashes = {trial['raw_sha256'] for trial in trials}
     for trial in trials:
         if trial.get('capture_purpose') == 'calibration':
@@ -61,7 +63,17 @@ def evaluate_trials(trial_ids, lookup, root):
         path = (Path(root) / trial['raw_path']).resolve()
         if not path.is_relative_to(Path(root).resolve()) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != trial['raw_sha256']:
             raise ValueError(f"Trial {trial['id']} has missing or changed original CSV bytes.")
-        capture = normalized_capture(trial, get(trial['run_id'], 'run'))
+        trial_run = get(trial['run_id'], 'run')
+        admission = admit(trial, trial_run, 'evaluation', root=root)
+        # A changed firing setting is reported after the lineage checks below,
+        # so a capture reused for fitting is named for that reason first.
+        early = {**admission, 'blocking': [i for i in admission['blocking'] if i['code'] != 'as_fired_settings_differ']}
+        if early['blocking'] or early['awaiting_review']:
+            quality_codes = {i['code'] for i in admission['quality']['issues']}
+            prefix = 'needs capture review before evaluation: ' if quality_codes & {i['code'] for i in early['blocking'] + early['awaiting_review']} else ''
+            raise ValueError(f"Trial {trial['id']} {prefix}{explain(early)}")
+        admissions[trial['id']] = admission
+        capture = normalized_capture(trial, trial_run)
         if any(trial['raw_sha256'] == previous['raw_sha256'] or same_capture(capture, other)
                for previous, other in zip(trials[:len(captures)], captures)):
             raise ValueError('Repeated imports of the same waveform cannot count as new shots.')
@@ -112,6 +124,9 @@ def evaluate_trials(trial_ids, lookup, root):
             if datetime.fromisoformat(fitted['created_at']) > datetime.fromisoformat(run['created_at']):
                 raise ValueError('The fitted parameters must predate the saved prediction.')
             ancestors.append(fitted_id)
+        differ = [i for i in admissions[trial['id']]['blocking'] if i['code'] == 'as_fired_settings_differ']
+        if differ:
+            raise ValueError(f"Trial {trial['id']}: {differ[0]['message']}")
         inputs = run['inputs']
         impulse = inputs['impulse_type']
         limits = captured_limits(run)

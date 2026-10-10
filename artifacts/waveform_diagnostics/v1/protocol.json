@@ -1,0 +1,48 @@
+{
+  "version": "waveform-diagnostics-evaluation-v1",
+  "declared_at": "2026-10-11",
+  "declared_before": "Written and committed before any fixture below was generated or evaluated. Development probes used other seeds (0-11) and other settings; the evaluation seed is 20261011.",
+  "evidence_type": "SIMULATED AND RENDERED. Stand-in recordings come from the lumped circuit (and, for off-model cases, from added features it cannot produce or from an independent ODE of a different topology). No real machine, no laboratory recording. This evaluation does not establish real CPRI accuracy.",
+  "seed": 20261011,
+  "settings": {
+    "cpri_lightning": "CPRI profile (12 x 0.125 uF), 1425 kV Lightning, recommended by the existing optimizer with the test stock (30/465 ohm front, 520 ohm tail, one per stage).",
+    "cpri_switching": "CPRI profile, 1050 kV Switching; front and tail resistances solved continuously to 250/2500 us (fixture truth need not be constructible).",
+    "workbook_lightning": "Workbook profile (15 x 3 uF), 1425 kV Lightning; resistances solved continuously to 1.2/50 us."
+  },
+  "csv_fixtures": {
+    "noise_sigma_pct_of_crest": 0.3,
+    "families": {
+      "no_change": "Recording equals the prediction at the recorded settings (all three settings).",
+      "single_in_model": "front x0.75, front x1.3, tail x0.7, tail x1.35, load-side capacitance +350 pF and -300 pF, inductance 35 uH (CPRI Lightning); front x0.8 and tail x1.25 (CPRI Switching, workbook Lightning).",
+      "combined_in_model": "front x0.85 with tail x1.2; capacitance +300 pF with inductance 30 uH (CPRI Lightning).",
+      "ambiguous_amplitude": "gain x0.94 (CPRI Lightning) with as-fired settings recorded, and charge x0.95 with as-fired settings not recorded.",
+      "off_model": "(a) 4 MHz damped oscillation of 6% superimposed on the front and crest; (b) slow second tail component of 12% of crest; (c) both; (d) a precursor of 35% crest 0.1 us before the main rise.",
+      "topology_variant": "40% of the tail conductance at the load side (independent ODE). Reported descriptively; no gate, because an effective tail resistance can legitimately represent it.",
+      "noise_and_scale": "noise 1.5% of crest with front x0.8; and gain x1.03 declared as a divider-scale uncertainty.",
+      "negative_polarity": "Negative recording declared positive.",
+      "ringing_in_model": "inductance 80 uH with front x0.25 (oscillatory but inside the lumped model).",
+      "clipping": "Recording clipped at 92% of crest (flat top).",
+      "missing_falling_limb": "Record ends at 20 us (Lightning).",
+      "different_settings": "Shot at 95% charge: (i) as-fired charge recorded, (ii) not recorded.",
+      "unit_mistake": "Time column in ms labelled as us (x1000 error)."
+    }
+  },
+  "image_fixtures": {
+    "source": "The CPRI Lightning truths above (no change and front x0.8) rendered with matplotlib and digitized back through the API with anchors at the rendered axis positions (a careful user) and a seed point on the curve.",
+    "variants": ["clean 1600x900 PNG, 0-60 us", "low resolution 480x300", "thick trace 6 px", "second curve in another colour", "second curve in the same colour", "perspective photo JPEG q80 rectified from its four plot corners", "dark oscilloscope style with per-division calibration", "clipped display range", "record ending at 20 us", "front x0.8 clean (for diagnosis)"],
+    "manual_check_set": "Four overlays (clean, photo, thick, same colour) are inspected by eye and recorded in manual_checks.json with notes."
+  },
+  "recorded_per_case": ["verdict label", "leading explanations", "fitted values and their errors against the truth", "metric errors of digitized samples against the truth", "whether the digitization spread contains the truth", "quality flags", "whether quantitative diagnosis was allowed"],
+  "gates": {
+    "G1_no_change": "No-change CSV fixtures: verdict 'No change needed' in every case.",
+    "G2_single_identified": "Single in-model CSV fixtures: the true explanation is the leading one or among 'Several explanations fit' in at least 80% of cases, and its fitted value is within 5% of the truth (20 pF / 2 uH absolute allowance).",
+    "G3_no_confident_false_cause": "Off-model CSV fixtures (a)-(d): never 'Possible cause' with a single hardware explanation.",
+    "G4_amplitude_competition": "Amplitude-only fixtures: never a single cause; at least two explanations retained.",
+    "G5_image_round_trip": "Clean, perspective-photo and oscilloscope images: crest within 1.5%, tail within 3%, front within 6% of the truth whenever the front is reported as resolved; the 5-95% digitization spread contains the truth for at least two thirds of reported metrics.",
+    "G6_integrity": "Clipping, same-colour, negative-polarity and unit-mistake fixtures: quantitative diagnosis disabled or every affected metric marked 'Requires review' / 'Insufficient capture' (no silent comparison).",
+    "G7_no_extrapolation": "Missing-falling-limb fixtures (CSV and image): tail never reported as a value.",
+    "G8_settings_difference": "Different-settings fixture with as-fired charge recorded: 'No change needed' against the as-fired prediction; without it: diagnosis marked limited and charge among the retained explanations."
+  },
+  "decision": "Results are reported whatever they are. A failed gate is reported as failed and explained; thresholds and fixtures are not changed after evaluation. Any code fix made after a failure is disclosed in results.json with the cases re-run.",
+  "not_established": "Real CPRI accuracy, real photo digitization accuracy on laboratory screenshots, and real fault attribution remain unknown until real recordings with known causes are available."
+}

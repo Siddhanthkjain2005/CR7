@@ -74,8 +74,10 @@ def physics(req,p,n,charge,rf,rt,include_waveform=False):
         return predict(n,charge,rf,rt,req.load_c_pf,req.divider_c_pf,stray,req.l_uh,req.efficiency,p['stage_c_uf'])
     # Effective generator parameters fitted from calibration shots (circuit only).
     fitted=p.get('effective_parameters') or {}
-    return simulate(n,charge,rf,rt*fitted.get('tail_scale',1.),p['stage_c_uf'],
-        req.load_c_pf+req.divider_c_pf+stray+fitted.get('extra_load_pf',0.),req.l_uh,
+    # front_scale and extra_l_uh are only set by an explicitly requested diagnostic
+    # exploration (hypothetical); calibration fits use the other three.
+    return simulate(n,charge,rf*fitted.get('front_scale',1.),rt*fitted.get('tail_scale',1.),p['stage_c_uf'],
+        req.load_c_pf+req.divider_c_pf+stray+fitted.get('extra_load_pf',0.),req.l_uh+fitted.get('extra_l_uh',0.),
         req.efficiency*fitted.get('loss_scale',1.),req.impulse_type,include_waveform)
 
 def parameter_scope_matches(record,req,p):

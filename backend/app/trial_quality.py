@@ -8,11 +8,30 @@ import numpy as np
 from .physics.compliance import RULES
 
 
-VERSION = 'waveform-acquisition-review-v3'
+VERSION = 'waveform-acquisition-review-v4'
 MIN_RISING_INTERVALS = 4
 MIN_POST_HALF_INTERVALS = 4
 MIN_POST_HALF_TAIL_FRACTION = .02
 RESOLUTION_HALFWIDTH_FRACTION = .25
+# Floating-point allowance only, not an inferred acquisition-noise bound.
+# (Adopted from the uncommitted v4 connection check in the team's checkout.)
+RISING_CONNECTION_RTOL = 1e-9
+RISING_CONNECTION_ATOL_KV = 1e-12
+# Recrossings smaller than NOISE_MULTIPLE x the pre-trigger noise are not
+# counted. The noise is estimated from the acquired samples before the signal
+# first reaches 10% of crest (robust MAD of first differences / sqrt 2); with
+# fewer than MIN_PRETRIGGER_SAMPLES no noise is inferred and only roundoff is allowed.
+NOISE_MULTIPLE = 4.0
+MIN_PRETRIGGER_SAMPLES = 20
+# Rise-rate profile between first crossings of 20, 25, ..., 90 % of crest.
+# A smooth lumped-circuit rise has one rate maximum (its inflection). A stall
+# whose rate is three times lower than the rate both before and after it is a
+# second rising stage: a precursor, shelf or front oscillation. Heuristic only.
+STALL_LEVELS = tuple(round(x, 2) for x in np.arange(.20, .901, .05))
+STALL_RATE_FACTOR = 3.0
+# Issues a qualified reviewer may accept with a recorded reason. All other
+# issues block calibration and evaluation outright.
+REVIEWABLE = {'two_stage_rise', 'dip_after_90_percent'}
 DEFINITION_TYPES = {
     'virtual front/origin': 'Lightning',
     'challenge time to peak/from explicit onset': 'Switching',
@@ -46,8 +65,144 @@ def review_context(measured, impulse_type, rules):
             'maximum_half_value_bracket_span_us': limits['tail']}
 
 
-def assess_waveform(time_us, voltage_kv, measured, *, impulse_type=None, rules=None):
+def _polarity(measured):
+    try:
+        value = float(measured['polarity'])
+    except (KeyError, TypeError, ValueError):
+        return None
+    return int(value) if value in (-1, 1) else None
+
+
+def review_trial(trial, run):
+    """Acquisition review of a stored capture, including its declared polarity.
+
+    Every backend path that reuses a saved capture calls this, so no route can
+    skip a check the upload applied.
+    """
+    wave = trial.get('waveform') or {}
+    instrument = trial.get('instrument') or {}
+    return assess_waveform(wave.get('time_us'), wave.get('voltage_kv'), trial.get('measured') or {},
+                           impulse_type=run['inputs']['impulse_type'], rules=run.get('rules', {}),
+                           expected_polarity=instrument.get('expected_polarity'))
+
+
+def first_rising_crossings(t, v, crest, levels, peak):
+    """Interpolated first upward crossing of each level before the peak (None if absent)."""
+    found = []
+    for fraction in levels:
+        level = crest * fraction
+        a, b = v[:peak], v[1:peak + 1]
+        hits = np.flatnonzero((a <= level) & (b >= level))
+        if not len(hits):
+            found.append(None)
+            continue
+        i = int(hits[0])
+        found.append(float(t[i]) if b[i] == a[i] else float(t[i] + (t[i + 1] - t[i]) * (level - a[i]) / (b[i] - a[i])))
+    return found
+
+
+def rising_limb_review(t, v, crest, t30, t90, peak, *, tolerance_kv=None, stall_check=True):
+    """Check that the analyzer's 30/90 % crossings describe one connected rising limb.
+
+    Returns (metrics, issues, notes). Nothing is substituted: the analyzer's
+    first-crossing metrics stay the reported values; a connected-limb front is
+    reported only as a diagnostic so the reviewer can see what is at stake.
+    """
+    metrics, issues, notes = {}, [], []
+    level30 = crest * .3
+    roundoff = max(crest * RISING_CONNECTION_RTOL, RISING_CONNECTION_ATOL_KV)
+    start = first_rising_crossings(t, v, crest, (.1,), peak)[0]
+    pre = v[t < start] if start is not None else v[:0]
+    pre = pre[:int(len(pre) * .9)]  # guard band before the rise
+    noise = None
+    if len(pre) >= MIN_PRETRIGGER_SAMPLES:
+        d = np.diff(pre)
+        noise = float(1.4826 * np.median(np.abs(d - np.median(d))) / np.sqrt(2))
+    tolerance = max(roundoff, NOISE_MULTIPLE * noise) if noise is not None else roundoff
+    if tolerance_kv is not None:
+        # A caller with a stated sample uncertainty (e.g. digitized pixels) supplies it.
+        tolerance = max(roundoff, float(tolerance_kv))
+    metrics.update(pre_trigger_samples=int(len(pre)), pre_trigger_noise_kv=noise,
+                   recrossing_tolerance_kv=tolerance,
+                   recrossing_tolerance_basis=('stated sample uncertainty' if tolerance_kv is not None else
+                                               f'{NOISE_MULTIPLE:g} x pre-trigger noise' if noise is not None and tolerance > roundoff
+                                               else 'floating-point roundoff only (no pre-trigger record to estimate noise)'
+                                               if noise is None else 'floating-point roundoff (no pre-trigger noise detected)'))
+    t_peak = float(t[peak])
+    # The boundary levels are interpolated crossings; only acquired interior
+    # samples can establish a return below 30 %.
+    inside = (t > t30) & (t < t_peak)
+    below = inside & (v < level30 - tolerance)
+    returns = np.flatnonzero(below)
+    connected = not len(returns)
+    metrics.update(rising_30_level_kv=level30, rising_connection_tolerance_kv=tolerance,
+                   rising_window_minimum_kv=float(min(level30, np.min(v[inside], initial=np.inf))),
+                   rising_below_30_interior_samples=int(len(returns)), rising_limb_connected=connected)
+    if not connected:
+        metrics['rising_below_30_time_range_us'] = [float(t[returns[0]]), float(t[returns[-1]])]
+        # Diagnostic only: the limb that finally reaches the crest.
+        last = int(returns[-1])
+        try:
+            seg_t, seg_v = t[last:peak + 1], v[last:peak + 1]
+            a = first_rising_crossings(seg_t, seg_v, crest, (.3, .9), len(seg_t) - 1)
+            if None not in a:
+                metrics['connected_limb_t30_us'], metrics['connected_limb_t90_us'] = a
+                metrics['connected_limb_front_us'] = 1.67 * (a[1] - a[0])
+        except (IndexError, ValueError):
+            pass
+        issues.append({'code': 'disconnected_rising_limb', 'reviewable': False, 'message':
+            'The recorded waveform returns below 30% of crest after the first rising 30% crossing and before the crest. '
+            'The analyzer\'s first 30% and 90% crossings therefore belong to different rising events (for example a '
+            'precursor and the main front), so the reported front is not the front of one impulse. '
+            + (f"The connected main limb alone would give a front of {metrics['connected_limb_front_us']:.3g} µs; "
+               if 'connected_limb_front_us' in metrics else '')
+            + 'it is shown for review only and is not substituted. Review the precursor or recrossing before calibration '
+              'or accuracy evaluation.'})
+    # Crossing-time rate profile (two-stage rise, connected or not).
+    times = first_rising_crossings(t, v, crest, STALL_LEVELS, peak)
+    pairs = [(STALL_LEVELS[k], STALL_LEVELS[k + 1], times[k], times[k + 1]) for k in range(len(times) - 1)
+             if times[k] is not None and times[k + 1] is not None]
+    rates = [((b - a) * crest) / (tb - ta) if tb > ta else np.inf for a, b, ta, tb in pairs]
+    stalls = []
+    for k in range(1, len(rates) - 1 if stall_check else 1):
+        before, after = max(rates[:k]), max(rates[k + 1:])
+        if rates[k] * STALL_RATE_FACTOR < before and rates[k] * STALL_RATE_FACTOR < after:
+            stalls.append(k)
+    metrics['rise_rate_levels_pct'] = [round(100 * p[0]) for p in pairs]
+    metrics['rise_rate_kv_per_us'] = [None if not np.isfinite(r) else float(r) for r in rates]
+    metrics['rise_stall_factor'] = STALL_RATE_FACTOR
+    if stalls:
+        worst = min(stalls, key=lambda k: rates[k])
+        lo, hi, ta, tb = pairs[worst]
+        metrics.update(rise_stall_levels_pct=[round(100 * lo), round(100 * hi)], rise_stall_duration_us=float(tb - ta),
+                       rise_stall_time_us=[float(ta), float(tb)])
+        affects = any(pairs[k][1] > .3 + 1e-9 for k in stalls)
+        if affects and connected:
+            issues.append({'code': 'two_stage_rise', 'reviewable': True, 'message':
+                f'The rise stalls between {round(100 * lo)}% and {round(100 * hi)}% of crest for {tb - ta:.3g} µs and then '
+                'accelerates again (rise rate more than 3× lower than before and after). A precursor, shelf or front '
+                'oscillation can move the 30% crossing and change the reported front. A qualified reviewer must accept '
+                'or exclude this capture before calibration or accuracy evaluation.'})
+        elif not affects:
+            notes.append({'code': 'precursor_below_30_percent', 'message':
+                f'A stall below 30% of crest ({round(100 * lo)}–{round(100 * hi)}%) suggests a small precursor. It does '
+                'not move the 30% or 90% crossings, so the extracted metrics are unaffected.'})
+    # After the first 90 % crossing the signal should not fall back below 90 % before the crest.
+    level90 = crest * .9
+    after90 = (t > t90) & (t < t_peak) & (v < level90 - tolerance)
+    if np.any(after90) and connected:
+        dip = float(np.min(v[after90]))
+        metrics['dip_after_90_minimum_pct'] = 100 * dip / crest
+        issues.append({'code': 'dip_after_90_percent', 'reviewable': True, 'message':
+            f'After first reaching 90% of crest the waveform falls back to {100 * dip / crest:.1f}% before its maximum. '
+            'The crest may be an oscillation peak rather than the impulse crest; no test-voltage curve is fitted here. '
+            'A qualified reviewer must accept or exclude this capture.'})
+    return metrics, issues, notes
+
+
+def assess_waveform(time_us, voltage_kv, measured, *, impulse_type=None, rules=None, expected_polarity=None):
     issues = []
+    notes = []
     metrics = {'sample_count': 0, 'rising_intervals_30_90': 0,
                'minimum_rising_intervals': MIN_RISING_INTERVALS,
                'flat_crest_max_consecutive_samples': 0}
@@ -88,6 +243,10 @@ def assess_waveform(time_us, voltage_kv, measured, *, impulse_type=None, rules=N
         if (peak in (0, len(v) - 1)
                 or not np.isclose(v[peak], crest, rtol=1e-9, atol=1e-12)):
             raise ValueError('The saved crest does not match a resolved interior acquired peak.')
+        limb_metrics, limb_issues, limb_notes = rising_limb_review(t, v, crest, t30, t90, peak)
+        metrics.update(limb_metrics)
+        issues.extend(limb_issues)
+        notes.extend(limb_notes)
         # These spans describe acquired resolution, not an uncertainty bound on
         # the underlying signal. In particular, no hidden crest is reconstructed.
         peak_span = float(t[peak + 1] - t[peak - 1])
@@ -152,14 +311,36 @@ def assess_waveform(time_us, voltage_kv, measured, *, impulse_type=None, rules=N
         issues.append({'code': 'missing_acquisition_evidence', 'message':
             'Stored waveform samples or extraction metadata are missing or invalid. '
             'Re-upload the original CSV to review acquisition quality before calibration.'})
+    # The operator's declared polarity is part of the capture record. A mismatch
+    # blocks every use; the waveform is never flipped to hide it.
+    if expected_polarity not in (None, 'auto'):
+        detected = {1: 'positive', -1: 'negative'}.get(_polarity(measured))
+        metrics['expected_polarity'] = expected_polarity
+        metrics['detected_polarity'] = detected
+        if expected_polarity not in ('positive', 'negative'):
+            issues.append({'code': 'polarity_declaration_invalid', 'message':
+                'The recorded expected polarity is not positive, negative or auto.'})
+        elif detected != expected_polarity:
+            issues.append({'code': 'polarity_mismatch', 'message':
+                f'The capture is {detected or "of unknown polarity"} but the operator expected {expected_polarity}. '
+                'Check divider polarity and channel wiring; the waveform was not flipped to hide this. '
+                'It cannot be used for calibration, parameter fitting or accuracy evaluation.'})
+    for issue in issues:
+        issue.setdefault('reviewable', issue['code'] in REVIEWABLE)
     allowed = not issues
     return {'version': VERSION, 'status': 'usable' if allowed else 'review_required',
-            'calibration_allowed': allowed, 'evaluation_allowed': allowed, 'issues': issues, 'metrics': metrics,
+            'calibration_allowed': allowed, 'evaluation_allowed': allowed, 'issues': issues, 'notes': notes,
+            'metrics': metrics,
             'scope': 'Acquisition heuristics only, not IEC certification or an instrument uncertainty estimate. '
                      'Peak-neighbor and falling half-value bracket spans must not exceed 25% of their '
                      'selected challenge timing tolerance half-widths. These limits are application review '
                      'preferences, not waveform error bounds. At least four acquired intervals and '
                      '2% of the extracted tail duration must remain beyond the falling half-value '
                      'crossing; this is a capture-completeness heuristic, not waveform classification. '
+                     'The rising 30% crossing must stay connected to the crest (no acquired return below 30% by more than '
+                     '4× the pre-trigger noise estimated from samples before 10% of crest, or roundoff when there is no '
+                     'pre-trigger record). A rise whose rate between '
+                     '20% and 90% stalls to less than a third of the rate before and after it, or a fall below 90% '
+                     'after first reaching it, requires a recorded review. A declared polarity must match. '
                      'No resampling, smoothing or changes to raw '
                      'samples or extracted metrics. Passing does not establish laboratory accuracy.'}
