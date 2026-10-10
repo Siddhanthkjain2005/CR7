@@ -133,6 +133,7 @@ The fixtures are generated:
 
 - A save bug, fixed: non-finite identifiability values blocked storage in two cases.
 - Two wording changes: a "Requires review" note next to the verdict, and a clearer unit-plausibility message.
+- After a code review, a memory bound for large images. A full re-run gave identical case results.
 
 No threshold or fixture changed. All runs together took 74 s.
 
