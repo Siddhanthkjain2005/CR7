@@ -1,0 +1,226 @@
+{
+ "date": "2026-10-11",
+ "environment": "Harness: real backend (this branch) + esbuild bundle of the frontend sources, headless Chromium. Not the Next production build, which could not run in this sandbox.",
+ "suites": {
+  "waveform_diagnostics_walkthrough": "19/19",
+  "judge_workflow_behaviour": "21/21",
+  "parameter_calibration_behaviour": "5/5",
+  "capture_admission_ui": "8/8"
+ },
+ "checks": [
+  {
+   "check": "Nav entry present",
+   "pass": true
+  },
+  {
+   "check": "Start screen offers the demonstration",
+   "pass": true
+  },
+  {
+   "check": "Six steps shown",
+   "pass": true
+  },
+  {
+   "check": "Generated label shown",
+   "pass": true
+  },
+  {
+   "check": "Open questions visible",
+   "pass": true
+  },
+  {
+   "check": "Extract enabled after picks",
+   "pass": true
+  },
+  {
+   "check": "Overlay drawn before comparison",
+   "pass": true
+  },
+  {
+   "check": "Digitized label shown",
+   "pass": true
+  },
+  {
+   "check": "Three labelled curves",
+   "pass": true
+  },
+  {
+   "check": "Metric statuses shown",
+   "pass": true
+  },
+  {
+   "check": "Verdict shown \u00b7 Possible cause",
+   "pass": true
+  },
+  {
+   "check": "Fit-score statement shown",
+   "pass": true
+  },
+  {
+   "check": "Finding card with checks",
+   "pass": true
+  },
+  {
+   "check": "Exploration labelled hypothetical",
+   "pass": true
+  },
+  {
+   "check": "Fitted curve appears in comparison after diagnosis",
+   "pass": true
+  },
+  {
+   "check": "Reload restores the saved diagnosis",
+   "pass": true
+  },
+  {
+   "check": "Changed as-fired marks later steps out of date",
+   "pass": true
+  },
+  {
+   "check": "No horizontal page scroll at 390 px \u00b7 overflow 0",
+   "pass": true
+  },
+  {
+   "check": "No uncaught page errors",
+   "pass": true
+  },
+  {
+   "check": "CPRI without stock cannot be submitted",
+   "pass": true
+  },
+  {
+   "check": "Workflow shows four steps",
+   "pass": true
+  },
+  {
+   "check": "Volt unit shows the same request in V \u00b7 1425000",
+   "pass": true
+  },
+  {
+   "check": "Volt entry is converted to kV for the solver \u00b7 1,430.000 kV sent to the solver \u00b7 profile range 50\u20132,400 kV",
+   "pass": true
+  },
+  {
+   "check": "Plain basis: circuit prediction \u00b7 Circuit prediction. Metrics above are re-extracted from the ",
+   "pass": true
+  },
+  {
+   "check": "Metrics re-extracted from plotted curve",
+   "pass": true
+  },
+  {
+   "check": "No duplicate physics trace in circuit mode",
+   "pass": true
+  },
+  {
+   "check": "Hardware and waveform verdicts shown",
+   "pass": true
+  },
+  {
+   "check": "Evidence collapsed by default",
+   "pass": true
+  },
+  {
+   "check": "Evidence opens with limits panel",
+   "pass": true
+  },
+  {
+   "check": "Scenario checks live in evidence",
+   "pass": true
+  },
+  {
+   "check": "Edited request marks the result stale",
+   "pass": true
+  },
+  {
+   "check": "Reverting clears the stale state",
+   "pass": true
+  },
+  {
+   "check": "Impossible request is rejected, saved run kept",
+   "pass": true
+  },
+  {
+   "check": "Custom generator needs complete ratings",
+   "pass": true
+  },
+  {
+   "check": "Complete custom generator can be submitted",
+   "pass": true
+  },
+  {
+   "check": "Custom generator solved with circuit prediction",
+   "pass": true
+  },
+  {
+   "check": "Validation capture recorded with its purpose",
+   "pass": true
+  },
+  {
+   "check": "Validation capture cannot calibrate",
+   "pass": true
+  },
+  {
+   "check": "Model lab leads with what is demonstrated",
+   "pass": true
+  },
+  {
+   "check": "No uncaught page errors",
+   "pass": true
+  },
+  {
+   "check": "Fitted parameters shown \u00b7 Loss scale \u00d71.0600 Extra load-side capacitance 179.9 pF Effective tail resistance \u00d70.9300",
+   "pass": true
+  },
+  {
+   "check": "Results say fitted generator parameters are used \u00b7 Circuit prediction with generator parameters fitted from 1 calibration shot. Metrics above",
+   "pass": true
+  },
+  {
+   "check": "Notice offers to return to the declared model",
+   "pass": true
+  },
+  {
+   "check": "Model lab shows the calibration study",
+   "pass": true
+  },
+  {
+   "check": "No uncaught page errors",
+   "pass": true
+  },
+  {
+   "check": "Diagnose this waveform action on the result",
+   "pass": true
+  },
+  {
+   "check": "As-fired model error column shown",
+   "pass": true
+  },
+  {
+   "check": "Configuration difference explained",
+   "pass": true
+  },
+  {
+   "check": "One-shot offset refused for other settings",
+   "pass": true
+  },
+  {
+   "check": "Parameter fit admitted for the as-fired shot",
+   "pass": true
+  },
+  {
+   "check": "Polarity mismatch blocks every use \u00b7 Can this capture be used?",
+   "pass": true
+  },
+  {
+   "check": "Status is REVIEW REQUIRED, not NOMINAL PASS",
+   "pass": true
+  },
+  {
+   "check": "No uncaught page errors",
+   "pass": true
+  }
+ ],
+ "backend_tests": "364 passed",
+ "frontend": "tsc --noEmit clean; 15/15 unit tests"
+}
