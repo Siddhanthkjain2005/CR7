@@ -30,13 +30,13 @@ def parameter_space(base, predicted, impulse_type):
     ctot, l, eta = base['total_c_pf'], base['l_uh'], base['efficiency']
     shift = .5 * predicted['front_us'] if impulse_type == 'Lightning' else .25 * predicted['front_us']
     return {
-        'front_factor': ('Front network resistance (× nominal)', '×', .4, 2.5, True, 1.),
-        'tail_factor': ('Tail network resistance (× nominal)', '×', .4, 2.5, True, 1.),
+        'front_factor': ('Front network resistance', '×', .4, 2.5, True, 1.),
+        'tail_factor': ('Tail network resistance', '×', .4, 2.5, True, 1.),
         'extra_load_pf': ('Load-side capacitance change', 'pF', -.6 * ctot, 1.5 * ctot, False, 0.),
         'inductance_uh': ('Total circuit inductance', 'µH', 0., max(4 * l, l + 40.), False, l),
-        'charge_factor': ('Charge per stage (× recorded)', '×', .7, 1.3, False, 1.),
-        'efficiency_factor': ('Loss factor (× assumed)', '×', .7, min(1.25, 1 / eta), False, 1.),
-        'gain': ('Measurement gain (× declared divider ratio)', '×', .7, 1.3, False, 1.),
+        'charge_factor': ('Charge per stage', '×', .7, 1.3, False, 1.),
+        'efficiency_factor': ('Loss factor', '×', .7, min(1.25, 1 / eta), False, 1.),
+        'gain': ('Measurement gain', '×', .7, 1.3, False, 1.),
         'time_shift_us': ('Recording time offset', 'µs', -shift, shift, False, 0.),
         'baseline_kv': ('Recording baseline offset', 'kV', -.05 * predicted['crest_kv'], .05 * predicted['crest_kv'], False, 0.),
     }
@@ -66,6 +66,7 @@ HYPOTHESES = [
     ('gain_and_timing', 'Measurement gain and time origin differ', 'measurement', 'Divider scale and trigger', ['gain', 'time_shift_us'], None),
 ]
 AMPLITUDE_ONLY = {'charge', 'loss_convention', 'gain'}
+FIELD_NAMES = {'charge_kv_stage': 'charge per stage', 'stages': 'number of active stages'}
 
 
 class Cancelled(Exception):
@@ -266,7 +267,7 @@ def investigate(base, observed, predicted, impulse_type, *, uncertain=(), as_fir
     for hid, title, category, group, names, needs, action in plan:
         if action == 'skip':
             results.append({'id': hid, 'title': title, 'category': category, 'group': group, 'parameter_names': names,
-                            'status': 'Not tested', 'reason': f'The {needs.replace("_", " ")} was recorded as fired and not declared uncertain, so it stays fixed.'})
+                            'status': 'Not tested', 'reason': f'The {FIELD_NAMES.get(needs, needs)} was recorded as fired and not declared uncertain, so it stays fixed.'})
             continue
         if hid == 'stages':
             best = None

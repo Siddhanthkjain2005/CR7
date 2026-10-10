@@ -20,6 +20,7 @@ import {
   Search,
   ShieldCheck,
   SlidersHorizontal,
+  Stethoscope,
   Timer,
   Unplug,
   Waves,
@@ -69,6 +70,7 @@ export const NAV_GROUPS: {id: string; name: string; home: string; items: NavItem
     items: [
       {href: '/', name: 'Configure & recommend', icon: SlidersHorizontal, hint: 'Configure the test, recommend settings, inspect the waveform'},
       {href: '/trial-calibrator/', name: 'Compare measurement', icon: FlaskConical, hint: 'Import a measured waveform and compare it with the prediction'},
+      {href: '/diagnostics/', name: 'Waveform Diagnostics', icon: Stethoscope, hint: 'Compare a recording or photo with the circuit and look for possible causes'},
     ],
   },
   {

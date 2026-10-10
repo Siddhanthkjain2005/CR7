@@ -159,7 +159,7 @@ def finding(hypothesis, base, comparison, investigation, snapshot):
                        'may be behaving as predicted.',
         'model': 'The recording is reproduced when the model assumption is changed to {what}; this is a question about the '
                  'model\'s convention, not a hardware fault.',
-    }[hypothesis['category']].format(what=' and '.join(f"{v['quantity'].lower()} {v['effective']}" for v in values))
+    }[hypothesis['category']].format(what=' and '.join(f"{v['quantity'].lower()} of {v['effective']}" for v in values))
     return {'hypothesis_id': hypothesis['id'], 'title': hypothesis['title'], 'status': hypothesis['status'],
             'category': CATEGORIES[hypothesis['category']], 'component_group': hypothesis['group'],
             'explanation': plain, 'supporting_evidence': supporting, 'contradicting_evidence': contradicting,

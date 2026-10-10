@@ -12,7 +12,7 @@ import ts from 'typescript';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = fs.mkdtempSync(path.join(os.tmpdir(), 'impulsetwin-unit-'));
-for (const name of ['api', 'generator-model', 'inventory', 'series']) {
+for (const name of ['api', 'generator-model', 'inventory', 'series', 'diagnostics']) {
   const source = fs.readFileSync(path.join(root, 'lib', `${name}.ts`), 'utf8');
   let code = ts.transpileModule(source, {compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020}}).outputText;
   code = code.replace(/from '\.\/([\w-]+)'/g, "from './$1.mjs'");
@@ -23,6 +23,7 @@ const api = await load('api');
 const gm = await load('generator-model');
 const inv = await load('inventory');
 const series = await load('series');
+const diag = await load('diagnostics');
 
 // Topology strings and saved equivalents as produced by backend/app/optimization/networks.py.
 const NETWORKS = [
@@ -170,4 +171,45 @@ test('custom generator needs every rating and is reset when leaving the profile'
   const back = api.profileInputs({...custom, custom_profile: complete}, 'cpri_problem_brief_profile');
   assert.equal(back.custom_profile, null);
   assert.equal(api.requestKey({...api.initialInputs}), api.requestKey({...api.initialInputs, custom_profile: null}));
+});
+
+test('diagnostic steps follow the saved session and show stale results', () => {
+  const s = diag.stepStates({next_step: 'compare', stale: {}});
+  assert.deepEqual([s.reference, s.upload, s.calibrate, s.compare, s.investigate], ['done', 'done', 'done', 'current', 'waiting']);
+  const stale = diag.stepStates({next_step: 'compare', stale: {comparison: 'x', investigation: 'y'}});
+  assert.equal(stale.compare, 'stale');
+  assert.equal(stale.investigate, 'stale');
+  assert.equal(diag.stepStates({next_step: 'findings', stale: {}}).findings, 'done');
+  assert.equal(diag.stepStates(null).reference, 'current');
+});
+
+test('axis calibration gaps refuse log axes, double divider and close anchors', () => {
+  const base = {mode: 'anchors', voltage_side: 'high_voltage', divider_ratio: 1, x_anchors: [{px: 10, value: 0}, {px: 400, value: 60}], y_anchors: [{px: 500, value: 0}, {px: 40, value: 1600}]};
+  assert.deepEqual(diag.calibrationGaps(base), []);
+  assert.ok(diag.calibrationGaps({...base, x_scale: 'log'})[0].startsWith('Logarithmic'));
+  assert.ok(diag.calibrationGaps({...base, divider_ratio: 1000}).some(g => g.includes('divider ratio must be 1')));
+  assert.ok(diag.calibrationGaps({...base, voltage_side: 'instrument', divider_ratio: 1000}).includes('source of the divider ratio'));
+  assert.ok(diag.calibrationGaps({...base, x_anchors: [{px: 10, value: 0}, {px: 20, value: 60}]}).some(g => g.includes('20 px')));
+  assert.ok(diag.calibrationGaps({...base, y_anchors: [{px: 500, value: 0}, {px: 40, value: 0}]}).some(g => g.includes('different values')));
+});
+
+test('oscilloscope divisions give the same anchors as the backend', () => {
+  const a = diag.perDivisionAnchors({left_px: 100, right_px: 1100, top_px: 50, bottom_px: 850, divisions_x: 10, divisions_y: 8, time_per_div: 6, time_at_left: -6, volts_per_div: 300, value_at_center: 400});
+  assert.deepEqual(a.x, [[100, -6], [1100, 54]]);
+  assert.deepEqual(a.y, [[450, 400], [50, 1600]]);
+  assert.equal(diag.perDivisionAnchors({left_px: 1}), null);
+});
+
+test('hypotheses are grouped by category and fitted values read plainly', () => {
+  const inv = {ranking: ['b', 'a'], hypotheses: [
+    {id: 'baseline', category: null}, {id: 'a', category: 'hardware'}, {id: 'b', category: 'hardware'}, {id: 'g', category: 'measurement'}]};
+  const groups = diag.groupHypotheses(inv);
+  assert.deepEqual(groups.map(g => g.category), ['hardware', 'measurement']);
+  assert.deepEqual(groups[0].items.map(h => h.id), ['b', 'a']);
+  assert.equal(diag.paramText('front_factor', 0.8217), 'Front network 0.822×');
+  assert.equal(diag.paramText('extra_load_pf', 350.4), 'Load-side capacitance +350 pF');
+  assert.equal(diag.paramText('time_shift_us', -0.0654), 'Time offset -0.065 µs');
+  assert.equal(diag.statusTone('Possible cause'), 'cyan');
+  assert.equal(diag.statusTone('Cannot explain with the current model'), 'red');
+  assert.equal(diag.uploadedLabel({upload: {source: 'image', label: 'anything'}}), 'Digitized from image — approximate');
 });

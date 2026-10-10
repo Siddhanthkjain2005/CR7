@@ -1,7 +1,7 @@
 'use client';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
-import {ArrowDownToLine, ArrowRight, Check, ChevronDown, Download, FlaskConical, GitCompareArrows, LoaderCircle, Settings2, ShieldCheck, SlidersHorizontal, Sparkles, TriangleAlert, Zap} from 'lucide-react';
+import {ArrowDownToLine, ArrowRight, Check, ChevronDown, Download, FlaskConical, GitCompareArrows, LoaderCircle, Settings2, ShieldCheck, SlidersHorizontal, Sparkles, Stethoscope, TriangleAlert, Zap} from 'lucide-react';
 import {EvidenceCard, trialSourceType, sourceLabel} from './evidence-pages';
 import {api, apiUrl, Data, fmt, human, initialInputs, workbookInputs, profileInputs, solverInputs, post, requestKey, stamp, shortId, age, isNum, signed, CUSTOM_PROFILE_ID, customProfileGaps, customProfileView} from '@/lib/api';
 import {Badge, KindTag, Notice, Panel, PassFail, Segmented, Status, Working} from './ui';
@@ -844,6 +844,11 @@ export default function Optimizer() {
               <Link className="button small primary" href="/trial-calibrator/">
                 <FlaskConical size={14} aria-hidden /> Compare a measured waveform
               </Link>
+              {run.inputs?.solver === 'circuit' || run.profile?.stage_c_uf ? (
+                <Link className="button small" href={`/diagnostics/?run=${encodeURIComponent(run.id)}&candidate=${encodeURIComponent(c.id)}`}>
+                  <Stethoscope size={14} aria-hidden /> Diagnose this waveform
+                </Link>
+              ) : null}
             </div>
           </aside>
         </div>

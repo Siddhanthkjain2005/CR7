@@ -9,6 +9,7 @@ import {useRouter} from 'next/navigation';
 import EngineeringChart from './engineering-chart';
 import TrialQuality from './trial-quality';
 import TrialEvaluator from './trial-evaluator';
+import CaptureAdmission from './capture-admission';
 import {comparisonWaveform} from '@/lib/trial-waveform';
 import {sourceLabel, trialSourceType} from './evidence-pages';
 import {metricName} from './hall';
@@ -52,6 +53,7 @@ export function TrialCalibrator() {
     });
   const [asFired, setAsFired] = useState<Data>({});
   const [fitted, setFitted] = useState<Data | null>(null);
+  const [admission, setAdmission] = useState<Data | null>(null);
   const router = useRouter();
   const [trialRun, setTrialRun] = useState<Data | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -114,7 +116,17 @@ export function TrialCalibrator() {
     const r = await w.optimize({...trialRun.inputs, parameter_calibration_id: fitted.id, calibration_id: null});
     if (r) router.push('/');
   }
-  useEffect(() => setFitted(null), [trial?.id]);
+  useEffect(() => {
+    setFitted(null);
+    setAdmission(null);
+  }, [trial?.id]);
+  // Live shared admission (falls back to the upload-time snapshot, then to the old quality flag).
+  const admitted = (use: string) => (admission?.uses?.[use] ?? trial?.admission?.[use])?.admitted ?? trial?.quality?.calibration_allowed !== false;
+  const blockReason = (use: string) => {
+    const u = admission?.uses?.[use] ?? trial?.admission?.[use];
+    if (!u) return '';
+    return u.blocking.length ? 'Blocked by the admission checks' : u.awaiting_review.length ? 'Awaiting a recorded review' : '';
+  };
   async function calibrate() {
     if (!trial) return;
     setBusy(true);
@@ -386,7 +398,8 @@ export function TrialCalibrator() {
                             <th className="num">Saved prediction</th>
                             {trial.as_fired && <th className="num">Prediction at as-fired settings</th>}
                             <th className="num">Measured</th>
-                            <th className="num">Measured − saved</th>
+                            <th className="num">Measured − saved (recommended settings)</th>
+                            {trial.configuration_difference && <th className="num">Model error at as-fired settings</th>}
                           </tr>
                         </thead>
                         <tbody>
@@ -400,11 +413,17 @@ export function TrialCalibrator() {
                               {trial.as_fired && <td className="num">{fmt(trial.as_fired.prediction?.[k], 3)}</td>}
                               <td className="num">{fmt(trial.measured?.[k], 3)}</td>
                               <td className="num">{signed(trial.bias?.[i], 4)}</td>
+                              {trial.configuration_difference && <td className="num">{signed(trial.model_residual?.values?.[i], 4)}</td>}
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
+                    {trial.configuration_difference && (
+                      <Notice tone="info" title="Fired at different settings">
+                        The difference from the saved prediction is mostly the changed settings ({['front', 'tail', 'crest'].map((n, i) => `${n} ${signed(trial.configuration_difference.values[i], 3)}`).join(', ')} from the settings alone). The model error is judged against the prediction at the settings actually fired. {trial.calibration_bias_withheld}
+                      </Notice>
+                    )}
                     <p className="panel-note">
                       {trial.processing?.steps?.join(' · ')}. Detected polarity: {trial.processing?.polarity}. The plot shows baseline-corrected positive magnitude and time from the entered physical onset; the original CSV is preserved (SHA-256 <code>{trial.raw_sha256}</code>).
                     </p>
@@ -459,6 +478,7 @@ export function TrialCalibrator() {
                       )}
                     </dl>
                     <TrialQuality trial={trial} />
+                    <CaptureAdmission trialId={trial.id} onChange={setAdmission} />
                   </>
                 ) : (
                   <Empty title="Your next shot completes the picture">Upload actual analyzer data, or use the clearly labelled generated demo CSV to rehearse the workflow.</Empty>
@@ -473,8 +493,8 @@ export function TrialCalibrator() {
                   {trial.capture_purpose === 'validation' ? (
                     <Notice tone="neutral">This capture is for independent validation, so it is never used to fit parameters.</Notice>
                   ) : !fitted ? (
-                    <button className="button" disabled={busy || trial.quality?.calibration_allowed === false} onClick={fitParameters}>
-                      {busy ? <LoaderCircle className="spin" size={15} aria-hidden /> : <CheckCheck size={15} aria-hidden />} Fit generator parameters from this shot
+                    <button className="button" disabled={busy || !admitted('parameter_fit')} onClick={fitParameters}>
+                      {busy ? <LoaderCircle className="spin" size={15} aria-hidden /> : <CheckCheck size={15} aria-hidden />} {admitted('parameter_fit') ? 'Fit generator parameters from this shot' : blockReason('parameter_fit')}
                     </button>
                   ) : (
                     <>
@@ -508,9 +528,9 @@ export function TrialCalibrator() {
                   <>
                     <p className="panel-note">A single shot updates only the matching profile, layout, solver and hardware settings with inputs within 1%. Transfer from reduced voltage to full voltage is not inferred.</p>
                     {!calibration ? (
-                      <button className="button" disabled={busy || trial.quality?.calibration_allowed === false || trial.capture_purpose === 'validation'} onClick={calibrate}>
+                      <button className="button" disabled={busy || !admitted('local_correction') || trial.capture_purpose === 'validation'} onClick={calibrate}>
                         {busy ? <LoaderCircle className="spin" size={15} aria-hidden /> : <CheckCheck size={15} aria-hidden />}{' '}
-                        {trial.capture_purpose === 'validation' ? 'Validation captures are never used for correction' : trial.quality?.calibration_allowed === false ? 'Review capture before calibration' : 'Create scoped calibration'}
+                        {trial.capture_purpose === 'validation' ? 'Validation captures are never used for correction' : trial.configuration_difference ? 'Fired at other settings: use the parameter fit' : !admitted('local_correction') ? 'Review capture before calibration' : 'Create scoped calibration'}
                       </button>
                     ) : (
                       <>

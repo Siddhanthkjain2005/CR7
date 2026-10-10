@@ -8,6 +8,7 @@ frontend/.next/
 frontend/tsconfig.tsbuildinfo
 artifacts/*.sqlite3
 artifacts/trials/
+artifacts/diagnostics/
 *.log
 .env
 .env.*
