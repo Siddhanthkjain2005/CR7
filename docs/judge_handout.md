@@ -40,4 +40,4 @@ Confirm CPRI inventory and ratings; collect paired reduced-voltage waveforms acr
 
 **Local app:** `http://127.0.0.1:8000` after starting the prepared package. Inference requires no external model service. Cloud deployment is deferred.
 
-**Review trail:** `docs/source_reconciliation.md` · `docs/data_audit.md` · `docs/acceptance_review.md` · `artifacts/models/hidden_test_evaluation.json`.
+**Review trail:** `docs/source_reconciliation.md` · `docs/data_audit.md` · `docs/accuracy_report.md` · `artifacts/models/hidden_test_evaluation.json`.
