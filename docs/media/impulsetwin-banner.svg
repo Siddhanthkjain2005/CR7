@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 300" role="img" aria-labelledby="title desc">
+  <title id="title">ImpulseTwin AI</title>
+  <desc id="desc">Team CR7. Impulse-generator decision support. Configure, inspect and compare.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1d29"/><stop offset="1" stop-color="#133642"/></linearGradient>
+    <linearGradient id="wave" x2="1"><stop stop-color="#56e1ee"/><stop offset="1" stop-color="#82c9af"/></linearGradient>
+  </defs>
+  <rect width="1280" height="300" rx="20" fill="url(#bg)"/>
+  <g fill="none" stroke="#82b2bd" stroke-opacity=".09"><path d="M780 45V265M880 45V265M980 45V265M1080 45V265M1180 45V265M730 65H1230M730 115H1230M730 165H1230M730 215H1230M730 265H1230"/></g>
+  <rect x="50" y="42" width="159" height="29" rx="14" fill="#174b58"/>
+  <text x="70" y="62" fill="#68e2ec" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="2">TEAM CR7</text>
+  <text x="50" y="137" fill="#fff" font-family="Arial,sans-serif" font-size="58" font-weight="700">ImpulseTwin AI</text>
+  <text x="52" y="181" fill="#b9d1d9" font-family="Arial,sans-serif" font-size="23">Impulse-generator decision support</text>
+  <text x="52" y="248" fill="#68e2ec" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="1">CONFIGURE · INSPECT · COMPARE</text>
+  <path d="M740 244H775C785 244 787 73 802 73C831 73 870 168 925 194C1000 230 1095 240 1230 244" fill="none" stroke="url(#wave)" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="802" cy="73" r="6" fill="#56e1ee"/>
+</svg>

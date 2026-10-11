@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest an engineering workflow or product improvement.
+title: "[Feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      description: Describe the user and decision or workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or acceptance criteria
+      description: Explain verification and any source/data assumptions needed.
