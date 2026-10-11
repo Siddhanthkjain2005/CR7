@@ -61,4 +61,4 @@ Lightning uses `1.67 × (t90−t30)` front time and half-value time relative to 
 - Published workbook Model Validation metrics cannot yet be reproduced from its own formulas and labeled split; exact cached-case/helper parity is verified separately. Obtain the metric-generation script before claiming published-table parity.
 - Deployment is excluded from this hardening. No new training, Hidden Test tuning, cloud resources or paid services are introduced.
 
-Final full regression passes 263 tests; frontend typecheck/build and browser review pass. The measured performance/search comparisons and explicit remaining platform/evidence limits are in `OPTIMIZATION_REPORT.md` and `artifacts/optimization_report.json`.
+Final full regression passes 263 tests; frontend typecheck/build and browser review pass. The measured performance/search comparisons and explicit remaining platform/evidence limits are in [Optimization report](validation/optimization_report.md) and `artifacts/optimization_report.json`.
