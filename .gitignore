@@ -18,3 +18,15 @@ tmp/
 *.pem
 *.key
 credentials.json
+
+# Local notes and generated distribution archives
+AGENTS.md
+HANDOFF.md
+PROJECT_STATE.md
+*_Master_Prompt.md
+docs/*prompt*.md
+/*.zip
+release/*.zip
+release/*.sha256
+release/manifest.json
+release/verification.json
