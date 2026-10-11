@@ -39,11 +39,13 @@ from .test_objects import catalog, validate_request
 from .experiment_timeline import timeline
 
 from .diagnostics.api import router as diagnostics_router
+from .fault_tests.api import router as fault_tests_router
 
 ROOT=Path(__file__).resolve().parents[2]
 app=FastAPI(title='ImpulseTwin AI',version='1.0.0',description='Offline physics-guided impulse-generator decision support. No hardware control.',docs_url=None,redoc_url=None)
 app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:3000','http://127.0.0.1:3000','http://localhost:8000','http://127.0.0.1:8000'],allow_methods=['GET','POST'],allow_headers=['*'])
 app.include_router(diagnostics_router)
+app.include_router(fault_tests_router)
 
 def saved(id,kind):
     try:return storage.get(id,kind)

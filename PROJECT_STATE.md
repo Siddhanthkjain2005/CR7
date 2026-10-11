@@ -1,5 +1,16 @@
 # ImpulseTwin AI project state
 
+## Current packaged version — 11 October 2026
+
+Branch `codex/assembly-twin`, based on CR7 main `b02baeb`, contains the conceptual
+assembly workshop, additive chopped-impulse/stage-failure lab and ISO capture-time
+autofill. The frontend export has been rebuilt with Node 22. Read the latest
+`HANDOFF.md` section and `AGENTS.md` for setup, verification and model limitations.
+Latest checks are 438 backend tests for the fault implementation and 28 frontend
+unit tests after timestamp autofill; the backend suite was not rerun for the
+frontend-only timestamp change. Numerical verification is not laboratory accuracy.
+The owner authorized a CR7 GitHub push; cloud deployment and video remain deferred.
+
 ## Capture admission fixes and Waveform Diagnostics — 11 October 2026
 
 Branch `codex/waveform-diagnostics` from `codex/effective-parameter-calibration`. It is local only and has not been pushed. Read `docs/capture_admission.md` and `docs/waveform_diagnostics.md`.

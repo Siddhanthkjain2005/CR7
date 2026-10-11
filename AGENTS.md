@@ -1,5 +1,47 @@
 # ImpulseTwin AI — engineering handoff and progress
 
+## ISO capture-time autofill — 11 October 2026
+
+The owner postponed the walkthrough video and requested only timestamp autofill.
+Waveform Diagnostics and Compare measurement now fill `captured_at` once on the
+client with the device's local date/time, seconds and explicit ISO 8601 offset.
+The value remains editable; **Use current time** refreshes it and **Clear time**
+leaves it omitted as before. Keep the device-clock explanation: autofill is not
+proof of a recording's actual capture time. Trial metadata says **Included on
+upload** while it is a draft. No backend, scientific results or defaults changed.
+
+Node 22 typecheck/build, 28 frontend unit tests (including fractional time zones,
+date rollover and daylight saving), six focused browser interaction checks in an
+isolated local store, and fresh-database external-network-denied smoke with 31
+local assets pass. Both forms visibly contain an actual value, not a placeholder.
+No browser console errors. See `artifacts/qa/october11_iso_autofill_review.json`.
+The export is rebuilt; refresh the port 8000 page. Local edits only, no video,
+push, deployment or cloud use.
+
+## Fault Test Lab — 11 October 2026 (`codex/assembly-twin`)
+
+The owner requested Front/Tail-Chopped Lightning Impulse and Generator Stage-Failure highlights. Both are implemented in the local CR7 copy, with a **Fault test lab** link beside **Assemble digitally** and an integrated section below the assembly workshop. Read `docs/fault_test_lab.md`, `docs/fault_tests_physics_review.md` and `artifacts/qa/october11_fault_tests_review.json`.
+
+- Chopping closes an assumed finite R / optional L shunt across load capacitance. Exact state handover, passive energy decay, continuous extrema/crossings, shared healthy/fault sample grid and no target-crest rescaling. Chopped metrics are geometric descriptors, never full-wave compliance claims.
+- Stage scenarios distinguish reduced-charge **fully erected conducting** stages from a declared conductive bypass. Open-gap misfire, delayed erection and distributed stage-position effects are unsupported. Bypassing every stage is rejected; all-uncharged conducting stages produce zero output with undefined timing. Bypassed capacitors may retain charge: displayed bypass energy counts only contributing stages.
+- Saved `fault_test` records retain settings, nominal loss factor, effective parameters, version, generated provenance, energy scope and JSON/CSV/HTML exports. They never enter calibration, measured evidence or prior evaluation studies. Charging voltage is held fixed.
+- Independent predeclared verification: 34 numerical scenarios plus four expected all-bypass rejections; all seven gates pass. Worst Radau/BDF voltage discrepancy is 0.000001512% of healthy crest within the same assumed equations. Initial four metric failures, three numerical corrections and later wording/provenance edits remain disclosed. Preserve this completed evidence; real CPRI fault accuracy is unknown.
+- Final checks: **438 backend tests**, **27 frontend unit tests**, Node 22 typecheck/production build, **17 isolated browser checks**, exact downloaded CSV/JSON values, **543 original protected files** (main only adds router import/registration), and fresh-database external-network-denied smoke including 31 local assets pass. A new test-fixture global-profile leak was reproduced and corrected in the new fixture only; the pristine GitHub baseline passes 364 tests. Existing production calibration code and tests remain unchanged.
+- Main server is restarted on port 8000 with saved owner history retained. Temporary port 8002 server/tab are stopped/closed; Quiet preference and viewport override restored. No screenshots/aesthetic review or real touchscreen/cross-browser/hardware validation. Local edits only; no push, deployment, cloud spend or model fit.
+
+New backend is additive under `backend/app/fault_tests`; existing physics, optimizer, schemas, API exports, dependencies, datasets, models and completed studies remain protected. Keep all person-safety and conditional-model labels during future edits.
+
+## Conceptual assembly digital twin — 11 October 2026 (`codex/assembly-twin`)
+
+The owner requested an appealing RLC assembly view and person-safety briefings after recommendation. This additive frontend workshop is complete below the saved setup; use **Assemble digitally**. Read `docs/assembly_digital_twin.md` and `artifacts/qa/october11_assembly_twin_review.json`.
+
+- Five virtual groups, drag/drop and keyboard/button alternatives, exploded/assembled schematic, component inspector, staged briefing review, remove/reset and saved-snapshot reset. Existing 3D view and 2D fallback retained. Edited requests pause placement.
+- Stage and load capacitance remain distinct. Series-model totals are labelled derived and unknown facts stay unknown. Wiring still requires verified saved resistor trees. Fitted parameters are separate from nominal hardware inputs.
+- Checkmarks mean briefing read only. Completion remains **Virtual review complete · physical authorization pending**. Keep these boundaries: no hardware control, physical assembly/energization recipes, safe-to-fire score, invented pulse/mounting/clearance facts or physical-safety certification.
+- Node 22 typecheck/production build, all 21 frontend tests (six new), 14 isolated browser interaction/layout checks, phone and desktop widths, 361 protected hashes and fresh-database external-network-denied smoke pass. Zero browser console errors. No screenshots/visual aesthetic review or full backend-suite rerun for this frontend-only change.
+- CR7 now resides at `/Users/swetha/Downloads/HACKTHON_WIN/CR7`; the old `/private/tmp/impulse-cr7-oct11` checkout was moved with its saved history intact. Main app is served locally on port 8000. Temporary QA server/tab are cleaned up after verification.
+- Local edits and rebuilt export only; no push, cloud use or deployment. Preserve frozen studies, defaults, API exports and the safety/source labels during future changes.
+
 ## Capture admission fixes and Waveform Diagnostics — 11 October 2026 (`codex/waveform-diagnostics`)
 
 Built on `codex/effective-parameter-calibration` (`2de2d4c`). Local branch; not pushed. Read `docs/capture_admission.md` and `docs/waveform_diagnostics.md`.

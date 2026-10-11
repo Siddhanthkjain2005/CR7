@@ -9,6 +9,8 @@ import {api, apiUrl, Data, fmt, post, shortId, signed, stamp} from '@/lib/api';
 import {DIAGNOSTIC_STEPS, ORIGINS, groupHypotheses, paramText, statusTone, stepStates, uploadedLabel} from '@/lib/diagnostics';
 import {Badge, Empty, KindTag, Notice, PageHeading, Panel} from '../ui';
 import {useWorkspace} from '../workspace';
+import CaptureTimeField from '../capture-time-field';
+import {captureTimeNow} from '@/lib/capture-time';
 import Digitizer, {DigitizationQuality} from './digitizer';
 import DiagnosticsChart, {Curve} from './diagnostics-chart';
 
@@ -329,6 +331,11 @@ function UploadStep({view, onView, onError}: StepProps) {
   const [file, setFile] = useState<File | null>(null);
   const [form, setForm] = useState<Data>({origin: '', expected_polarity: 'positive', captured_at: '', instrument: '', session_label: '', shot_label: '', notes: '',
     time_column: 'time_us', voltage_column: 'voltage_kv', time_unit: 'us', voltage_unit: 'kV', voltage_side: 'high_voltage', divider_ratio: 1, divider_ratio_source: '', baseline_kv: 0, onset_us: 0});
+  useEffect(() => {
+    // Client-only, once per form: keep later edits and deliberately blank times.
+    const capturedAt = captureTimeNow();
+    setForm(current => ({...current, captured_at: current.captured_at || capturedAt}));
+  }, []);
   const [busy, setBusy] = useState(false);
   const isCsv = !!file && (/\.csv$/i.test(file.name) || file.type === 'text/csv');
   const up = view.upload;
@@ -412,7 +419,7 @@ function UploadStep({view, onView, onError}: StepProps) {
                 <option value="positive">Positive</option><option value="negative">Negative</option><option value="unknown">Not known</option>
               </select>
             </label>
-            <label className="field"><span>Captured at (ISO 8601)</span><input value={form.captured_at} placeholder="2026-10-11T14:05:00+05:30" onChange={e => setForm({...form, captured_at: e.target.value})} /></label>
+            <CaptureTimeField value={form.captured_at} onChange={captured_at => setForm(current => ({...current, captured_at}))} />
           </div>
           <details className="disclosure">
             <summary>Instrument, session and shot</summary>

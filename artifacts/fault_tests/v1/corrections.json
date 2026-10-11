@@ -1,0 +1,24 @@
+{
+  "protocol_changed": false,
+  "initial_results_preserved": "initial_results.json",
+  "changes": [
+    {
+      "issue": "The initial exact-extrema bracket required a strict derivative sign change, so an analytic RC crest already present as an exact-zero derivative sample was missed.",
+      "evidence": "Four of the original 38 predeclared attempts failed the exported-metric gate G4; their curves retained the correct healthy crest but the chopped descriptor selected the later event voltage.",
+      "correction": "Include isolated exact-zero derivative extrema and the existing solver's resolved healthy crest before the chopping event; preserve the exact event as a separate corner-extremum candidate.",
+      "scope": "No equations, scenario cases or thresholds were changed."
+    },
+    {
+      "issue": "Conversion of the event time from microseconds to seconds and back could export the adjacent floating-point time rather than the exact declared timestamp.",
+      "evidence": "Focused event-grid regression failed strict presence of the declared microsecond event while the physical capacitor-state solution was continuous.",
+      "correction": "Canonicalize the event grid timestamp to its declared microsecond value. No voltage sample is clipped or multiplied.",
+      "scope": "Timestamp representation only."
+    },
+    {
+      "issue": "Stage-failure negative reversal had been calculated on its first plot grid while the exported waveform used the union of healthy and fault grids.",
+      "evidence": "Code review found that an additional common-grid sample could yield a lower voltage than the earlier grid and leave reversal metadata inconsistent.",
+      "correction": "Calculate minimum voltage and reversal from the published common grid for both curves. Explicitly label stage/healthy minima as sampled; chopped continuous extrema are retained.",
+      "scope": "Published-curve descriptor consistency; no new laboratory-accuracy claim."
+    }
+  ]
+}

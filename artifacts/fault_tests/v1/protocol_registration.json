@@ -1,0 +1,6 @@
+{
+  "path": "artifacts/fault_tests/v1/protocol.json",
+  "sha256": "62388b611034937ee8c2e073578feced01dbaf8a35fad45cf99c829d79809b38",
+  "predeclared_case_count": 38,
+  "created_before_production_scoring": true
+}

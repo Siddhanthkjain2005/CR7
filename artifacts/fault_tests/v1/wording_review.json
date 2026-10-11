@@ -1,0 +1,13 @@
+{
+  "review_scope": "Post-verification safety wording, report prominence and explicit replay metadata only",
+  "numerical_equations_changed": false,
+  "numeric_fields_changed": false,
+  "request_bounds_changed": false,
+  "protocol_changed": false,
+  "completed_study_results_changed": false,
+  "finding": "In a conductive-bypass experiment, fault_input_kj describes the contributing erected stages. It must not be read as a measurement of the whole original bank or evidence that excluded capacitors are discharged.",
+  "correction": "Mode-specific energy definitions and fault_input_scope now make excluded capacitor charge and residual energy explicitly unverified. The HTML report displays this fact prominently in its own notice.",
+  "replay_metadata": "Reference exports now include nominal_efficiency and physics_version explicitly, alongside the existing effective circuit arguments and fitted parameters. The nominal loss factor differs from the effective one when a loss_scale is fitted; both must be retained for replay.",
+  "regression": "test_bypassed_energy_labels_and_report_never_imply_capacitors_are_discharged",
+  "existing_results": "results.json retains the completed 38-attempt numerical verification. Source hashes there identify its scoring source; the later metadata-only revision is disclosed here."
+}

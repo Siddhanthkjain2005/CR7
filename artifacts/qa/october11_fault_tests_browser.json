@@ -1,0 +1,105 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-11T02:30:58.570614+00:00",
+  "origin": "http://127.0.0.1:8002",
+  "separate_database": true,
+  "run_id_prefix": "80afce7f",
+  "browser": "Codex in-app browser",
+  "interaction_checks": [
+    {
+      "test": "Tail chop produces saved overlay at unchanged charge",
+      "pass": true
+    },
+    {
+      "test": "Changing fault controls clears old generated result",
+      "pass": true
+    },
+    {
+      "test": "Front chop lowers crest and displays resolved reversal",
+      "pass": true
+    },
+    {
+      "test": "Front chop time after healthy peak is blocked",
+      "pass": true
+    },
+    {
+      "test": "One uncharged conducting stage shows 1295.45 kV and unchanged waveform shape",
+      "pass": true
+    },
+    {
+      "test": "Partial stage charge uses declared fraction",
+      "pass": true
+    },
+    {
+      "test": "Keyboard toggles stage selection and clears stale result",
+      "pass": true
+    },
+    {
+      "test": "Bypassed stage changes shape and shows retained-charge energy boundary",
+      "pass": true
+    },
+    {
+      "test": "Actual JSON and CSV downloads complete",
+      "pass": true
+    },
+    {
+      "test": "All uncharged stages return zero output with undefined timing",
+      "pass": true
+    },
+    {
+      "test": "Bypassing every stage is blocked before submission",
+      "pass": true
+    },
+    {
+      "test": "Edited main request pauses fault simulations",
+      "pass": true
+    },
+    {
+      "test": "Restoring saved inputs re-enables the unchanged reference",
+      "pass": true
+    },
+    {
+      "test": "Fault workshop honors Quiet motion",
+      "pass": true
+    },
+    {
+      "test": "Desktop fault layout fits 1280px viewport",
+      "pass": true
+    },
+    {
+      "test": "Mobile controls and detail chart fit 390px viewport without page overflow",
+      "pass": true
+    },
+    {
+      "test": "Selecting another saved candidate clears the prior experiment",
+      "pass": true
+    }
+  ],
+  "console_errors": 0,
+  "desktop": {
+    "viewport_width": 1280,
+    "viewport_height": 900,
+    "document_width": 1280,
+    "columns": "361.609px 852.391px"
+  },
+  "mobile": {
+    "viewport_width": 390,
+    "viewport_height": 844,
+    "document_width": 390,
+    "columns": "356px"
+  },
+  "viewport_override_restored": true,
+  "quiet_preference_restored": true,
+  "download_verification": {
+    "exact_csv_rows": 2379,
+    "json_record_id": "f8a045d504ae",
+    "nominal_efficiency": 0.83,
+    "full_numeric_values_preserved": true,
+    "explicit_bypass_energy_scope": true
+  },
+  "limitations": [
+    "No screenshot or visual aesthetic review per owner preference.",
+    "Only in-app browser and simulated responsive viewport sizes, not physical touchscreen or cross-browser certification.",
+    "Generated circuit scenarios only; no real chopping-gap or failed-stage measurements."
+  ]
+}

@@ -1,6 +1,8 @@
 import './globals.css';
 import './workbench.css';
 import './pages.css';
+import './assembly-twin.css';
+import './fault-test-lab.css';
 import {Workspace} from '@/components/workspace';
 import type {Metadata, Viewport} from 'next';
 

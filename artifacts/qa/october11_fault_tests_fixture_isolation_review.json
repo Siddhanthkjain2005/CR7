@@ -1,0 +1,75 @@
+{
+  "baseline_commit": "b02baebc52c764055fe48b2369856b99c93f35e9",
+  "pristine_path": "/private/tmp/cr7-pristine-fault-audit-neqh9kpm",
+  "original_failure": "Full feature suite:432passed2failed at the old repeated-shot calibration applied assertion.",
+  "isolated_existing_tests": "The exacttwo tests pass on pristine b02baeb and current feature tree independently.",
+  "causal_reproduction": "Run NEW test_unknown_connection_and_unknown_included_capacitance_reject before the two old repeated-shot tests:1pass2fail.",
+  "cause": "The new saved_run test fixture held profile_for() shared registry dictionary; changing its base_c_pf to None contaminated later same_hardware calibration comparisons. This was test-only state and did not alter source bytes or affect the running application.",
+  "fix": "Deep-copy the existing hardware profile when constructing a new fault fixture. Added a regression that modifying a malformed snapshot and a nested front_values list cannot change the serving profile registry.",
+  "post_fix_ordered_recheck": "All32 new fault tests plus the exacttwo old feedback tests pass in one process (34passed).",
+  "production_code_changed_for_fix": false,
+  "old_tests_changed": false,
+  "thresholds_changed": false,
+  "protected_sources": {
+    "backend/app/optimization/engine.py": {
+      "sha256": "323338950624f384db89cf8a50f63450d231c6b2e127946e78bcfa780b02e9a5",
+      "same_as_pristine_b02baeb": true
+    },
+    "tests/test_trial_feedback.py": {
+      "sha256": "26f36286ab21fe30b6aa47d99e0e5f950f3633978c30154f339fba96b185107d",
+      "same_as_pristine_b02baeb": true
+    },
+    "config/generator_profiles.json": {
+      "sha256": "4380998771dd66383d5e7139ec6486d08fa0a9e4a13dfe37ba1777109eef83f0",
+      "same_as_pristine_b02baeb": true
+    }
+  },
+  "evidence_files": [
+    "october11_fault_tests_pristine_feedback.log",
+    "october11_fault_tests_pristine_feedback.xml",
+    "october11_fault_tests_current_feedback.log",
+    "october11_fault_tests_current_feedback.xml",
+    "october11_fault_tests_fixture_leak_before.log",
+    "october11_fault_tests_fixture_leak_before.xml",
+    "october11_fault_tests_fixture_leak_fixed.log",
+    "october11_fault_tests_fixture_leak_fixed.xml"
+  ],
+  "full_pristine_baseline": "PASS:364/364 tests on pristine b02baeb, fresh SQLite database, all native threads limited to1.",
+  "execution_results": {
+    "october11_fault_tests_pristine_feedback.xml": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.022"
+    },
+    "october11_fault_tests_current_feedback.xml": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.095"
+    },
+    "october11_fault_tests_fixture_leak_before.xml": {
+      "tests": "3",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0",
+      "time": "4.784"
+    },
+    "october11_fault_tests_fixture_leak_fixed.xml": {
+      "tests": "34",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.153"
+    },
+    "october11_fault_tests_pristine_full.xml": {
+      "tests": "364",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "135.785"
+    }
+  }
+}

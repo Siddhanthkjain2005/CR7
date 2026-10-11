@@ -1,0 +1,69 @@
+{
+  "offline": {
+    "status": "PASS",
+    "fresh_database": true,
+    "external_network_denied": true,
+    "local_assets": 31,
+    "saved_recommendation": true
+  },
+  "fault": {
+    "status": "PASS",
+    "fresh_database": true,
+    "external_network_denied": true,
+    "exports": "saved JSON, raw CSV and HTML report",
+    "recommendation_unchanged": true,
+    "no_calibration_or_lab_evidence_created": true,
+    "cases": [
+      {
+        "request": {
+          "test_type": "chopped_impulse",
+          "chop_mode": "front",
+          "chop_time_us": 1.0633452478253773,
+          "shunt_r_ohm": 10.0,
+          "shunt_l_uh": 1.0
+        },
+        "id": "272496408399",
+        "healthy_crest_kv": 1425.0,
+        "fault_crest_kv": 1341.0867117236219
+      },
+      {
+        "request": {
+          "test_type": "chopped_impulse",
+          "chop_mode": "tail",
+          "chop_time_us": 4.253380991301509,
+          "shunt_r_ohm": 10.0,
+          "shunt_l_uh": 1.0
+        },
+        "id": "4746d7abccb9",
+        "healthy_crest_kv": 1425.0,
+        "fault_crest_kv": 1425.0000000000002
+      },
+      {
+        "request": {
+          "test_type": "stage_failure",
+          "failure_mode": "uncharged_conducting",
+          "stage_indices": [
+            1
+          ],
+          "remaining_charge_fraction": 0
+        },
+        "id": "1f5fdee2a9c5",
+        "healthy_crest_kv": 1425.0,
+        "fault_crest_kv": 1295.4545454545453
+      },
+      {
+        "request": {
+          "test_type": "stage_failure",
+          "failure_mode": "bypassed",
+          "stage_indices": [
+            1
+          ],
+          "remaining_charge_fraction": 0
+        },
+        "id": "8872e54c0dd8",
+        "healthy_crest_kv": 1425.0,
+        "fault_crest_kv": 1312.2912217890234
+      }
+    ]
+  }
+}

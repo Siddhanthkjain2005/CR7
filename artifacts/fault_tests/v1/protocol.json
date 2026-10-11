@@ -1,0 +1,837 @@
+{
+  "id": "fault_tests_v1_numerical_verification",
+  "version": 1,
+  "declared_before_scoring": true,
+  "created_date": "2026-10-11",
+  "scope": "Generated verification of explicitly assumed passive lumped topology only; no laboratory validation, no IEC conformity, no model-training evidence.",
+  "independence": "Separately constructed SI Kirchhoff ODE, state order generatorV/loadV/seriesA/shuntA, solve_ivp Radau and BDF. No production matrix/modes/propagation helpers imported. Production export times sampled by independent integration for direct voltage/energy comparisons.",
+  "settings_policy": "All cases use fixed recorded charge. No fault retuning to target. Source recipe never changes original data/profile/model artifacts.",
+  "profiles": {
+    "cpri": "12 available stages, 0.125 uF per stage; chosen active11 or12",
+    "workbook": "15 available stages, 3 uF per stage; chosen active10",
+    "custom_ringing": "hypothetical 4 active stages; no hardware/rating assertion"
+  },
+  "cases": [
+    {
+      "id": "cpri_11_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 0.4,
+      "shunt_r_ohm": 20.0,
+      "shunt_l_uh": 0.0
+    },
+    {
+      "id": "cpri_11_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 5.0,
+      "shunt_r_ohm": 5.0,
+      "shunt_l_uh": 0.8
+    },
+    {
+      "id": "cpri_11_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 8.0,
+      "shunt_r_ohm": 80.0,
+      "shunt_l_uh": 3.0
+    },
+    {
+      "id": "cpri_12_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 0.4,
+      "shunt_r_ohm": 20.0,
+      "shunt_l_uh": 0.0
+    },
+    {
+      "id": "cpri_12_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 5.0,
+      "shunt_r_ohm": 5.0,
+      "shunt_l_uh": 0.8
+    },
+    {
+      "id": "cpri_12_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 8.0,
+      "shunt_r_ohm": 80.0,
+      "shunt_l_uh": 3.0
+    },
+    {
+      "id": "workbook_10_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 0.4,
+      "shunt_r_ohm": 20.0,
+      "shunt_l_uh": 0.0
+    },
+    {
+      "id": "workbook_10_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 5.0,
+      "shunt_r_ohm": 5.0,
+      "shunt_l_uh": 0.8
+    },
+    {
+      "id": "workbook_10_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 8.0,
+      "shunt_r_ohm": 80.0,
+      "shunt_l_uh": 3.0
+    },
+    {
+      "id": "zero_l_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 0.4,
+      "shunt_r_ohm": 20.0,
+      "shunt_l_uh": 0.0
+    },
+    {
+      "id": "zero_l_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 5.0,
+      "shunt_r_ohm": 5.0,
+      "shunt_l_uh": 0.8
+    },
+    {
+      "id": "zero_l_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 8.0,
+      "shunt_r_ohm": 80.0,
+      "shunt_l_uh": 3.0
+    },
+    {
+      "id": "negligible_l_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 1e-10,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 0.4,
+      "shunt_r_ohm": 20.0,
+      "shunt_l_uh": 0.0
+    },
+    {
+      "id": "negligible_l_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 1e-10,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 5.0,
+      "shunt_r_ohm": 5.0,
+      "shunt_l_uh": 0.8
+    },
+    {
+      "id": "negligible_l_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 1e-10,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 8.0,
+      "shunt_r_ohm": 80.0,
+      "shunt_l_uh": 3.0
+    },
+    {
+      "id": "ringing_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 4,
+        "charge_kv_stage": 100.0,
+        "front_r_stage": 2.0,
+        "tail_r_stage": 1000.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 40.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 0.4,
+      "shunt_r_ohm": 20.0,
+      "shunt_l_uh": 0.0
+    },
+    {
+      "id": "ringing_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 4,
+        "charge_kv_stage": 100.0,
+        "front_r_stage": 2.0,
+        "tail_r_stage": 1000.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 40.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 5.0,
+      "shunt_r_ohm": 5.0,
+      "shunt_l_uh": 0.8
+    },
+    {
+      "id": "ringing_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 4,
+        "charge_kv_stage": 100.0,
+        "front_r_stage": 2.0,
+        "tail_r_stage": 1000.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 40.0,
+        "efficiency": 0.83
+      },
+      "chop_time_us": 8.0,
+      "shunt_r_ohm": 80.0,
+      "shunt_l_uh": 3.0
+    },
+    {
+      "id": "cpri_11_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "cpri_11_uncharged_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "id": "cpri_11_uncharged_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": "cpri_11_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "cpri_11_bypass_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": "cpri_12_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "cpri_12_uncharged_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": "cpri_12_uncharged_12",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "id": "cpri_12_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "cpri_12_bypass_12",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "id": "workbook_10_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "workbook_10_uncharged_9",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "id": "workbook_10_uncharged_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "id": "workbook_10_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "workbook_10_bypass_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "id": "zero_l_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "zero_l_uncharged_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "id": "zero_l_uncharged_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "mode": "uncharged",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": "zero_l_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1
+      ]
+    },
+    {
+      "id": "zero_l_bypass_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "mode": "bypass",
+      "failed_stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    }
+  ],
+  "gates": {
+    "G1_independent_voltage": {
+      "max_absolute_difference_normalized_by_healthy_crest": 1e-05,
+      "methods": [
+        "Radau",
+        "BDF"
+      ],
+      "integration_rtol": 1e-10
+    },
+    "G2_pre_chop_match": {
+      "normalized_max_difference": 1e-08,
+      "condition": "All published samples at/before chop match original healthy solve without alteration."
+    },
+    "G3_continuity_and_passivity": {
+      "relative_event_state_jump": 1e-10,
+      "max_increase_in_total_passive_energy_over_initial": 1e-08,
+      "states": "Every capacitor voltage and nonzero-inductance current continuous at finite R/L switch; shunt branch initial current zero."
+    },
+    "G4_metrics_export_consistency": {
+      "relative_tolerance": 1e-08,
+      "absolute_tolerance": 1e-08,
+      "condition": "Every available exported metric agrees with re-extraction on published samples, unavailable crossings null/not fabricated; chopped curves do not claim ordinary full-impulse nominal compliance."
+    },
+    "G5_stage_fault_semantics": {
+      "linear_ratio_tolerance": 1e-08,
+      "uncharged": "Full erection, all original C and R remain; sourcevoltage=(n-k)*q*eff, equalshape and ratio(n-k)/n; no energy claim about hidden individual stage voltages.",
+      "bypass": "Explicit conductive replacement, n-k stages, Cg=Cstage/(n-k), totalRf=(n-k)*Rfstage, totalRt=(n-k)*Rtstage, samecharge; not a failed-open-gap simulation.",
+      "all_failed": "Zero waveform allowed only under explicitly conductive topology; metrics unresolved, not zero-valued passes.",
+      "positions": "Permuting same-count selected stages produces identical lumped response; cannot infer stage location."
+    },
+    "G6_RC_analytic_limit": {
+      "normalized_voltage_tolerance": 1e-07,
+      "condition": "Zero L=0 Rsh case against direct independent 2x2 matrix exponential; positive negligibleL versus RC limit, shuntcurrentwithzeroL algebraic."
+    },
+    "G7_input_and_provenance": {
+      "condition": "Reject NaN/Inf/zero/nonpositiveR, negativeL, noninteriorchoptime, duplicates/outofrangestages, unsupportedopen-gap modes; keepgeneratedprovenance/savedconfiguration and profilefamily; no mutation of originalsavedrun or independent evidence."
+    }
+  },
+  "failure_policy": "Report all failed gates and cases. Do not adjust tolerances/cases after outcomes; implementation correctness repairs may be made and recorded as new execution revisions. Numerical agreement does not establish real hardware accuracy."
+}

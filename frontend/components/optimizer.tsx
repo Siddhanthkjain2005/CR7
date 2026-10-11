@@ -1,7 +1,7 @@
 'use client';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import Link from 'next/link';
-import {ArrowDownToLine, ArrowRight, Check, ChevronDown, Download, FlaskConical, GitCompareArrows, LoaderCircle, Settings2, ShieldCheck, SlidersHorizontal, Sparkles, Stethoscope, TriangleAlert, Zap} from 'lucide-react';
+import {ArrowDownToLine, ArrowRight, Box, Check, ChevronDown, Download, FlaskConical, GitCompareArrows, LoaderCircle, Settings2, ShieldCheck, SlidersHorizontal, Sparkles, Stethoscope, TriangleAlert, Zap} from 'lucide-react';
 import {EvidenceCard, trialSourceType, sourceLabel} from './evidence-pages';
 import {api, apiUrl, Data, fmt, human, initialInputs, workbookInputs, profileInputs, solverInputs, post, requestKey, stamp, shortId, age, isNum, signed, CUSTOM_PROFILE_ID, customProfileGaps, customProfileView} from '@/lib/api';
 import {Badge, KindTag, Notice, Panel, PassFail, Segmented, Status, Working} from './ui';
@@ -16,6 +16,8 @@ import {MetricGauges, Scope, predictionLabelFor} from './hall';
 import NetworkSchematic from './network-schematic';
 import InventoryEditor from './inventory-editor';
 import {InventoryDraft, draftFromOverride, overrideFromDraft} from '@/lib/inventory';
+import AssemblyTwin from './assembly-twin';
+import FaultTestLab from './fault-test-lab';
 
 const primaryFields = [
   ['load_c_pf', 'Test-object capacitance', 'pF', 1, 100000],
@@ -225,6 +227,16 @@ export default function Optimizer() {
           </ol>
         </div>
         <div className="page-actions">
+          {run && c && (
+            <a className="button small" href="#assembly-twin">
+              <Box size={14} aria-hidden /> Assemble digitally
+            </a>
+          )}
+          {run && c && (
+            <a className="button small" href="#fault-test-lab">
+              <Zap size={14} aria-hidden /> Fault test lab
+            </a>
+          )}
           {run && (
             <a className="button small" href="#rlc-sensitivity">
               <SlidersHorizontal size={14} aria-hidden /> Explore R, L &amp; C
@@ -855,6 +867,14 @@ export default function Optimizer() {
       )}
         </div>
       </div>
+
+      {run && c && (
+        <AssemblyTwin run={run} candidate={c} draftEdited={changed} />
+      )}
+
+      {run && c && (
+        <FaultTestLab run={run} candidate={c} draftEdited={changed} />
+      )}
 
       {run && c && (
         <details className="evidence-disclosure" id="evidence">

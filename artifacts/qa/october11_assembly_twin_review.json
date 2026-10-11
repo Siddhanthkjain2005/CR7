@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-11",
+  "branch": "codex/assembly-twin",
+  "base_commit": "b02baeb",
+  "project_path": "/Users/swetha/Downloads/HACKTHON_WIN/CR7",
+  "change": "Additive conceptual RLC assembly workshop below saved recommendation, linked by Assemble digitally. Frontend only.",
+  "protected": {
+    "files": 361,
+    "changed": [],
+    "includes": "Backend, data, frozen models, parameter-calibration and diagnostics study evidence, original API module."
+  },
+  "frontend": {
+    "node": "22.23.2",
+    "typecheck": "PASS",
+    "unit_tests": {
+      "passed": 21,
+      "added": 6
+    },
+    "production_build": "PASS",
+    "build_note": "First build used relocated stale cache and failed a Next internal path lookup. Cache retained at /private/tmp/cr7-next-cache-before-assembly-oct11; clean production build passed."
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:8001",
+    "isolated_database": "/private/tmp/cr7-assembly-qa-oct11.sqlite3",
+    "run_id": "37429b00edd6",
+    "preset": "pdf-lightning",
+    "checks": [
+      {
+        "name": "initial placement requires briefing and ordered groups",
+        "result": "PASS"
+      },
+      {
+        "name": "native browser drag places reviewed front network",
+        "result": "PASS"
+      },
+      {
+        "name": "all five groups complete without physical authorization",
+        "result": "PASS"
+      },
+      {
+        "name": "removing an early group clears later placements and relationship paths",
+        "result": "PASS"
+      },
+      {
+        "name": "keyboard Enter inspects an SVG component",
+        "result": "PASS"
+      },
+      {
+        "name": "reset clears placements and briefing gate",
+        "result": "PASS"
+      },
+      {
+        "name": "candidate switching resets placements and acknowledgements",
+        "result": "PASS"
+      },
+      {
+        "name": "3D camera and zoom controls available",
+        "result": "PASS"
+      },
+      {
+        "name": "2D fallback retained",
+        "result": "PASS"
+      },
+      {
+        "name": "edited request visibly pauses placement",
+        "result": "PASS"
+      },
+      {
+        "name": "Quiet motion applies",
+        "result": "PASS"
+      },
+      {
+        "name": "390 px viewport fits page; diagram pans internally",
+        "result": "PASS"
+      },
+      {
+        "name": "mobile button placement works",
+        "result": "PASS"
+      },
+      {
+        "name": "1280 px desktop layout fits and uses two columns",
+        "result": "PASS"
+      }
+    ],
+    "console_errors": [],
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "document_width": 390,
+      "scene_width": 328,
+      "scene_scroll_width": 640,
+      "viewport_override_restored": true
+    },
+    "screenshots_or_visual_review": false,
+    "desktop": {
+      "width": 1280,
+      "height": 900,
+      "document_width": 1280,
+      "twin_columns_px": [
+        780.422,
+        433.578
+      ],
+      "scene_width": 738,
+      "viewport_override_restored": true
+    }
+  },
+  "retention": {
+    "reference_example": {
+      "stages": 11,
+      "charge_kv_stage": 181.90279026170387,
+      "front_r_stage": 30.0,
+      "tail_r_stage": 520.0,
+      "stored_energy_kj": 22.74842975968298,
+      "stage_c_uf": 0.125,
+      "nominal_total_c_pf": 1500.0,
+      "l_uh": 12.0
+    },
+    "existing_run_f521450da348_retained": true,
+    "main_health": "online",
+    "main_homepage_assets": 18,
+    "asset_http_status": "all 200"
+  },
+  "release_smoke": {
+    "status": "PASS",
+    "fresh_database": true,
+    "external_network_denied": true,
+    "local_assets": 31,
+    "saved_recommendation": true
+  },
+  "safety_boundary": {
+    "virtual_acknowledgements_only": true,
+    "physical_authorization_pending": true,
+    "unknown_ratings_mounting_clearances_preserved": true,
+    "hardware_control": false,
+    "sources": [
+      "https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.333",
+      "https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.335",
+      "https://electricalsafety.lbl.gov/electrical-safety/emergency-response/"
+    ]
+  },
+  "limitations": [
+    "No screenshot or visual aesthetic review; functional DOM/keyboard/native-drag and phone-width layout checks performed.",
+    "No actual hardware assembly or personnel protection is verified. The scene is conceptual geometry.",
+    "No full backend test rerun for this frontend-only change; protected bytes, fresh-database smoke and existing recommendation retention verified.",
+    "No independent laboratory accuracy claim.",
+    "No cross-browser or physical touchscreen drag test."
+  ],
+  "cloud_spend_usd": 0,
+  "deployment": false,
+  "push": false
+}

@@ -1,5 +1,37 @@
 # Continue ImpulseTwin AI
 
+## Latest package — 11 October 2026 (`codex/assembly-twin`)
+
+Prepared for the owner's requested push to `Siddhanthkjain2005/CR7`. This branch
+contains the current local website, including the rebuilt `frontend/out` export.
+Start from this section; the older build and branch notes below are historical.
+
+- **Assembly digital twin:** five virtual RLC groups, saved-setting visualization,
+  component inspection and staged person-safety briefings. Completion is virtual
+  review only, never authorization to assemble or energize hardware.
+- **Fault test lab:** front/tail chopping with a finite R/L shunt, and reduced-charge
+  conducting or bypassed-stage scenarios. The saved charge stays fixed. Results
+  have generated provenance and CSV/JSON/HTML exports; they never become calibration
+  or laboratory evidence. Read `docs/fault_test_lab.md` for supported assumptions.
+- **Capture timestamps:** both upload forms autofill local ISO 8601 time with the
+  actual device offset. Edit to the recording's true time, use the refresh button,
+  or clear if unknown. The walkthrough video is postponed at the owner's request.
+- **Verification:** 438 backend tests in the fault feature review; latest frontend
+  has 28 passing unit tests, Node 22 typecheck/build, six focused timestamp browser
+  checks and fresh-database external-network-denied smoke with 31 local assets.
+  See `artifacts/qa/october11_fault_tests_review.json` and
+  `artifacts/qa/october11_iso_autofill_review.json` for exact scope and omissions.
+- **Accuracy boundaries:** fault numerical verification checks the same assumed
+  equations with independent solvers. Real CPRI fault/diagnostic accuracy is
+  unknown. Preserve frozen models, completed study evidence and existing defaults.
+
+Install the Python requirements in your local environment, then run
+`PYTHONUTF8=1 python3 scripts/dev.py` from the repository root and open
+`http://127.0.0.1:8000/`. Node 22 is needed only to rebuild after frontend source
+changes. Install frontend dependencies locally; the Mac's `node_modules` symlink,
+private runtime databases, uploaded captures and credentials are not part of the
+Git package. No cloud deployment is authorized by this push request.
+
 ## Capture admission fixes and Waveform Diagnostics — 11 October 2026
 
 Branch `codex/waveform-diagnostics` from `codex/effective-parameter-calibration`. It is local only and has not been pushed. Read `docs/capture_admission.md` and `docs/waveform_diagnostics.md`.
