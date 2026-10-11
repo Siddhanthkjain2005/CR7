@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="4.784" timestamp="2026-10-11T07:50:27.072560+05:30" hostname="Swethas-MacBook-Air.local"><testcase classname="tests.test_fault_tests" name="test_unknown_connection_and_unknown_included_capacitance_reject" time="0.081" /><testcase classname="tests.test_trial_feedback" name="test_second_calibration_preserves_prior_bias_and_reapplies_to_original_model[1.05]" time="1.483"><failure message="assert False">trial_store = (&lt;starlette.testclient.TestClient object at 0x12f634e90&gt;, {'calibration_review': None, 'candidates': [{'accuracy_cost'..._id': 'powernext_challenge', ...}, ...}], 'created_at': '2026-10-01T15:07:56.855122+00:00', 'id': '748bb8541090', ...})
+measurement_factor = 1.05
+
+    @pytest.mark.parametrize('measurement_factor',[1.05,1.07])
+    def test_second_calibration_preserves_prior_bias_and_reapplies_to_original_model(trial_store,measurement_factor):
+        client,run=trial_store;c=run['candidates'][0]
+        base=np.array(c['prediction']); prior=base*.05
+        c['prediction']=(base+prior).tolist();c['hybrid']=dict(zip(['front_us','tail_us','crest_kv'],c['prediction']))
+        c['calibration']={'id':'previous-shot','bias':prior.tolist(),'source_type':'generated_stress_test'}
+        run=storage.put('run','repeated-shot',run)
+        response=upload(client,run,csv_wave(base*measurement_factor));assert response.status_code==200,response.text
+        trial=response.json();assert trial['quality']['calibration_allowed']
+        np.testing.assert_allclose(trial['calibration_bias'],np.array(trial['bias'])+prior,atol=1e-10)
+        cal=client.post(f"/api/trials/{trial['id']}/calibrate");assert cal.status_code==200,cal.text
+        calibration=cal.json();assert calibration['calibration_lineage']['parent_calibration_id']=='previous-shot'
+        np.testing.assert_allclose(calibration['bias'],base*(measurement_factor-1),rtol=.002)
+        corrected=optimize(OptimizeRequest(**run['inputs']),calibration)['calibration_review']
+&gt;       assert corrected['applied']
+E       assert False
+
+tests/test_trial_feedback.py:60: AssertionError</failure></testcase><testcase classname="tests.test_trial_feedback" name="test_second_calibration_preserves_prior_bias_and_reapplies_to_original_model[1.07]" time="0.910"><failure message="assert False">trial_store = (&lt;starlette.testclient.TestClient object at 0x12f39f380&gt;, {'calibration_review': None, 'candidates': [{'accuracy_cost'..._id': 'powernext_challenge', ...}, ...}], 'created_at': '2026-10-01T15:07:56.855122+00:00', 'id': '748bb8541090', ...})
+measurement_factor = 1.07
+
+    @pytest.mark.parametrize('measurement_factor',[1.05,1.07])
+    def test_second_calibration_preserves_prior_bias_and_reapplies_to_original_model(trial_store,measurement_factor):
+        client,run=trial_store;c=run['candidates'][0]
+        base=np.array(c['prediction']); prior=base*.05
+        c['prediction']=(base+prior).tolist();c['hybrid']=dict(zip(['front_us','tail_us','crest_kv'],c['prediction']))
+        c['calibration']={'id':'previous-shot','bias':prior.tolist(),'source_type':'generated_stress_test'}
+        run=storage.put('run','repeated-shot',run)
+        response=upload(client,run,csv_wave(base*measurement_factor));assert response.status_code==200,response.text
+        trial=response.json();assert trial['quality']['calibration_allowed']
+        np.testing.assert_allclose(trial['calibration_bias'],np.array(trial['bias'])+prior,atol=1e-10)
+        cal=client.post(f"/api/trials/{trial['id']}/calibrate");assert cal.status_code==200,cal.text
+        calibration=cal.json();assert calibration['calibration_lineage']['parent_calibration_id']=='previous-shot'
+        np.testing.assert_allclose(calibration['bias'],base*(measurement_factor-1),rtol=.002)
+        corrected=optimize(OptimizeRequest(**run['inputs']),calibration)['calibration_review']
+&gt;       assert corrected['applied']
+E       assert False
+
+tests/test_trial_feedback.py:60: AssertionError</failure></testcase></testsuite></testsuites>

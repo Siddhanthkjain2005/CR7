@@ -1,0 +1,198 @@
+{
+  "id": "37429b00edd6",
+  "inputs": {
+    "profile_id": "cpri_problem_brief_profile",
+    "impulse_type": "Lightning",
+    "test_kv": 1425.0,
+    "load_c_pf": 650.0,
+    "divider_c_pf": 250.0,
+    "stray_c_pf": 55.0,
+    "l_uh": 12.0,
+    "efficiency": 0.83,
+    "solver": "circuit",
+    "model_mode": "physics",
+    "require_model_agreement": false,
+    "connection_mode": "series_marx_equivalent",
+    "layout_id": "default-layout",
+    "stage_min": null,
+    "stage_max": null,
+    "inventory_override": {
+      "front": [
+        {
+          "ohm": 30.0,
+          "count_per_stage": 1
+        },
+        {
+          "ohm": 465.0,
+          "count_per_stage": 1
+        },
+        {
+          "ohm": 3700.0,
+          "count_per_stage": 1
+        }
+      ],
+      "tail": [
+        {
+          "ohm": 520.0,
+          "count_per_stage": 1
+        }
+      ],
+      "provenance": "Demo assumption: one unit per source value per stage; not verified CPRI stock"
+    },
+    "max_components_per_network": 24,
+    "include_base_c": true,
+    "uncertainty_pct": 5.0,
+    "monte_carlo_samples": 32,
+    "equipment_reference_kv": null,
+    "test_object_id": null,
+    "equipment_reference_source": null,
+    "confirm_reference_mismatch": false,
+    "calibration_id": null,
+    "custom_profile": null,
+    "parameter_calibration_id": null
+  },
+  "profile": {
+    "id": "cpri_problem_brief_profile",
+    "name": "CPRI generator \u2014 up to 12 stages",
+    "version": "1.0.0",
+    "kind": "specified_hardware",
+    "source": "HV IG Problem Statement.pdf p4, annotated technical figure",
+    "voltage_min_kv": 50.0,
+    "voltage_max_kv": 2400.0,
+    "min_stages": 2,
+    "max_stages": 12,
+    "stage_kv": 200.0,
+    "stage_c_uf": 0.125,
+    "energy_stage_kj": 2.5,
+    "energy_total_kj": 30.0,
+    "front_values": [
+      30.0,
+      465.0,
+      3700.0
+    ],
+    "lightning_tail_values": [
+      520.0
+    ],
+    "switching_tail_values": [
+      22000.0
+    ],
+    "units_per_value_per_stage": null,
+    "base_c_pf": 545.0,
+    "enabled": true,
+    "energy_provenance": "PDF figure rated values",
+    "charging_r_ohm": 135000,
+    "potential_r_ohm": 2000000,
+    "discharge_r_ohm": [
+      5450,
+      13000
+    ],
+    "sphere_diameter_cm": 25,
+    "pulses_per_min": 2,
+    "notes": [
+      "Inventory quantities and permitted mounting arrangements were not supplied. Explicit stock assumptions are required.",
+      "545 pF base capacitance must be included only if not already represented by divider/system capacitance.",
+      "Connection notation is ambiguous. A lumped series Marx equivalent is a modeling assumption.",
+      "External front/tail resistors and mechanical weights unspecified; height approximately 8.7 m."
+    ]
+  },
+  "created_at": "2026-10-11T00:59:46.972275+00:00",
+  "inventory_provenance": "Demo assumption: one unit per source value per stage; not verified CPRI stock",
+  "candidate": {
+    "id": "c6",
+    "rank": 1,
+    "settings": {
+      "stages": 11,
+      "charge_kv_stage": 181.90279026170387,
+      "front_r_stage": 30.0,
+      "tail_r_stage": 520.0,
+      "stage_utilization": 0.9095139513085193,
+      "stored_energy_kj": 22.74842975968298,
+      "voltage_margin_kv_stage": 18.09720973829613,
+      "energy_margin_kj": 7.251570240317019,
+      "energy_margin_pct": 24.171900801056733
+    },
+    "front_network": {
+      "equivalent_ohm": 30.0,
+      "topology": "1\u00d730\u03a9",
+      "components": [
+        {
+          "ohm": 30.0,
+          "count_per_stage": 1,
+          "total_required": 11,
+          "available_per_stage": 1
+        }
+      ],
+      "count_per_stage": 1,
+      "inventory_feasible": true,
+      "legacy_catalog_value": true,
+      "total_components": 11
+    },
+    "tail_network": {
+      "equivalent_ohm": 520.0,
+      "topology": "1\u00d7520\u03a9",
+      "components": [
+        {
+          "ohm": 520.0,
+          "count_per_stage": 1,
+          "total_required": 11,
+          "available_per_stage": 1
+        }
+      ],
+      "count_per_stage": 1,
+      "inventory_feasible": true,
+      "legacy_catalog_value": true,
+      "total_components": 11
+    },
+    "compliance": {
+      "profile_id": "powernext_challenge",
+      "version": "1.0.0",
+      "source": "Workbook Hybrid Calculator H13; briefing 17:24\u201318:00",
+      "rows": [
+        {
+          "name": "Front / peak time",
+          "target": 1.2,
+          "predicted": 1.1867806844403406,
+          "lower": 0.84,
+          "upper": 1.56,
+          "deviation": -0.013219315559659384,
+          "deviation_pct": -1.1016096299716116,
+          "pass": true,
+          "robust": true,
+          "unit": "\u00b5s",
+          "reason": "Inside challenge limits"
+        },
+        {
+          "name": "Time to half-value",
+          "target": 50,
+          "predicted": 53.74352664656466,
+          "lower": 40,
+          "upper": 60,
+          "deviation": 3.7435266465646606,
+          "deviation_pct": 7.487053293129331,
+          "pass": true,
+          "robust": true,
+          "unit": "\u00b5s",
+          "reason": "Inside challenge limits"
+        },
+        {
+          "name": "Crest voltage",
+          "target": 1425.0,
+          "predicted": 1425.0,
+          "lower": 1382.25,
+          "upper": 1467.75,
+          "deviation": 0.0,
+          "deviation_pct": 0.0,
+          "pass": true,
+          "robust": false,
+          "unit": "kV",
+          "reason": "Inside challenge limits"
+        }
+      ],
+      "nominal_pass": true,
+      "robust_pass": false,
+      "status": "MARGINAL",
+      "hardware_pass": true,
+      "definition": "1.67 \u00d7 rising 30\u201390%; half-value relative to virtual origin"
+    }
+  }
+}

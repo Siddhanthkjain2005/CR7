@@ -36,7 +36,7 @@ These are logical responsibilities, not a requirement that every request passes 
 | Optional experiments | XGBoost | Historical local V2 search dependency; not a required production inference service. |
 | Hosted demo | Azure App Service, Linux, Python 3.12 | One B1 instance serving the frontend and API. |
 
-Exact versions are declared in [`frontend/package.json`](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/frontend/package.json), [`requirements.txt`](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/requirements.txt) and [`requirements-experiments.txt`](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/requirements-experiments.txt). Pillow is also a Matplotlib dependency. Three.js is supplied locally; no runtime CDN is required.
+Exact versions are declared in [`frontend/package.json`](https://github.com/Siddhanthkjain2005/CR7/blob/main/frontend/package.json), [`requirements.txt`](https://github.com/Siddhanthkjain2005/CR7/blob/main/requirements.txt) and [`requirements-experiments.txt`](https://github.com/Siddhanthkjain2005/CR7/blob/main/requirements-experiments.txt). Pillow is also a Matplotlib dependency. Three.js is supplied locally; no runtime CDN is required.
 
 ## Recommendation path
 
@@ -62,4 +62,4 @@ The Azure demo runs the committed application with a hosting launcher, one Uvico
 
 This public shared demonstration has no individual user authorization or production backup/multi-instance database design. Use generated examples. Physical operation and equipment interlocks remain outside the software.
 
-[Detailed engineering ownership](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/architecture.md) · [Evidence scope](README.md#evidence-and-validation)
+[Detailed engineering ownership](https://github.com/Siddhanthkjain2005/CR7/blob/main/docs/architecture.md) · [Evidence scope](README.md#evidence-and-validation)

@@ -8,9 +8,7 @@ ImpulseTwin AI helps engineers explore high-voltage impulse-generator settings b
 
 Built by **Team CR7** for **PowerNext AI 2026 · Track 1**.
 
-**[Live demo](https://cr7-impulsetwin-730856d9.azurewebsites.net/)** · **[Pitch deck](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/presentations/CR7_ImpulseTwin_AI_Vertical_Architecture.pptx)** · **[Five-minute tour](docs/demo_walkthrough.md)** · **[Documentation](docs/README.md)**
-
-> **Current demo branch:** [`codex/assembly-twin`](https://github.com/Siddhanthkjain2005/CR7/tree/codex/assembly-twin). The live app uses its engineering implementation. The default branch provides this project entry point; clone the demo branch for the features described below.
+**[Live demo](https://cr7-impulsetwin-730856d9.azurewebsites.net/)** · **[Documentation](docs/README.md)**
 
 ## The problem
 
@@ -46,23 +44,23 @@ flowchart TD
 
 **CPRI recommendations use circuit physics.** The 12-stage / 0.125 µF CPRI reference stays separate from the 15-stage / 3 µF workbook benchmark. Frozen workbook residual ML is applied only inside its supported domain. [Architecture and technology stack →](docs/system_architecture.md)
 
-## Try it in five minutes
+## Technology
 
-1. Open the [live app](https://cr7-impulsetwin-730856d9.azurewebsites.net/).
-2. Select **CPRI Lightning · matched example, assumed stock** and choose **Recommend settings**.
-3. Inspect the waveform, stages, charge and resistor construction.
-4. Open **Assemble digitally**, then **Fault test lab** to compare generated scenarios.
-5. Open **Waveform Diagnostics** and use its labelled generated demonstration.
-6. Export a report and review the supporting evidence.
-
-The public demo has shared history. Use generated examples, not private lab files. Preset stock quantities are assumptions, not confirmed CPRI inventory. [Complete demo guide →](docs/demo_walkthrough.md)
+| Layer | Stack |
+|---|---|
+| Interface | Next.js, React, TypeScript, Tailwind CSS |
+| Visualization | Apache ECharts, Three.js, Canvas and SVG |
+| API | Python 3.12, FastAPI, Pydantic, Uvicorn |
+| Engineering | NumPy, SciPy, pandas, scikit-learn |
+| Records | SQLite, SQLAlchemy, versioned JSON and source checksums |
+| Hosting | Azure App Service |
 
 ## Run locally
 
-Use **Python 3.12**. The prepared frontend and frozen models are included on the demo branch; Node.js is needed only to rebuild the frontend.
+Use **Python 3.12**. The prepared frontend and frozen models are included; Node.js is needed only to rebuild the frontend.
 
 ```bash
-git clone --branch codex/assembly-twin https://github.com/Siddhanthkjain2005/CR7.git
+git clone https://github.com/Siddhanthkjain2005/CR7.git
 cd CR7
 python3 -m venv .venv
 source .venv/bin/activate
@@ -72,7 +70,7 @@ python scripts/dev.py
 
 Open **http://127.0.0.1:8000/**. On Windows, use `py -3.12 -m venv .venv` and `.\.venv\Scripts\Activate.ps1` for environment creation/activation. Installing dependencies needs internet; the prepared local inference workflow can run offline.
 
-[Detailed setup and platform notes](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/release_readiness.md) · [Contributor guide](CONTRIBUTING.md)
+[Detailed setup and platform notes](docs/release_readiness.md) · [Contributor guide](CONTRIBUTING.md)
 
 ## Evidence, with its scope
 
@@ -87,7 +85,7 @@ Open **http://127.0.0.1:8000/**. On Windows, use `py -3.12 -m venv .venv` and `.
 
 These are distinct software and simulation results, **not a laboratory-accuracy percentage**. Independent CPRI measurements remain necessary to establish real-equipment agreement. [Evidence and limitations →](docs/README.md#evidence-and-validation)
 
-## Inside the demo branch
+## Repository structure
 
 ```text
 backend/app/       API, physics, optimization, ML gates and records
@@ -96,7 +94,7 @@ config/            Generator profiles, compliance and search configuration
 data/source/       Original challenge PDF, workbook and briefing transcript
 data/              Processed and labelled generated data
 artifacts/         Frozen models, protocols and completed study records
-docs/              Architecture, demo guides and engineering explanations
+docs/              Architecture, workflow guides and engineering explanations
 docs/validation/   Detailed optimization report
 scripts/           Startup, audits and reproducibility utilities
 tests/             Backend regression and numerical checks

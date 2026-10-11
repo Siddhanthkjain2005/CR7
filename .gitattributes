@@ -9,3 +9,5 @@
 artifacts/qa/*.xml whitespace=-blank-at-eol
 data/generated/independent_circuit_v1/*.csv -text whitespace=cr-at-eol
 data/external/** -text
+# Preserve the exact exported waveform bytes in the browser audit record.
+artifacts/qa/october11_fault_test_browser/bypassed_stage_waveforms.csv -text whitespace=cr-at-eol

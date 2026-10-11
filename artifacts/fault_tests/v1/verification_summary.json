@@ -1,0 +1,67 @@
+{
+  "scope": "Generated verification of explicitly assumed passive lumped topology only; no laboratory validation, no IEC conformity, no model-training evidence.",
+  "numeric_cases": 34,
+  "expected_rejections": 4,
+  "front_chop_cases": 6,
+  "tail_chop_cases": 12,
+  "stage_condition_cases": 16,
+  "independent_waveform_worst_normalized_error": 1.5119478639989195e-08,
+  "gates": {
+    "G1_independent_voltage": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    },
+    "G2_pre_chop_match": {
+      "pass": true,
+      "scored_cases": 18,
+      "passing_cases": 18
+    },
+    "G3_continuity_and_passivity": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    },
+    "G4_metrics_export_consistency": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    },
+    "G5_stage_fault_semantics": {
+      "pass": true,
+      "scored_cases": 16,
+      "passing_cases": 16
+    },
+    "G6_RC_analytic_limit": {
+      "pass": true,
+      "scored_cases": 2,
+      "passing_cases": 2
+    },
+    "G7_input_and_provenance": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    }
+  },
+  "initial_failed_cases": [
+    "zero_l_tail_shunt_RL",
+    "zero_l_tail_shunt_damped",
+    "negligible_l_tail_shunt_RL",
+    "negligible_l_tail_shunt_damped"
+  ],
+  "final_failed_cases": [],
+  "pytest_evidence": [
+    {
+      "command": "python3 -m pytest tests/test_fault_tests_independent.py --disable-warnings",
+      "result": "40 passed in 13.86s",
+      "scope": "All initial33 tests+4samplemetricregressions+3fastR/Lphase tests. Before adding2 partialchargeenergytests."
+    },
+    {
+      "command": "python3 -m pytest tests/test_fault_tests_independent.py -k partial_stage --disable-warnings",
+      "result": "2 passed,40 deselected in0.69s",
+      "scope": "Added2 partialchargeenergytests;42tests total in finalfile."
+    }
+  ],
+  "no_lab_accuracy_claim": true,
+  "original_protocol_unchanged": true
+}

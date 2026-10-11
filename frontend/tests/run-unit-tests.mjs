@@ -12,7 +12,7 @@ import ts from 'typescript';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = fs.mkdtempSync(path.join(os.tmpdir(), 'impulsetwin-unit-'));
-for (const name of ['api', 'generator-model', 'inventory', 'series', 'diagnostics']) {
+for (const name of ['api', 'generator-model', 'inventory', 'series', 'diagnostics', 'assembly-twin', 'fault-tests', 'capture-time']) {
   const source = fs.readFileSync(path.join(root, 'lib', `${name}.ts`), 'utf8');
   let code = ts.transpileModule(source, {compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020}}).outputText;
   code = code.replace(/from '\.\/([\w-]+)'/g, "from './$1.mjs'");
@@ -24,6 +24,32 @@ const gm = await load('generator-model');
 const inv = await load('inventory');
 const series = await load('series');
 const diag = await load('diagnostics');
+const assembly = await load('assembly-twin');
+const fault = await load('fault-tests');
+const captureTime = await load('capture-time');
+
+test('capture autofill retains the instant across UTC, fractional offsets and daylight saving', () => {
+  const previousZone = process.env.TZ;
+  try {
+    for (const [zone, instant, expected] of [
+      ['UTC', '2026-10-11T08:35:09.987Z', '2026-10-11T08:35:09+00:00'],
+      ['Asia/Kolkata', '2026-10-11T08:35:09.987Z', '2026-10-11T14:05:09+05:30'],
+      ['Asia/Kathmandu', '2026-10-11T23:59:01Z', '2026-10-12T05:44:01+05:45'],
+      ['America/New_York', '2026-01-01T00:01:02Z', '2025-12-31T19:01:02-05:00'],
+      ['America/New_York', '2026-07-01T00:01:02Z', '2026-06-30T20:01:02-04:00'],
+      ['America/New_York', '2026-11-01T05:30:02Z', '2026-11-01T01:30:02-04:00'],
+      ['America/New_York', '2026-11-01T06:30:02Z', '2026-11-01T01:30:02-05:00'],
+    ]) {
+      process.env.TZ = zone;
+      const result = captureTime.captureTimeNow(new Date(instant));
+      assert.equal(result, expected);
+      assert.equal(Date.parse(result), Math.floor(Date.parse(instant) / 1000) * 1000);
+    }
+  } finally {
+    if (previousZone === undefined) delete process.env.TZ;
+    else process.env.TZ = previousZone;
+  }
+});
 
 // Topology strings and saved equivalents as produced by backend/app/optimization/networks.py.
 const NETWORKS = [
@@ -212,4 +238,188 @@ test('hypotheses are grouped by category and fitted values read plainly', () => 
   assert.equal(diag.statusTone('Possible cause'), 'cyan');
   assert.equal(diag.statusTone('Cannot explain with the current model'), 'red');
   assert.equal(diag.uploadedLabel({upload: {source: 'image', label: 'anything'}}), 'Digitized from image — approximate');
+});
+
+const assemblyFixture = () => ({
+  run: {
+    id: 'saved-cpri',
+    inputs: {impulse_type: 'Lightning', connection_mode: 'series_marx_equivalent', load_c_pf: 650, divider_c_pf: 250, stray_c_pf: 55, include_base_c: true, l_uh: 12},
+    profile: {name: 'CPRI source reference', max_stages: 12, stage_kv: 200, stage_c_uf: 0.125, base_c_pf: 545},
+    inventory_provenance: 'Assumed stock — generated demonstration',
+  },
+  candidate: {
+    id: 'c1', rank: 1,
+    settings: {stages: 11, charge_kv_stage: 181.90279026170387, front_r_stage: 30, tail_r_stage: 520, stored_energy_kj: 22.748430},
+    front_network: {topology: '1×30Ω', equivalent_ohm: 30, components: [{ohm: 30, count_per_stage: 1, total_required: 11}], total_components: 11},
+    tail_network: {topology: '1×520Ω', equivalent_ohm: 520, components: [{ohm: 520, count_per_stage: 1, total_required: 11}], total_components: 11},
+    compliance: {nominal_pass: true},
+  },
+});
+
+test('assembly twin keeps stage storage distinct from the saved load-side contributions', () => {
+  const {run, candidate} = assemblyFixture();
+  const model = assembly.assemblyModelFromCandidate(run, candidate);
+  assert.equal(model.stageCapacitanceUf, 0.125);
+  assert.equal(model.generatorCapacitanceUf, 0.125 / 11, 'series equivalent uses active stages, not the 12 available stages');
+  assert.deepEqual(model.capacitance, {loadPf: 650, dividerPf: 250, strayPf: 55, basePf: 545, includeBase: true, totalPf: 1500});
+  assert.equal(model.frontPerStageOhm, 30);
+  assert.equal(model.totalFrontOhm, 330);
+  assert.equal(model.tailPerStageOhm, 520);
+  assert.equal(model.totalTailOhm, 5720);
+  assert.equal(model.inductanceUh, 12);
+  assert.equal(model.stockProvenance, 'Assumed stock — generated demonstration');
+});
+
+test('assembly twin does not infer series totals for an unrecorded or different connection mode', () => {
+  const {run, candidate} = assemblyFixture();
+  for (const connection_mode of [undefined, 'unverified_layout']) {
+    const model = assembly.assemblyModelFromCandidate({...run, inputs: {...run.inputs, connection_mode}}, candidate);
+    assert.equal(model.seriesEquivalent, false);
+    assert.equal(model.totalFrontOhm, null);
+    assert.equal(model.totalTailOhm, null);
+    assert.equal(model.generatorCapacitanceUf, null);
+    assert.equal(model.frontPerStageOhm, 30, 'recorded per-stage values remain visible');
+  }
+});
+
+test('assembly twin preserves unknown values and distinguishes excluded base from unknown base', () => {
+  const {run, candidate} = assemblyFixture();
+  const unknown = {...run, profile: {name: 'Partial record', max_stages: 12}, inventory_provenance: undefined, inputs: {...run.inputs, l_uh: undefined}};
+  const model = assembly.assemblyModelFromCandidate(unknown, candidate);
+  assert.equal(model.stageCapacitanceUf, null);
+  assert.equal(model.generatorCapacitanceUf, null);
+  assert.equal(model.generator.stageRatingKv, null);
+  assert.equal(model.generator.front.parts[0].available, null);
+  assert.equal(model.inductanceUh, null);
+  assert.equal(model.stockProvenance, null);
+  assert.equal(model.capacitance.basePf, null);
+  assert.equal(model.capacitance.totalPf, null, 'unknown included contribution must not silently become zero');
+  const excluded = assembly.assemblyModelFromCandidate({...unknown, inputs: {...unknown.inputs, include_base_c: false}}, candidate);
+  assert.equal(excluded.capacitance.basePf, 0);
+  assert.equal(excluded.capacitance.totalPf, 955);
+  const undecided = assembly.assemblyModelFromCandidate({...run, inputs: {...run.inputs, include_base_c: undefined}}, candidate);
+  assert.equal(undecided.capacitance.includeBase, null);
+  assert.equal(undecided.capacitance.totalPf, null);
+  const zeros = assembly.assemblyModelFromCandidate({...run, inputs: {...run.inputs, load_c_pf: 0, divider_c_pf: 0, stray_c_pf: 0, l_uh: 0, include_base_c: false}}, candidate);
+  assert.equal(zeros.capacitance.totalPf, 0);
+  assert.equal(zeros.inductanceUh, 0);
+});
+
+test('assembly twin retains the verified topology gate without repairing mismatched saved wiring', () => {
+  const {run, candidate} = assemblyFixture();
+  const bad = {...candidate, front_network: {...candidate.front_network, topology: '30Ω ∥ 465Ω'}};
+  const model = assembly.assemblyModelFromCandidate(run, bad);
+  assert.equal(model.generator.front.tree, null);
+  assert.equal(model.generator.tail.tree.kind, 'R');
+  assert.equal(assembly.assemblyModelFromCandidate(run, {id: 'missing-settings'}), null);
+});
+
+test('assembly progress identity follows the full immutable saved snapshot', () => {
+  const {run, candidate} = assemblyFixture();
+  const before = JSON.stringify({run, candidate});
+  const freeze = value => {
+    if (value && typeof value === 'object') {
+      Object.values(value).forEach(freeze);
+      Object.freeze(value);
+    }
+    return value;
+  };
+  freeze(run); freeze(candidate);
+  const model = assembly.assemblyModelFromCandidate(run, candidate);
+  assert.equal(JSON.stringify({run, candidate}), before);
+  const changes = [
+    [{...run, id: 'other-run'}, candidate],
+    [run, {...candidate, id: 'other-rank'}],
+    [{...run, profile: {...run.profile, stage_c_uf: 3}}, candidate],
+    [{...run, inputs: {...run.inputs, load_c_pf: 800}}, candidate],
+    [run, {...candidate, settings: {...candidate.settings, stages: 10}}],
+    [run, {...candidate, front_network: {...candidate.front_network, topology: 'not recorded'}}],
+    [{...run, inventory_provenance: 'Counted by operator'}, candidate],
+    [{...run, parameter_calibration_review: {id: 'new-calibration'}}, candidate],
+  ];
+  for (const [nextRun, nextCandidate] of changes) assert.notEqual(assembly.assemblyModelFromCandidate(nextRun, nextCandidate).key, model.key);
+  assert.equal(model.hasEffectiveParameters, false);
+  assert.equal(assembly.assemblyModelFromCandidate(changes.at(-1)[0], candidate).hasEffectiveParameters, true);
+  model.parts[0].title = 'changed display copy';
+  assert.equal(assembly.assemblyModelFromCandidate(run, candidate).parts[0].title, 'Stage capacitor bank');
+});
+
+test('virtual placement requires the briefing and ordered groups and blocks stale plans', () => {
+  const order = ['stages', 'front', 'tail', 'inductance', 'load'];
+  assert.deepEqual(assembly.ASSEMBLY_ORDER, order);
+  for (const [index, part] of order.entries()) {
+    const prior = order.slice(0, index);
+    assert.equal(assembly.canPlaceAssemblyPart(part, prior, true), true);
+    assert.equal(assembly.canPlaceAssemblyPart(part, prior, false), false, 'briefing acknowledgement required');
+    assert.equal(assembly.canPlaceAssemblyPart(part, prior, true, true), false, 'unsolved edits block progress');
+    assert.equal(assembly.canPlaceAssemblyPart(part, [...prior, part], true), false, 'duplicate placement blocked');
+    if (index > 0) assert.equal(assembly.canPlaceAssemblyPart(part, prior.slice(1), true), false, 'a missing preceding group cannot be skipped');
+  }
+  assert.equal(assembly.canPlaceAssemblyPart('unknown', [], true), false);
+});
+
+const faultReference = () => ({
+  supported: {chopped_impulse: true, stage_failure: true},
+  healthy: {metrics: {crest_kv: 1425, peak_time_us: 2.5}, waveform: {time_us: [0, 0.5, 2.5, 50, 300], voltage_kv: [0, 800, 1425, 750, 5]}},
+});
+const chopRequest = {test_type: 'chopped_impulse', chop_mode: 'front', chop_time_us: 0.5, shunt_r_ohm: 5, shunt_l_uh: 1};
+
+test('fault experiment identity invalidates results when the saved electrical setup changes', () => {
+  const {run, candidate} = assemblyFixture();
+  const key = fault.faultSnapshotKey(run, candidate);
+  assert.ok(key);
+  assert.equal(fault.faultSnapshotKey(null, candidate), '');
+  assert.equal(fault.faultSnapshotKey(run, null), '');
+  for (const [r, c] of [
+    [{...run, id: 'another-run'}, candidate],
+    [run, {...candidate, id: 'another-candidate'}],
+    [{...run, inputs: {...run.inputs, load_c_pf: 750}}, candidate],
+    [{...run, profile: {...run.profile, stage_c_uf: 3}}, candidate],
+    [run, {...candidate, settings: {...candidate.settings, charge_kv_stage: 175}}],
+    [{...run, parameter_calibration_review: {id: 'new-fit'}}, candidate],
+    [run, {...candidate, calibration: {id: 'new-one-shot-offset'}}],
+  ]) assert.notEqual(fault.faultSnapshotKey(r, c), key);
+});
+
+test('front and tail chopping are distinguished using prospective peak rather than front-time target', () => {
+  const ref = faultReference();
+  assert.equal(fault.classifyChop(2, 2.5), 'front', '2 microseconds can still precede the peak');
+  assert.equal(fault.classifyChop(2.5, 2.5), 'at_peak');
+  assert.equal(fault.classifyChop(5, 2.5), 'tail');
+  assert.deepEqual(fault.faultRequestProblems(chopRequest, ref, 11), []);
+  assert.ok(fault.faultRequestProblems({...chopRequest, chop_mode: 'tail'}, ref, 11).length);
+  assert.ok(fault.faultRequestProblems({...chopRequest, chop_time_us: 2.5}, ref, 11).length);
+  assert.ok(fault.faultRequestProblems({...chopRequest, chop_time_us: 301, chop_mode: 'tail'}, ref, 11).length);
+});
+
+test('fault controls allow a resistive zero-inductance shunt and reject nonphysical numbers', () => {
+  const ref = faultReference();
+  assert.deepEqual(fault.faultRequestProblems({...chopRequest, shunt_l_uh: 0}, ref, 11), []);
+  for (const patch of [{shunt_l_uh: -1}, {shunt_l_uh: Infinity}, {shunt_r_ohm: 0}, {shunt_r_ohm: NaN}, {chop_time_us: NaN}, {chop_time_us: -1}])
+    assert.ok(fault.faultRequestProblems({...chopRequest, ...patch}, ref, 11).length, JSON.stringify(patch));
+});
+
+test('uncharged conducting stages and a bypassed stack have distinct zero-contribution limits', () => {
+  const ref = faultReference();
+  const uncharged = {test_type: 'stage_failure', failure_mode: 'uncharged_conducting', stage_indices: [1, 2, 3], remaining_charge_fraction: 0};
+  assert.deepEqual(fault.faultRequestProblems(uncharged, ref, 3), []);
+  assert.ok(fault.faultRequestProblems({...uncharged, failure_mode: 'bypassed'}, ref, 3).length, 'bypassing every stage leaves no generator');
+  assert.deepEqual(fault.faultRequestProblems({...uncharged, failure_mode: 'bypassed', stage_indices: [1]}, ref, 3), []);
+  assert.ok(fault.faultRequestProblems({...uncharged, failure_mode: 'bypassed', stage_indices: [1], remaining_charge_fraction: 0.5}, ref, 3).length);
+  for (const stage_indices of [[], [0], [4], [1, 1], [1.5]])
+    assert.ok(fault.faultRequestProblems({...uncharged, stage_indices}, ref, 3).length);
+  for (const remaining_charge_fraction of [-0.1, 1.1, NaN])
+    assert.ok(fault.faultRequestProblems({...uncharged, remaining_charge_fraction}, ref, 3).length);
+});
+
+test('unsupported fault types stay unavailable and stage identifiers remain one based', () => {
+  const ref = {...faultReference(), supported: {chopped_impulse: false, stage_failure: true}};
+  assert.ok(fault.faultRequestProblems(chopRequest, ref, 11).some(p => p.includes('Lightning')));
+  assert.deepEqual(fault.selectedStageIndices([3, 1, 1, -1, 0, 12, 2.2], 11), [1, 3]);
+});
+
+test('changing fault parameters marks the old generated result as a different experiment', () => {
+  assert.equal(fault.faultRequestKey(chopRequest), fault.faultRequestKey(Object.fromEntries(Object.entries(chopRequest).reverse())));
+  for (const patch of [{chop_time_us: 0.6}, {shunt_l_uh: 2}, {shunt_r_ohm: 10}, {chop_mode: 'tail'}])
+    assert.notEqual(fault.faultRequestKey({...chopRequest, ...patch}), fault.faultRequestKey(chopRequest));
 });

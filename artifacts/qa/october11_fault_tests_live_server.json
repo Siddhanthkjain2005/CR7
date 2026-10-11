@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "port": 8000,
+  "saved_run_retained": "4c6a129ab370",
+  "saved_candidate": "c158",
+  "hardware_control": false,
+  "reference_endpoint": true,
+  "source_solver": "reference",
+  "healthy_circuit_crest_kv": 1358.9165747433085,
+  "fixed_saved_charge_kv_stage": 171.68674698795184,
+  "nominal_efficiency_retained": 0.83
+}

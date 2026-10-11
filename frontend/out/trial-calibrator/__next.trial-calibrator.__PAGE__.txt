@@ -1,0 +1,27 @@
+1:"$Sreact.fragment"
+2:I[2760,["144","static/chunks/144-ceb1397b364e3182.js","716","static/chunks/716-f1369232c36b62a7.js","163","static/chunks/163-6779275cf73e59a3.js","615","static/chunks/615-3fdf39bfc6a24ff2.js","760","static/chunks/760-c4ab4aecbf09f6f6.js","695","static/chunks/695-997871f8070f50af.js","211","static/chunks/211-234d8a8c11b70d48.js","707","static/chunks/app/trial-calibrator/page-91e10b2a8d553855.js"],"TrialCalibrator"]
+3:I[2606,[],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[2606,[],"ViewportBoundary"]
+9:I[2606,[],"MetadataBoundary"]
+a:I[8187,[],"IconMark"]
+c:I[1239,[],""]
+d:I[3883,[],""]
+10:I[4760,["144","static/chunks/144-ceb1397b364e3182.js","163","static/chunks/163-6779275cf73e59a3.js","760","static/chunks/760-c4ab4aecbf09f6f6.js","177","static/chunks/app/layout-547227a688b80eac.js"],"Workspace"]
+:HL["/_next/static/css/6802d9c1b6ec24ae.css","style"]
+:HL["/_next/static/css/52831c7f68611f58.css","style"]
+:HL["/fonts/Barlow-Regular.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+:HL["/fonts/BarlowCondensed-SemiBold.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+7:X
+f:X
+f:C
+0:{"buildId":"zCvKTUz8YfMbeUQxw2Qn5","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0e161d"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"ImpulseTwin AI · HV Engineering"}],["$","meta","1",{"name":"description","content":"Physics-guided, inventory-aware impulse generator decision support for POWERnext AI."}],["$","link","2",{"rel":"icon","href":"/icon.svg?d77326549e06743e","type":"image/svg+xml","sizes":"any"}],["$","$La","3",{}]]}]}]}],null]}],"isPartial":"$@b","staleTime":"$7","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@e","staleTime":"$7","varyParams":"$f"},{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/6802d9c1b6ec24ae.css","precedence":"next"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/52831c7f68611f58.css","precedence":"next"}]],["$","html",null,{"lang":"en","children":[["$","head",null,{"children":[["$","link",null,{"rel":"preload","href":"/fonts/Barlow-Regular.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}],["$","link",null,{"rel":"preload","href":"/fonts/BarlowCondensed-SemiBold.woff2","as":"font","type":"font/woff2","crossOrigin":"anonymous"}]]}],["$","body",null,{"children":["$","$L10",null,{"children":["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}]}]]}]]}],"isPartial":"$@11","staleTime":"$7","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@12","rootVaryParams":null,"needsRuntimeRequest":"$@13"}
+5:null
+7:300
+13:true
+7:C
+12:0
+b:"$undefined"
+e:"$undefined"
+11:"$undefined"
+6:"$undefined"

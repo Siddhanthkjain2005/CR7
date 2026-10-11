@@ -1,0 +1,146 @@
+{
+  "status": "PASS",
+  "created_at": "2026-10-11T02:34:16.478859+00:00",
+  "local_branch": "codex/assembly-twin",
+  "base_commit": "b02baebc52c764055fe48b2369856b99c93f35e9",
+  "scope": "Additive generated chopped-Lightning and stage-contribution fault experiments, not physical tests or new ML accuracy evidence.",
+  "backend": {
+    "tests_passed": 438,
+    "failures": 0,
+    "focused_feature_tests": 32,
+    "independent_regression_tests": 42,
+    "xml": "artifacts/qa/october11_fault_tests_backend.xml",
+    "initial_failed_run_preserved": "artifacts/qa/october11_fault_tests_backend_initial.xml",
+    "fixture_isolation_cause_and_fix": "artifacts/qa/october11_fault_tests_fixture_isolation_review.json"
+  },
+  "frontend": {
+    "node": "22.23.2",
+    "typecheck": "PASS",
+    "production_build": "PASS",
+    "static_pages": 15,
+    "unit_tests_passed": 27,
+    "interaction_checks": 17,
+    "browser_review": "artifacts/qa/october11_fault_tests_browser.json",
+    "screenshot_or_aesthetic_review": false
+  },
+  "independent_numerical_verification": {
+    "protocol": "artifacts/fault_tests/v1/protocol.json",
+    "results": "artifacts/fault_tests/v1/results.json",
+    "numeric_scenarios_passed": 34,
+    "expected_rejections_passed": 4,
+    "gates_passed": 7,
+    "worst_voltage_gap_pct_of_healthy_crest": 1.5119478639989195e-06,
+    "initial_metric_failures_preserved": true,
+    "post_scoring_metadata_wording_disclosure": "artifacts/fault_tests/v1/wording_review.json",
+    "lab_accuracy_established": false
+  },
+  "protected_original_files": {
+    "status": "PASS",
+    "original_files_verified": 543,
+    "allowed_main_change": "Only import and registration of the additive fault-test router",
+    "mismatches": []
+  },
+  "offline_smoke": {
+    "offline": {
+      "status": "PASS",
+      "fresh_database": true,
+      "external_network_denied": true,
+      "local_assets": 31,
+      "saved_recommendation": true
+    },
+    "fault": {
+      "status": "PASS",
+      "fresh_database": true,
+      "external_network_denied": true,
+      "exports": "saved JSON, raw CSV and HTML report",
+      "recommendation_unchanged": true,
+      "no_calibration_or_lab_evidence_created": true,
+      "cases": [
+        {
+          "request": {
+            "test_type": "chopped_impulse",
+            "chop_mode": "front",
+            "chop_time_us": 1.0633452478253773,
+            "shunt_r_ohm": 10.0,
+            "shunt_l_uh": 1.0
+          },
+          "id": "272496408399",
+          "healthy_crest_kv": 1425.0,
+          "fault_crest_kv": 1341.0867117236219
+        },
+        {
+          "request": {
+            "test_type": "chopped_impulse",
+            "chop_mode": "tail",
+            "chop_time_us": 4.253380991301509,
+            "shunt_r_ohm": 10.0,
+            "shunt_l_uh": 1.0
+          },
+          "id": "4746d7abccb9",
+          "healthy_crest_kv": 1425.0,
+          "fault_crest_kv": 1425.0000000000002
+        },
+        {
+          "request": {
+            "test_type": "stage_failure",
+            "failure_mode": "uncharged_conducting",
+            "stage_indices": [
+              1
+            ],
+            "remaining_charge_fraction": 0
+          },
+          "id": "1f5fdee2a9c5",
+          "healthy_crest_kv": 1425.0,
+          "fault_crest_kv": 1295.4545454545453
+        },
+        {
+          "request": {
+            "test_type": "stage_failure",
+            "failure_mode": "bypassed",
+            "stage_indices": [
+              1
+            ],
+            "remaining_charge_fraction": 0
+          },
+          "id": "8872e54c0dd8",
+          "healthy_crest_kv": 1425.0,
+          "fault_crest_kv": 1312.2912217890234
+        }
+      ]
+    }
+  },
+  "live_server": {
+    "status": "PASS",
+    "port": 8000,
+    "saved_run_retained": "4c6a129ab370",
+    "saved_candidate": "c158",
+    "hardware_control": false,
+    "reference_endpoint": true,
+    "source_solver": "reference",
+    "healthy_circuit_crest_kv": 1358.9165747433085,
+    "fixed_saved_charge_kv_stage": 171.68674698795184,
+    "nominal_efficiency_retained": 0.83
+  },
+  "cleanup": {
+    "temporary_port_8002_stopped": true,
+    "temporary_browser_tab_closed": true,
+    "viewport_override_reset": true,
+    "quiet_preference_restored": true,
+    "owner_saved_history_preserved": true
+  },
+  "authorization_boundaries": {
+    "model_fit": false,
+    "cloud_spend_usd": 0,
+    "cloud_deployment": false,
+    "github_push": false,
+    "hardware_control": false
+  },
+  "limitations": [
+    "Same assumed lumped circuit numerical agreement is not laboratory accuracy.",
+    "Chopping-gap R/L are illustrative assumptions with no verified equipment ratings.",
+    "Only conductive reduced-charge stage and deliberate bypass hypotheses; no open-gap, delayed-ignition or distributed stage-position prediction.",
+    "Chopped metrics are geometric descriptors, not IEC/full-wave acceptance metrics.",
+    "Bypassed physical capacitors can retain charge; contributing-stage energy is not a physical residual-energy or personnel-safety assessment.",
+    "In-app desktop and viewport checks only; actual hardware, device and cross-browser validation remain unperformed."
+  ]
+}

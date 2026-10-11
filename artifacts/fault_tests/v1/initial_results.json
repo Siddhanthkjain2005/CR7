@@ -1,0 +1,4790 @@
+{
+  "execution_id": "initial_execution",
+  "protocol_sha256": "62388b611034937ee8c2e073578feced01dbaf8a35fad45cf99c829d79809b38",
+  "scope": "Generated verification of explicitly assumed passive lumped topology only; no laboratory validation, no IEC conformity, no model-training evidence.",
+  "clarification": {
+    "created_before_scoring": true,
+    "original_protocol_sha256": "62388b611034937ee8c2e073578feced01dbaf8a35fad45cf99c829d79809b38",
+    "case_inputs_or_tolerances_changed": false,
+    "contract_clarifications": [
+      {
+        "case_ids": [
+          "cpri_11_bypass_11",
+          "cpri_12_bypass_12",
+          "workbook_10_bypass_10",
+          "zero_l_bypass_11"
+        ],
+        "expected_result": "Reject all-bypassed scenario with ValueError/HTTP422; no remaining erected generator.",
+        "reason": "Original gate permits zero only under explicit supported conductive topology; current public contract has no source-free substitute topology. All-bypassed fixtures exercise expected unsupported rejection, not numerical accuracy."
+      }
+    ],
+    "numeric_case_count": 34,
+    "expected_rejection_case_count": 4
+  },
+  "source_sha256": {
+    "backend/app/fault_tests/simulation.py": "35fe8671295f61606ecd2125ba7e0a9d038a25d35edef5407de69daf8037b831",
+    "scripts/verify_fault_tests.py": "660e3641334729c26883737c57cff088c83a33688e637b33669bf6c5debb1e9f"
+  },
+  "methods": [
+    "Radau",
+    "BDF",
+    "analytic 2x2 RC exponential"
+  ],
+  "cases": [
+    {
+      "id": "cpri_11_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "front",
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 868.3311800643318,
+        "peak_time_us": 0.39999999999999997,
+        "front_us": 0.3817046093800266,
+        "tail_us": 0.4198237869885683,
+        "t30_us": 0.11700874875252994,
+        "t90_us": 0.3455743831118273,
+        "t50_us": 0.42254971856144957,
+        "virtual_origin_us": 0.0027259315728812433,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 14.006258961851533,
+        "remaining_energy_kj": 5.194763542889426e-10,
+        "shunt_dissipated_kj": 1.352489141774556,
+        "pre_event_dissipated_kj": 1.665134299594072,
+        "post_event_dissipated_kj": 14.006258961332094,
+        "balance_relative_error": 2.727264830566389e-15,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 0.4,
+        "baseline_peak_time_us": 2.1266904956507546,
+        "classification": "front",
+        "voltage_at_chop_kv": 868.3311800643318,
+        "pre_state": {
+          "generator_voltage_kv": 1536.3323135008864,
+          "load_voltage_kv": 868.3311800643318,
+          "series_current_a": 2231.1344459067504,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1536.3323135008864,
+          "load_voltage_kv": 868.3311800643318,
+          "series_current_a": 2231.1344459067504,
+          "shunt_current_a": 43416.55900321659
+        },
+        "shunt_r_ohm": 20.0,
+        "shunt_l_uh": 0.0,
+        "shunt_peak_current_a": 43416.55900321659,
+        "max_shunt_abs_di_dt_a_per_us": null,
+        "current_rate_note": "Zero-inductance ideal-switch current jumps algebraically. No finite instantaneous di/dt is defined.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 2.727264830566389e-15,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.600939527718374,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 4.440966892472811e-12,
+            "healthy": 1.3140762396352856e-11
+          },
+          "BDF": {
+            "fault": 2.3463383657048994e-10,
+            "healthy": 2.390764788479397e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 3.9277699683613824e-16,
+          "peak_time_us": 0.0,
+          "front_us": 0.0,
+          "tail_us": 5.551115123125783e-17,
+          "t30_us": 4.163336342344337e-17,
+          "t90_us": 5.551115123125783e-17,
+          "t50_us": 0.0,
+          "virtual_origin_us": 2.7755575615628914e-17
+        }
+      }
+    },
+    {
+      "id": "cpri_11_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1425.0000000000002,
+        "peak_time_us": 2.1266904956559785,
+        "front_us": 1.1867806844403406,
+        "tail_us": 5.214004009822505,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 5.037174299537873,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": -890.5078907367721,
+        "reversal_pct": 62.49178180608926,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 12.066960442694006,
+        "remaining_energy_kj": 4.160013878091501e-10,
+        "shunt_dissipated_kj": 1.339889175528121,
+        "pre_event_dissipated_kj": 3.6044328187515986,
+        "post_event_dissipated_kj": 12.066960442277965,
+        "balance_relative_error": 3.316308781159366e-15,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 5.0,
+        "baseline_peak_time_us": 2.1266904956507546,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1377.8900196763966,
+        "pre_state": {
+          "generator_voltage_kv": 1368.638567195421,
+          "load_voltage_kv": 1377.8900196763966,
+          "series_current_a": -28.046644479859793,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1368.638567195421,
+          "load_voltage_kv": 1377.8900196763966,
+          "series_current_a": -28.046644479859793,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 5.0,
+        "shunt_l_uh": 0.8,
+        "shunt_peak_current_a": 51008.13317152909,
+        "max_shunt_abs_di_dt_a_per_us": 1722362.524595496,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 3.316308781159366e-15,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.3607658451814604,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 8.540713711306779e-12,
+            "healthy": 1.3140443275404865e-11
+          },
+          "BDF": {
+            "fault": 3.035940384857863e-09,
+            "healthy": 2.3895473420628136e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 1.5956047399525056e-16,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 1.5956047399525056e-16,
+          "peak_time_us": 2.456314816918307e-12,
+          "front_us": 3.929063528384588e-14,
+          "tail_us": 2.725516644872279e-15,
+          "t30_us": 8.326672684688674e-17,
+          "t90_us": 2.7977620220553945e-14,
+          "t50_us": 0.0,
+          "virtual_origin_us": 1.4072076837123859e-14
+        }
+      }
+    },
+    {
+      "id": "cpri_11_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1425.0000000000002,
+        "peak_time_us": 2.1266904956559785,
+        "front_us": 1.1867806844403406,
+        "tail_us": 8.27898469038783,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 8.102154980103197,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 11.122738728378541,
+        "remaining_energy_kj": 3.976273807315007e-10,
+        "shunt_dissipated_kj": 3.1868144969437044,
+        "pre_event_dissipated_kj": 4.548654533067063,
+        "post_event_dissipated_kj": 11.122738727980916,
+        "balance_relative_error": 3.270758125253611e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 8.0,
+        "baseline_peak_time_us": 2.1266904956507546,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1322.8884506509826,
+        "pre_state": {
+          "generator_voltage_kv": 1314.0002971102026,
+          "load_voltage_kv": 1322.8884506509826,
+          "series_current_a": -26.947104521273225,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1314.0002971102026,
+          "load_voltage_kv": 1322.8884506509826,
+          "series_current_a": -26.947104521273225,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 80.0,
+        "shunt_l_uh": 3.0,
+        "shunt_peak_current_a": 11724.421478643417,
+        "max_shunt_abs_di_dt_a_per_us": 440962.81688366085,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 3.270758125253611e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 3.025310959031355,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 8.540713711306779e-12,
+            "healthy": 1.3141560198722832e-11
+          },
+          "BDF": {
+            "fault": 3.4961287479075653e-10,
+            "healthy": 2.3895473420628136e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 1.5956047399525056e-16,
+          "peak_time_us": 2.456314816918307e-12,
+          "front_us": 3.929063528384588e-14,
+          "tail_us": 1.5019351213728692e-15,
+          "t30_us": 8.326672684688674e-17,
+          "t90_us": 2.7977620220553945e-14,
+          "t50_us": 2.1924498405208544e-16,
+          "virtual_origin_us": 1.4072076837123859e-14
+        }
+      }
+    },
+    {
+      "id": "cpri_12_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "front",
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 881.8021234781172,
+        "peak_time_us": 0.39999999999999997,
+        "front_us": 0.3844143278269733,
+        "tail_us": 0.42123047818785725,
+        "t30_us": 0.11646651587648986,
+        "t90_us": 0.3466547361321625,
+        "t50_us": 0.4226028839365108,
+        "virtual_origin_us": 0.0013724057486535352,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 24.3,
+        "fault_input_kj": 24.3,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 16.740269999999995,
+        "energy_at_event_kj": 14.885433855026806,
+        "remaining_energy_kj": 5.515343611642322e-10,
+        "shunt_dissipated_kj": 1.359503138577202,
+        "pre_event_dissipated_kj": 1.854836144973191,
+        "post_event_dissipated_kj": 14.885433854475275,
+        "balance_relative_error": 2.4439857396989266e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 0.4,
+        "baseline_peak_time_us": 2.2899447090641245,
+        "classification": "front",
+        "voltage_at_chop_kv": 881.8021234781173,
+        "pre_state": {
+          "generator_voltage_kv": 1655.2292483373967,
+          "load_voltage_kv": 881.8021234781173,
+          "series_current_a": 2328.9836276113274,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1655.2292483373967,
+          "load_voltage_kv": 881.8021234781173,
+          "series_current_a": 2328.9836276113274,
+          "shunt_current_a": 44090.106173905864
+        },
+        "shunt_r_ohm": 20.0,
+        "shunt_l_uh": 0.0,
+        "shunt_peak_current_a": 44090.10617390586,
+        "max_shunt_abs_di_dt_a_per_us": null,
+        "current_rate_note": "Zero-inductance ideal-switch current jumps algebraically. No finite instantaneous di/dt is defined.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 2.4439857396989266e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.3538398812734542,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 4.191243285924072e-12,
+            "healthy": 9.238098951217501e-12
+          },
+          "BDF": {
+            "fault": 2.152064031060939e-10,
+            "healthy": 2.594644540437575e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.086595021194913e-16,
+          "BDF": 0.0
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 5.551115123125783e-17,
+          "tail_us": 1.6653345369377348e-16,
+          "t30_us": 4.163336342344337e-17,
+          "t90_us": 0.0,
+          "t50_us": 5.551115123125783e-17,
+          "virtual_origin_us": 6.938893903907228e-17
+        }
+      }
+    },
+    {
+      "id": "cpri_12_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447089732714,
+        "front_us": 1.2946708871091575,
+        "tail_us": 5.237487262218222,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 5.037243162719193,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": -956.2891505452703,
+        "reversal_pct": 62.95553020204993,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 24.3,
+        "fault_input_kj": 24.3,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 16.740269999999995,
+        "energy_at_event_kj": 12.769839955589697,
+        "remaining_energy_kj": 4.343932023167119e-10,
+        "shunt_dissipated_kj": 1.5106952970776941,
+        "pre_event_dissipated_kj": 3.9704300444102993,
+        "post_event_dissipated_kj": 12.769839955155401,
+        "balance_relative_error": 7.549541632722714e-15,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 5.0,
+        "baseline_peak_time_us": 2.2899447090641245,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1473.2809767187036,
+        "pre_state": {
+          "generator_voltage_kv": 1462.6168587753816,
+          "load_voltage_kv": 1473.2809767187036,
+          "series_current_a": -29.631170859701268,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1462.6168587753816,
+          "load_voltage_kv": 1473.2809767187036,
+          "series_current_a": -29.631170859701268,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 5.0,
+        "shunt_l_uh": 0.8,
+        "shunt_peak_current_a": 54536.69355256301,
+        "max_shunt_abs_di_dt_a_per_us": 1841601.2208983796,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 7.549541632722714e-15,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.3604728575761935,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 7.825425432970771e-12,
+            "healthy": 8.974424842354813e-12
+          },
+          "BDF": {
+            "fault": 3.0856383255408103e-09,
+            "healthy": 2.5929051744739164e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.086595021194913e-16,
+          "BDF": 1.086595021194913e-16
+        },
+        "pre_chop_normalized_gap": 1.49687260211574e-16,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.9156122388401883e-15,
+          "tail_us": 1.5262291585823541e-15,
+          "t30_us": 5.551115123125783e-17,
+          "t90_us": 2.220446049250313e-15,
+          "t50_us": 1.9395455611532083e-15,
+          "virtual_origin_us": 1.0547118733938987e-15
+        }
+      }
+    },
+    {
+      "id": "cpri_12_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447089732714,
+        "front_us": 1.2946708871091575,
+        "tail_us": 8.302645640271846,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 8.102401540772817,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 24.3,
+        "fault_input_kj": 24.3,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 16.740269999999995,
+        "energy_at_event_kj": 11.780807500798332,
+        "remaining_energy_kj": 4.1658603952476095e-10,
+        "shunt_dissipated_kj": 3.346476880591923,
+        "pre_event_dissipated_kj": 4.959462499201665,
+        "post_event_dissipated_kj": 11.780807500381737,
+        "balance_relative_error": 6.17611111436153e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 8.0,
+        "baseline_peak_time_us": 2.2899447090641245,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1415.0950371240442,
+        "pre_state": {
+          "generator_voltage_kv": 1404.8327204156712,
+          "load_voltage_kv": 1415.0950371240442,
+          "series_current_a": -28.51920310886245,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1404.8327204156712,
+          "load_voltage_kv": 1415.0950371240442,
+          "series_current_a": -28.51920310886245,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 80.0,
+        "shunt_l_uh": 3.0,
+        "shunt_peak_current_a": 12540.913461050512,
+        "max_shunt_abs_di_dt_a_per_us": 471698.3457080147,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 6.17611111436153e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 3.150302078008176,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 8.974424842354813e-12,
+            "healthy": 8.974424842354813e-12
+          },
+          "BDF": {
+            "fault": 3.4877651792525976e-10,
+            "healthy": 2.592382765935778e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.086595021194913e-16,
+          "BDF": 1.086595021194913e-16
+        },
+        "pre_chop_normalized_gap": 1.49687260211574e-16,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.9156122388401883e-15,
+          "tail_us": 2.1395069913426887e-16,
+          "t30_us": 5.551115123125783e-17,
+          "t90_us": 2.220446049250313e-15,
+          "t50_us": 0.0,
+          "virtual_origin_us": 1.0547118733938987e-15
+        }
+      }
+    },
+    {
+      "id": "workbook_10_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "front",
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 611.1616841243807,
+        "peak_time_us": 0.39999999999999997,
+        "front_us": 0.40030103701385883,
+        "tail_us": 0.4230308026746205,
+        "t30_us": 0.11045717638620575,
+        "t90_us": 0.3501583961549835,
+        "t50_us": 0.4136373691764374,
+        "virtual_origin_us": -0.009393433498183126,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 442.14508636957487,
+        "fault_input_kj": 442.14508636957487,
+        "healthy_terminal_equivalent_kj": 304.5937500000001,
+        "fault_terminal_equivalent_kj": 304.5937500000001,
+        "energy_at_event_kj": 300.59997569583203,
+        "remaining_energy_kj": 1.1343370978065415e-08,
+        "shunt_dissipated_kj": 2.0389984639474044,
+        "pre_event_dissipated_kj": 3.993774304168066,
+        "post_event_dissipated_kj": 300.5999756844892,
+        "balance_relative_error": 1.7427444796312748e-15,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 0.4,
+        "baseline_peak_time_us": 3.2140012141163967,
+        "classification": "front",
+        "voltage_at_chop_kv": 611.1616841243807,
+        "pre_state": {
+          "generator_voltage_kv": 1415.2009305959896,
+          "load_voltage_kv": 611.1616841243807,
+          "series_current_a": 1098.3662824846074,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1415.2009305959896,
+          "load_voltage_kv": 611.1616841243807,
+          "series_current_a": 1098.3662824846074,
+          "shunt_current_a": 30558.084206219035
+        },
+        "shunt_r_ohm": 20.0,
+        "shunt_l_uh": 0.0,
+        "shunt_peak_current_a": 30558.084206219035,
+        "max_shunt_abs_di_dt_a_per_us": null,
+        "current_rate_note": "Zero-inductance ideal-switch current jumps algebraically. No finite instantaneous di/dt is defined.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 1.7427444796312748e-15,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.6473475329563454,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 3.1966033137425148e-12,
+            "healthy": 8.896227461148446e-12
+          },
+          "BDF": {
+            "fault": 1.5003504387038717e-10,
+            "healthy": 3.907408022800455e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 1.860176131370157e-16,
+          "peak_time_us": 0.0,
+          "front_us": 2.220446049250313e-16,
+          "tail_us": 1.6653345369377348e-16,
+          "t30_us": 1.3877787807814457e-16,
+          "t90_us": 0.0,
+          "t50_us": 5.551115123125783e-17,
+          "virtual_origin_us": 2.0816681711721685e-16
+        }
+      }
+    },
+    {
+      "id": "workbook_10_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141148393,
+        "front_us": 1.9467262102484086,
+        "tail_us": 5.3654625145714885,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 5.029312257286985,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": -960.5538210943403,
+        "reversal_pct": 70.68526787788892,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 442.14508636957487,
+        "fault_input_kj": 442.14508636957487,
+        "healthy_terminal_equivalent_kj": 304.5937500000001,
+        "fault_terminal_equivalent_kj": 304.5937500000001,
+        "energy_at_event_kj": 264.3036778423808,
+        "remaining_energy_kj": 9.949081689373047e-09,
+        "shunt_dissipated_kj": 1.120982488637977,
+        "pre_event_dissipated_kj": 40.290072157619285,
+        "post_event_dissipated_kj": 264.3036778324206,
+        "balance_relative_error": 4.2284204997141746e-14,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 5.0,
+        "baseline_peak_time_us": 3.2140012141163967,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1337.3352424441032,
+        "pre_state": {
+          "generator_voltage_kv": 1325.3227024065634,
+          "load_voltage_kv": 1337.3352424441032,
+          "series_current_a": -15.990506548244166,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1325.3227024065634,
+          "load_voltage_kv": 1337.3352424441032,
+          "series_current_a": -15.990506548244166,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 5.0,
+        "shunt_l_uh": 0.8,
+        "shunt_peak_current_a": 40248.21790967359,
+        "max_shunt_abs_di_dt_a_per_us": 1671669.053055129,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 4.2284204997141746e-14,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.2650533820929084,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.407787127860929e-11,
+            "healthy": 9.369742549170603e-12
+          },
+          "BDF": {
+            "fault": 3.981870738359271e-09,
+            "healthy": 3.9061246797880413e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "pre_chop_normalized_gap": 1.6731981908910166e-16,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.1899619947154778e-14,
+          "tail_us": 2.4830434020031277e-15,
+          "t30_us": 1.1102230246251565e-16,
+          "t90_us": 1.8079168176348718e-14,
+          "t50_us": 0.0,
+          "virtual_origin_us": 1.2656542480726785e-14
+        }
+      }
+    },
+    {
+      "id": "workbook_10_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141148393,
+        "front_us": 1.9467262102484086,
+        "tail_us": 8.409496179196045,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 8.07334592191154,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 442.14508636957487,
+        "fault_input_kj": 442.14508636957487,
+        "healthy_terminal_equivalent_kj": 304.5937500000001,
+        "fault_terminal_equivalent_kj": 304.5937500000001,
+        "energy_at_event_kj": 243.1951334625787,
+        "remaining_energy_kj": 9.159287035350768e-09,
+        "shunt_dissipated_kj": 6.00951573800335,
+        "pre_event_dissipated_kj": 61.39861653742142,
+        "post_event_dissipated_kj": 243.19513345332882,
+        "balance_relative_error": 3.72421598622539e-13,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 8.0,
+        "baseline_peak_time_us": 3.2140012141163967,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1283.7028009219662,
+        "pre_state": {
+          "generator_voltage_kv": 1271.2955639299357,
+          "load_voltage_kv": 1283.7028009219662,
+          "series_current_a": -16.546296604862338,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1271.2955639299357,
+          "load_voltage_kv": 1283.7028009219662,
+          "series_current_a": -16.546296604862338,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 80.0,
+        "shunt_l_uh": 3.0,
+        "shunt_peak_current_a": 10350.192269431374,
+        "max_shunt_abs_di_dt_a_per_us": 427900.9336406554,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 3.72421598622539e-13,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 2.3415168466560687,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 7.418709798682134e-12,
+            "healthy": 9.240738968652905e-12
+          },
+          "BDF": {
+            "fault": 4.997226840957671e-10,
+            "healthy": 3.9050287349730077e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.1899619947154778e-14,
+          "tail_us": 1.4786257833808163e-15,
+          "t30_us": 1.1102230246251565e-16,
+          "t90_us": 1.8079168176348718e-14,
+          "t50_us": 0.0,
+          "virtual_origin_us": 1.2656542480726785e-14
+        }
+      }
+    },
+    {
+      "id": "zero_l_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "front",
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 876.3505487724186,
+        "peak_time_us": 0.39999999999999997,
+        "front_us": 0.42137977081448436,
+        "tail_us": 0.4626788706463818,
+        "t30_us": 0.0864165641350422,
+        "t90_us": 0.3387397801916197,
+        "t50_us": 0.4229338267531353,
+        "virtual_origin_us": -0.03974504389324654,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 13.969121705421916,
+        "remaining_energy_kj": 5.097818917578568e-10,
+        "shunt_dissipated_kj": 1.3728454569185196,
+        "pre_event_dissipated_kj": 1.7022715560236883,
+        "post_event_dissipated_kj": 13.969121704912133,
+        "balance_relative_error": 0.0,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 0.4,
+        "baseline_peak_time_us": 2.25359290383967,
+        "classification": "front",
+        "voltage_at_chop_kv": 876.3505487724185,
+        "pre_state": {
+          "generator_voltage_kv": 1535.3145288904832,
+          "load_voltage_kv": 876.3505487724185,
+          "series_current_a": 1996.8605458123172,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1535.3145288904832,
+          "load_voltage_kv": 876.3505487724185,
+          "series_current_a": 1996.8605458123172,
+          "shunt_current_a": 43817.52743862093
+        },
+        "shunt_r_ohm": 20.0,
+        "shunt_l_uh": 0.0,
+        "shunt_peak_current_a": 43817.52743862093,
+        "max_shunt_abs_di_dt_a_per_us": null,
+        "current_rate_note": "Zero-inductance ideal-switch current jumps algebraically. No finite instantaneous di/dt is defined.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 0.0,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.0,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G6_RC_analytic_limit": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.552577325737941e-11,
+            "healthy": 1.5552960112480246e-11
+          },
+          "BDF": {
+            "fault": 3.3100463859098725e-10,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 2.594551641026921e-16,
+          "peak_time_us": 0.0,
+          "front_us": 3.191891195797325e-14,
+          "tail_us": 9.547918011776346e-15,
+          "t30_us": 0.0,
+          "t90_us": 1.9040324872321435e-14,
+          "t50_us": 0.0,
+          "virtual_origin_us": 9.547918011776346e-15
+        },
+        "rc_analytic_normalized_error": 6.5868152615629355e-15
+      }
+    },
+    {
+      "id": "zero_l_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1377.8827691903705,
+        "peak_time_us": 5.0,
+        "front_us": 1.1530115284503555,
+        "tail_us": 5.238672729754998,
+        "t30_us": 0.14491385460817596,
+        "t90_us": 0.8353399195485086,
+        "t50_us": 5.038373551893008,
+        "virtual_origin_us": -0.20029917786199036,
+        "minimum_kv": -845.6703258169478,
+        "reversal_pct": 61.37462088402882,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 12.066937408746297,
+        "remaining_energy_kj": 4.0406946655385943e-10,
+        "shunt_dissipated_kj": 1.2585359511518928,
+        "pre_event_dissipated_kj": 3.604455852699308,
+        "post_event_dissipated_kj": 12.066937408342222,
+        "balance_relative_error": 4.5222478793022305e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 5.0,
+        "baseline_peak_time_us": 2.25359290383967,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1377.8827691903705,
+        "pre_state": {
+          "generator_voltage_kv": 1368.638353165642,
+          "load_voltage_kv": 1377.8827691903705,
+          "series_current_a": -28.013381893116605,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1368.638353165642,
+          "load_voltage_kv": 1377.8827691903705,
+          "series_current_a": -28.013381893116605,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 5.0,
+        "shunt_l_uh": 0.8,
+        "shunt_peak_current_a": 51486.97136615047,
+        "max_shunt_abs_di_dt_a_per_us": 1722353.4614879633,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 4.5222478793022305e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.0928707416032033,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": false,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": false,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 7.297191793080084e-12,
+            "healthy": 1.610725211118318e-11
+          },
+          "BDF": {
+            "fault": 2.4350184236908825e-09,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.030869775494552484,
+          "peak_time_us": 1.2186793326696248,
+          "front_us": 0.11112284939367399,
+          "tail_us": 0.0069976733172751274,
+          "t30_us": 0.005515600209186122,
+          "t90_us": 0.09182911561398355,
+          "t50_us": 0.00014377837864731427,
+          "virtual_origin_us": 0.03764115749321256
+        }
+      }
+    },
+    {
+      "id": "zero_l_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1322.8913500961273,
+        "peak_time_us": 8.0,
+        "front_us": 1.0101099779238656,
+        "tail_us": 8.279078240864422,
+        "t30_us": 0.13810075349118436,
+        "t90_us": 0.7429570276970919,
+        "t50_us": 8.114750857252652,
+        "virtual_origin_us": -0.16432738361176943,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 11.12271783862344,
+        "remaining_energy_kj": 3.900091746343965e-10,
+        "shunt_dissipated_kj": 3.233266005892626,
+        "pre_event_dissipated_kj": 4.548675422822163,
+        "post_event_dissipated_kj": 11.122717838233434,
+        "balance_relative_error": 3.2707642681170026e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 8.0,
+        "baseline_peak_time_us": 2.25359290383967,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1322.8913500961273,
+        "pre_state": {
+          "generator_voltage_kv": 1313.9988045689834,
+          "load_voltage_kv": 1322.8913500961273,
+          "series_current_a": -26.94710765801202,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1313.9988045689834,
+          "load_voltage_kv": 1322.8913500961273,
+          "series_current_a": -26.94710765801202,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 80.0,
+        "shunt_l_uh": 3.0,
+        "shunt_peak_current_a": 11786.690511289635,
+        "max_shunt_abs_di_dt_a_per_us": 440963.78336537565,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 3.2707642681170026e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 3.240011328794581,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": false,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": false,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.3395603198890347e-11,
+            "healthy": 1.5552960112480246e-11
+          },
+          "BDF": {
+            "fault": 1.0559034685476096e-09,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.06954784559190332,
+          "peak_time_us": 2.5498869322714,
+          "front_us": 0.22128820326477164,
+          "tail_us": 0.007795038405808674,
+          "t30_us": 0.012328701326197372,
+          "t90_us": 0.18421200746539945,
+          "t50_us": 0.0010572436734796915,
+          "virtual_origin_us": 0.07361295174340363
+        }
+      }
+    },
+    {
+      "id": "negligible_l_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 1e-10,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "front",
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 876.3505487724186,
+        "peak_time_us": 0.39999999999999997,
+        "front_us": 0.42137977081448436,
+        "tail_us": 0.4626788706463818,
+        "t30_us": 0.0864165641350422,
+        "t90_us": 0.3387397801916197,
+        "t50_us": 0.4229338267531353,
+        "virtual_origin_us": -0.03974504389324654,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 13.969121705421916,
+        "remaining_energy_kj": 5.097818917578568e-10,
+        "shunt_dissipated_kj": 1.3728454569185196,
+        "pre_event_dissipated_kj": 1.7022715560236883,
+        "post_event_dissipated_kj": 13.969121704912133,
+        "balance_relative_error": 0.0,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 0.4,
+        "baseline_peak_time_us": 2.25359290383967,
+        "classification": "front",
+        "voltage_at_chop_kv": 876.3505487724185,
+        "pre_state": {
+          "generator_voltage_kv": 1535.3145288904832,
+          "load_voltage_kv": 876.3505487724185,
+          "series_current_a": 1996.8605458123172,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1535.3145288904832,
+          "load_voltage_kv": 876.3505487724185,
+          "series_current_a": 1996.8605458123172,
+          "shunt_current_a": 43817.52743862093
+        },
+        "shunt_r_ohm": 20.0,
+        "shunt_l_uh": 0.0,
+        "shunt_peak_current_a": 43817.52743862093,
+        "max_shunt_abs_di_dt_a_per_us": null,
+        "current_rate_note": "Zero-inductance ideal-switch current jumps algebraically. No finite instantaneous di/dt is defined.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 0.0,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.0,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G6_RC_analytic_limit": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.2053612054309943e-11,
+            "healthy": 1.0541303258656653e-11
+          },
+          "BDF": {
+            "fault": 3.446141383704503e-10,
+            "healthy": 4.262863696822193e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 2.594551641026921e-16,
+          "peak_time_us": 0.0,
+          "front_us": 3.191891195797325e-14,
+          "tail_us": 9.547918011776346e-15,
+          "t30_us": 0.0,
+          "t90_us": 1.9040324872321435e-14,
+          "t50_us": 0.0,
+          "virtual_origin_us": 9.547918011776346e-15
+        },
+        "rc_analytic_normalized_error": 6.5868152615629355e-15
+      }
+    },
+    {
+      "id": "negligible_l_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 1e-10,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1377.8827691903705,
+        "peak_time_us": 5.0,
+        "front_us": 1.1530115284503555,
+        "tail_us": 5.238672729754998,
+        "t30_us": 0.14491385460817596,
+        "t90_us": 0.8353399195485086,
+        "t50_us": 5.038373551893008,
+        "virtual_origin_us": -0.20029917786199036,
+        "minimum_kv": -845.6703258169478,
+        "reversal_pct": 61.37462088402882,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 12.066937408746297,
+        "remaining_energy_kj": 4.0406946655385943e-10,
+        "shunt_dissipated_kj": 1.2585359511518928,
+        "pre_event_dissipated_kj": 3.604455852699308,
+        "post_event_dissipated_kj": 12.066937408342222,
+        "balance_relative_error": 4.5222478793022305e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 5.0,
+        "baseline_peak_time_us": 2.25359290383967,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1377.8827691903705,
+        "pre_state": {
+          "generator_voltage_kv": 1368.638353165642,
+          "load_voltage_kv": 1377.8827691903705,
+          "series_current_a": -28.013381893116605,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1368.638353165642,
+          "load_voltage_kv": 1377.8827691903705,
+          "series_current_a": -28.013381893116605,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 5.0,
+        "shunt_l_uh": 0.8,
+        "shunt_peak_current_a": 51486.97136615047,
+        "max_shunt_abs_di_dt_a_per_us": 1722353.4614879633,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 4.5222478793022305e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.0928707416032033,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": false,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": false,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.1533543508498649e-11,
+            "healthy": 1.0947986626429753e-11
+          },
+          "BDF": {
+            "fault": 2.6203806606761983e-09,
+            "healthy": 4.262369535750066e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.030869775494552484,
+          "peak_time_us": 1.2186793326696248,
+          "front_us": 0.11112284939367399,
+          "tail_us": 0.0069976733172751274,
+          "t30_us": 0.005515600209186122,
+          "t90_us": 0.09182911561398355,
+          "t50_us": 0.00014377837864731427,
+          "virtual_origin_us": 0.03764115749321256
+        }
+      }
+    },
+    {
+      "id": "negligible_l_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 1e-10,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1322.8913500961273,
+        "peak_time_us": 8.0,
+        "front_us": 1.0101099779238656,
+        "tail_us": 8.279078240864422,
+        "t30_us": 0.13810075349118436,
+        "t90_us": 0.7429570276970919,
+        "t50_us": 8.114750857252652,
+        "virtual_origin_us": -0.16432738361176943,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 22.74842975968298,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 15.671393261445605,
+        "energy_at_event_kj": 11.12271783862344,
+        "remaining_energy_kj": 3.900091746343965e-10,
+        "shunt_dissipated_kj": 3.233266005892626,
+        "pre_event_dissipated_kj": 4.548675422822163,
+        "post_event_dissipated_kj": 11.122717838233434,
+        "balance_relative_error": 3.2707642681170026e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 8.0,
+        "baseline_peak_time_us": 2.25359290383967,
+        "classification": "tail",
+        "voltage_at_chop_kv": 1322.8913500961273,
+        "pre_state": {
+          "generator_voltage_kv": 1313.9988045689834,
+          "load_voltage_kv": 1322.8913500961273,
+          "series_current_a": -26.94710765801202,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 1313.9988045689834,
+          "load_voltage_kv": 1322.8913500961273,
+          "series_current_a": -26.94710765801202,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 80.0,
+        "shunt_l_uh": 3.0,
+        "shunt_peak_current_a": 11786.690511289635,
+        "max_shunt_abs_di_dt_a_per_us": 440963.78336537565,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 3.2707642681170026e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 3.240011328794581,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": false,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": false,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 7.607521747922278e-12,
+            "healthy": 1.0915522322985812e-11
+          },
+          "BDF": {
+            "fault": 5.124519884321175e-10,
+            "healthy": 4.261363622111335e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.1607068836826987e-16,
+          "BDF": 1.1607068836826987e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.06954784559190332,
+          "peak_time_us": 2.5498869322714,
+          "front_us": 0.22128820326477164,
+          "tail_us": 0.007795038405808674,
+          "t30_us": 0.012328701326197372,
+          "t90_us": 0.18421200746539945,
+          "t50_us": 0.0010572436734796915,
+          "virtual_origin_us": 0.07361295174340363
+        }
+      }
+    },
+    {
+      "id": "ringing_front_shunt_R",
+      "kind": "chop",
+      "configuration": {
+        "stages": 4,
+        "charge_kv_stage": 100.0,
+        "front_r_stage": 2.0,
+        "tail_r_stage": 1000.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 40.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "front",
+      "healthy_metrics": {
+        "crest_kv": 608.8384143495064,
+        "peak_time_us": 0.7510095123939033,
+        "front_us": 0.535948372454124,
+        "tail_us": 1.0277395156688445,
+        "t30_us": 0.27407180510534584,
+        "t90_us": 0.5949989742395518,
+        "t50_us": 1.1413477362070874,
+        "virtual_origin_us": 0.11360822053824285,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 339.6688946978208,
+        "peak_time_us": 0.39999999999999997,
+        "front_us": 0.29115477328220446,
+        "tail_us": 0.313118506600334,
+        "t30_us": 0.19890295736721186,
+        "t90_us": 0.3732471329852984,
+        "t50_us": 0.42484937615850266,
+        "virtual_origin_us": 0.1117308695581686,
+        "minimum_kv": -27.970408696195737,
+        "reversal_pct": 8.234609978367025,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 2.5,
+        "fault_input_kj": 2.5,
+        "healthy_terminal_equivalent_kj": 1.72225,
+        "fault_terminal_equivalent_kj": 1.72225,
+        "energy_at_event_kj": 1.7053427272289263,
+        "remaining_energy_kj": 3.9881309933863875e-11,
+        "shunt_dissipated_kj": 1.2313872352173223,
+        "pre_event_dissipated_kj": 0.016907272771073623,
+        "post_event_dissipated_kj": 1.7053427271890436,
+        "balance_relative_error": 7.999811597262909e-16,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 0.4,
+        "baseline_peak_time_us": 0.7510095123939033,
+        "classification": "front",
+        "voltage_at_chop_kv": 339.6688946978208,
+        "pre_state": {
+          "generator_voltage_kv": 314.6544898633832,
+          "load_voltage_kv": 339.6688946978208,
+          "series_current_a": 1894.9951694887868,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 314.6544898633832,
+          "load_voltage_kv": 339.6688946978208,
+          "series_current_a": 1894.9951694887868,
+          "shunt_current_a": 16983.44473489104
+        },
+        "shunt_r_ohm": 20.0,
+        "shunt_l_uh": 0.0,
+        "shunt_peak_current_a": 16983.44473489104,
+        "max_shunt_abs_di_dt_a_per_us": null,
+        "current_rate_note": "Zero-inductance ideal-switch current jumps algebraically. No finite instantaneous di/dt is defined.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 7.999811597262909e-16,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.6221295862792118,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.1631158795764549e-11,
+            "healthy": 1.1644696535073629e-11
+          },
+          "BDF": {
+            "fault": 3.4930495102025025e-10,
+            "healthy": 1.503578278043916e-08
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.320212950751819e-16,
+          "BDF": 1.320212950751819e-16
+        },
+        "pre_chop_normalized_gap": 0.0,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 1.6734949754930478e-16,
+          "peak_time_us": 0.0,
+          "front_us": 1.1102230246251565e-16,
+          "tail_us": 5.551115123125783e-17,
+          "t30_us": 2.7755575615628914e-17,
+          "t90_us": 5.551115123125783e-17,
+          "t50_us": 0.0,
+          "virtual_origin_us": 6.938893903907228e-17
+        }
+      }
+    },
+    {
+      "id": "ringing_tail_shunt_RL",
+      "kind": "chop",
+      "configuration": {
+        "stages": 4,
+        "charge_kv_stage": 100.0,
+        "front_r_stage": 2.0,
+        "tail_r_stage": 1000.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 40.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 608.8384143495064,
+        "peak_time_us": 0.7510095123939033,
+        "front_us": 0.535948372454124,
+        "tail_us": 1.0277395156688445,
+        "t30_us": 0.27407180510534584,
+        "t90_us": 0.5949989742395518,
+        "t50_us": 1.1413477362070874,
+        "virtual_origin_us": 0.11360822053824285,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 608.8384143495064,
+        "peak_time_us": 0.7510095123939033,
+        "front_us": 0.535948372450851,
+        "tail_us": 1.02773951568891,
+        "t30_us": 0.27407180510534573,
+        "t90_us": 0.5949989742375918,
+        "t50_us": 1.1413477362281326,
+        "virtual_origin_us": 0.11360822053922268,
+        "minimum_kv": -257.6213041168658,
+        "reversal_pct": 42.31357582653732,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 2.5,
+        "fault_input_kj": 2.5,
+        "healthy_terminal_equivalent_kj": 1.72225,
+        "fault_terminal_equivalent_kj": 1.72225,
+        "energy_at_event_kj": 1.5507122354826,
+        "remaining_energy_kj": 6.028210918069031e-11,
+        "shunt_dissipated_kj": 0.6525618057052823,
+        "pre_event_dissipated_kj": 0.1715377645174001,
+        "post_event_dissipated_kj": 1.550712235422316,
+        "balance_relative_error": 1.1730025480709293e-15,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 5.0,
+        "baseline_peak_time_us": 0.7510095123939033,
+        "classification": "tail",
+        "voltage_at_chop_kv": 388.154860586905,
+        "pre_state": {
+          "generator_voltage_kv": 300.9183339376332,
+          "load_voltage_kv": 388.154860586905,
+          "series_current_a": 1068.6798123217493,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 300.9183339376332,
+          "load_voltage_kv": 388.154860586905,
+          "series_current_a": 1068.6798123217493,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 5.0,
+        "shunt_l_uh": 0.8,
+        "shunt_peak_current_a": 15207.903207080066,
+        "max_shunt_abs_di_dt_a_per_us": 485193.57573363127,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 1.1730025480709293e-15,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 1.2095745337251014,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.3034508861659579e-11,
+            "healthy": 1.4186430431283215e-11
+          },
+          "BDF": {
+            "fault": 3.9782213836351534e-09,
+            "healthy": 1.5119478639989195e-08
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 3.9606388522554575e-16,
+          "BDF": 3.9606388522554575e-16
+        },
+        "pre_chop_normalized_gap": 9.336371937296453e-17,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 5.10702591327572e-14,
+          "tail_us": 1.663596107596098e-14,
+          "t30_us": 1.4432899320127035e-15,
+          "t90_us": 3.197442310920451e-14,
+          "t50_us": 2.723643610337082e-15,
+          "virtual_origin_us": 1.3822276656583199e-14
+        }
+      }
+    },
+    {
+      "id": "ringing_tail_shunt_damped",
+      "kind": "chop",
+      "configuration": {
+        "stages": 4,
+        "charge_kv_stage": 100.0,
+        "front_r_stage": 2.0,
+        "tail_r_stage": 1000.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 40.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": "tail",
+      "healthy_metrics": {
+        "crest_kv": 608.8384143495064,
+        "peak_time_us": 0.7510095123939033,
+        "front_us": 0.535948372454124,
+        "tail_us": 1.0277395156688445,
+        "t30_us": 0.27407180510534584,
+        "t90_us": 0.5949989742395518,
+        "t50_us": 1.1413477362070874,
+        "virtual_origin_us": 0.11360822053824285,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 608.8384143495064,
+        "peak_time_us": 0.7510095123939033,
+        "front_us": 0.5359483724508514,
+        "tail_us": 1.02773951568891,
+        "t30_us": 0.27407180510534573,
+        "t90_us": 0.5949989742375921,
+        "t50_us": 1.1413477362281326,
+        "virtual_origin_us": 0.11360822053922257,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Positive crest and geometric 30\u201390%/50% descriptors of the chopped circuit; these are not chopped-impulse standard acceptance metrics.",
+        "front_tail_status": "Chopped waveform descriptors only; no full-wave or IEC compliance assessment."
+      },
+      "energy": {
+        "healthy_input_kj": 2.5,
+        "fault_input_kj": 2.5,
+        "healthy_terminal_equivalent_kj": 1.72225,
+        "fault_terminal_equivalent_kj": 1.72225,
+        "energy_at_event_kj": 1.469797482924035,
+        "remaining_energy_kj": 1.0910873039747975e-10,
+        "shunt_dissipated_kj": 1.3165184942330554,
+        "pre_event_dissipated_kj": 0.25245251707596505,
+        "post_event_dissipated_kj": 1.4697974828149296,
+        "balance_relative_error": 2.3204592273919107e-15,
+        "definition": "Input stage energy is sum(0.5 Cstage Vcharge\u00b2). Terminal-equivalent model energy includes the squared voltage-loss factor. Dissipation is solved from the post-event passive state equations, not plot-grid integration."
+      },
+      "event": {
+        "chop_time_us": 8.0,
+        "baseline_peak_time_us": 0.7510095123939033,
+        "classification": "tail",
+        "voltage_at_chop_kv": 355.5205552664763,
+        "pre_state": {
+          "generator_voltage_kv": 295.25367347461815,
+          "load_voltage_kv": 355.5205552664763,
+          "series_current_a": 802.9991031997043,
+          "shunt_current_a": 0.0
+        },
+        "post_state": {
+          "generator_voltage_kv": 295.25367347461815,
+          "load_voltage_kv": 355.5205552664763,
+          "series_current_a": 802.9991031997043,
+          "shunt_current_a": 0.0
+        },
+        "shunt_r_ohm": 80.0,
+        "shunt_l_uh": 3.0,
+        "shunt_peak_current_a": 3382.0671773109343,
+        "max_shunt_abs_di_dt_a_per_us": 118506.85175549211,
+        "current_rate_note": "Finite assumed branch inductance; conditional model prediction.",
+        "branch_provenance": "User-declared hypothetical R/L, not verified chopping-gap equipment.",
+        "time_definition": "Elapsed since circuit trigger, not measured from virtual origin."
+      },
+      "production_checks": {
+        "post_event_maximum_energy_ratio": 1.0,
+        "post_event_maximum_energy_increase_ratio": 0.0,
+        "event_voltage_continuity": true,
+        "inductor_current_continuity": true,
+        "energy_balance_relative_error": 2.3204592273919107e-15,
+        "numerical_method": "Exact constant-system matrix exponential with checked energy-normalized modal fast path; continuous extrema and threshold roots.",
+        "post_event_modal_condition": 8.423958378209386,
+        "post_event_matrix_exponential_fallback": false,
+        "original_charge_held_fixed": true,
+        "output_renormalized": false
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G2_pre_chop_match": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.6892671201027966e-11,
+            "healthy": 1.4162902774001228e-11
+          },
+          "BDF": {
+            "fault": 1.356068260284229e-08,
+            "healthy": 1.5119253540061787e-08
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 2.640425901503638e-16,
+          "BDF": 3.9606388522554575e-16
+        },
+        "pre_chop_normalized_gap": 9.336371937296453e-17,
+        "relative_event_state_jump": {
+          "generator_voltage_kv": 0.0,
+          "load_voltage_kv": 0.0,
+          "series_current_a": 0.0
+        },
+        "shunt_initial_current_correct": true,
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 5.1181281435219717e-14,
+          "tail_us": 1.641990963341603e-14,
+          "t30_us": 1.4432899320127035e-15,
+          "t90_us": 3.2085445411667024e-14,
+          "t50_us": 2.723643610337082e-15,
+          "virtual_origin_us": 1.3877787807814457e-14
+        }
+      }
+    },
+    {
+      "id": "cpri_11_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1295.4545454545453,
+        "peak_time_us": 2.126690495650755,
+        "front_us": 1.186780684440339,
+        "tail_us": 53.74352664656467,
+        "t30_us": 0.17849384793103928,
+        "t90_us": 0.8891409643623801,
+        "t50_us": 53.56669693628004,
+        "virtual_origin_us": -0.17682971028463113,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 20.68039069062089,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 12.951564678880663,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 1.2951564678880665,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.9090909090909091,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 165.36617296518534,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 165.36617296518534,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 9.135156257176085e-12,
+            "healthy": 1.3018060391850507e-11
+          },
+          "BDF": {
+            "fault": 2.1366455863850813e-10,
+            "healthy": 2.389548937667553e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 2.0881703790855281e-16,
+          "front_us": 3.835514396756385e-14,
+          "tail_us": 1.3353201918385523e-14,
+          "t30_us": 1.1102230246251565e-16,
+          "t90_us": 2.7200464103316335e-14,
+          "t50_us": 1.313198962480883e-14,
+          "virtual_origin_us": 1.3766765505351941e-14
+        },
+        "proportionality_error_normalized": 5.185715404845643e-16,
+        "input_stage_energy_expected_kj": 20.68039069062089,
+        "terminal_equivalent_energy_expected_kj": 12.951564678880667,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_11_uncharged_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 129.54545454545456,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403395,
+        "tail_us": 53.74352664656467,
+        "t30_us": 0.17849384793103923,
+        "t90_us": 0.8891409643623802,
+        "t50_us": 53.56669693628004,
+        "virtual_origin_us": -0.1768297102846313,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 2.068039069062089,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 0.12951564678880664,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 1.2951564678880665,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.09090909090909091,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 16.536617296518536,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 16.536617296518536,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 7.532251625538297e-13,
+            "healthy": 1.3018060391850507e-11
+          },
+          "BDF": {
+            "fault": 3.5627510298677646e-11,
+            "healthy": 2.389548937667553e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 3.854224223082025e-14,
+          "tail_us": 1.3220991998401505e-14,
+          "t30_us": 8.326672684688674e-17,
+          "t90_us": 2.731148640577885e-14,
+          "t50_us": 1.2999343264962274e-14,
+          "virtual_origin_us": 1.379452108096757e-14
+        },
+        "proportionality_error_normalized": 3.989011849881264e-17,
+        "input_stage_energy_expected_kj": 2.068039069062089,
+        "terminal_equivalent_energy_expected_kj": 0.12951564678880664,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_11_uncharged_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 0.0,
+        "peak_time_us": null,
+        "front_us": null,
+        "tail_us": null,
+        "t30_us": null,
+        "t90_us": null,
+        "t50_us": null,
+        "virtual_origin_us": null,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "No output: front and tail are undefined."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 0.0,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 0.0,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.0,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 0.0,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 0.0,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 0.0,
+            "healthy": 1.3018060391850507e-11
+          },
+          "BDF": {
+            "fault": 0.0,
+            "healthy": 2.3895473420628136e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 0.0,
+          "tail_us": 0.0
+        },
+        "proportionality_error_normalized": 0.0,
+        "input_stage_energy_expected_kj": 0.0,
+        "terminal_equivalent_energy_expected_kj": 0.0,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_11_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1425.0,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403406,
+        "tail_us": 53.74352664656466,
+        "t30_us": 0.17849384793103915,
+        "t90_us": 0.8891409643623809,
+        "t50_us": 53.56669693628003,
+        "virtual_origin_us": -0.1768297102846317,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1312.2912217890234,
+        "peak_time_us": 1.9539849719419922,
+        "front_us": 1.0736975470617827,
+        "tail_us": 52.95766123619593,
+        "t30_us": 0.16985937482310232,
+        "t90_us": 0.8127920377343494,
+        "t50_us": 52.80605427956341,
+        "virtual_origin_us": -0.15160695663252122,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 20.68039069062089,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 14.24672114676873,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": "Excluded capacitors can retain physical stored charge; bypass does not establish discharge or safety.",
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "bypassed",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 10,
+        "source_voltage_ratio": 0.9090909090909091,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 10,
+          "charge_kv_stage": 181.90279026170387,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 181.90279026170387,
+        "mode_note": "A conductive bypass excludes the selected stage capacitor and its per-stage front/tail sections. This is an explicitly altered topology, not a spark gap that fails to close.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": false,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.0955342364276906e-11,
+            "healthy": 1.3018060391850507e-11
+          },
+          "BDF": {
+            "fault": 2.0085695851185735e-10,
+            "healthy": 2.3895473420628136e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.955224600327314e-12,
+          "tail_us": 5.272953688575556e-14,
+          "t30_us": 1.909000735267341e-12,
+          "t90_us": 9.103828801926284e-15,
+          "t50_us": 1.2110135303776696e-15,
+          "virtual_origin_us": 2.8589630662878562e-12
+        },
+        "input_stage_energy_expected_kj": 20.68039069062089,
+        "terminal_equivalent_energy_expected_kj": 14.24672114676873,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_11_bypass_11",
+      "expected_rejection": true,
+      "all_applicable_gates_pass": true,
+      "error_type": "ValueError",
+      "error": "Bypassing every stage leaves no erected generator. This scenario is unsupported."
+    },
+    {
+      "id": "cpri_12_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1392.4088720823572,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.294670887109156,
+        "tail_us": 54.516817984917864,
+        "t30_us": 0.18738191460550935,
+        "t90_us": 0.9626339428145848,
+        "t50_us": 54.31657388541883,
+        "virtual_origin_us": -0.20024409949902838,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 24.299999999999997,
+        "fault_input_kj": 22.275,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 14.066476874999994,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 1.2787706250000035,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 12,
+        "fault_stage_count": 12,
+        "source_voltage_ratio": 0.9166666666666666,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 12,
+          "charge_kv_stage": 165.0,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 180.0,
+        "effective_mean_charge_kv_stage": 165.0,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.1263217894619885e-11,
+            "healthy": 8.974424842354813e-12
+          },
+          "BDF": {
+            "fault": 2.342008370142889e-10,
+            "healthy": 2.592382765935778e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 3.258625443409627e-15,
+          "tail_us": 1.3033459435520842e-16,
+          "t30_us": 5.551115123125783e-17,
+          "t90_us": 2.4424906541753444e-15,
+          "t50_us": 2.61630174708366e-16,
+          "virtual_origin_us": 1.3322676295501878e-15
+        },
+        "proportionality_error_normalized": 3.492580922465851e-16,
+        "input_stage_energy_expected_kj": 22.275,
+        "terminal_equivalent_energy_expected_kj": 14.066476875,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_12_uncharged_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 126.58262473475976,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091572,
+        "tail_us": 54.51681798491786,
+        "t30_us": 0.18738191460550951,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.316573885418826,
+        "virtual_origin_us": -0.2002440994990286,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 24.299999999999997,
+        "fault_input_kj": 2.025,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 0.11625187499999996,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 1.278770625,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 12,
+        "fault_stage_count": 12,
+        "source_voltage_ratio": 0.08333333333333333,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 12,
+          "charge_kv_stage": 15.0,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 180.0,
+        "effective_mean_charge_kv_stage": 15.0,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 8.816766735536973e-13,
+            "healthy": 8.974424842354813e-12
+          },
+          "BDF": {
+            "fault": 3.4927267506013854e-11,
+            "healthy": 2.592382765935778e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.9156122388401887e-15,
+          "tail_us": 1.3033459435520844e-16,
+          "t30_us": 2.7755575615628914e-17,
+          "t90_us": 2.4424906541753444e-15,
+          "t50_us": 1.3081508735418303e-16,
+          "virtual_origin_us": 1.1379786002407855e-15
+        },
+        "proportionality_error_normalized": 3.74218150528935e-17,
+        "input_stage_energy_expected_kj": 2.025,
+        "terminal_equivalent_energy_expected_kj": 0.11625187499999999,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_12_uncharged_12",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 0.0,
+        "peak_time_us": null,
+        "front_us": null,
+        "tail_us": null,
+        "t30_us": null,
+        "t90_us": null,
+        "t50_us": null,
+        "virtual_origin_us": null,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "No output: front and tail are undefined."
+      },
+      "energy": {
+        "healthy_input_kj": 24.299999999999997,
+        "fault_input_kj": 0.0,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 0.0,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 12,
+        "fault_stage_count": 12,
+        "source_voltage_ratio": 0.0,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fault_circuit_args": {
+          "stages": 12,
+          "charge_kv_stage": 0.0,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 180.0,
+        "effective_mean_charge_kv_stage": 0.0,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 0.0,
+            "healthy": 8.974424842354813e-12
+          },
+          "BDF": {
+            "fault": 0.0,
+            "healthy": 2.592382765935778e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 0.0,
+          "tail_us": 0.0
+        },
+        "proportionality_error_normalized": 0.0,
+        "input_stage_energy_expected_kj": 0.0,
+        "terminal_equivalent_energy_expected_kj": 0.0,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_12_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 12,
+        "charge_kv_stage": 180.0,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1518.991496817117,
+        "peak_time_us": 2.2899447090641245,
+        "front_us": 1.2946708871091575,
+        "tail_us": 54.51681798491785,
+        "t30_us": 0.1873819146055095,
+        "t90_us": 0.9626339428145858,
+        "t50_us": 54.31657388541882,
+        "virtual_origin_us": -0.2002440994990287,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1410.093817862678,
+        "peak_time_us": 2.1266904956507546,
+        "front_us": 1.1867806844403401,
+        "tail_us": 53.74352664656467,
+        "t30_us": 0.1784938479310392,
+        "t90_us": 0.8891409643623807,
+        "t50_us": 53.56669693628004,
+        "virtual_origin_us": -0.17682971028463154,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 24.299999999999997,
+        "fault_input_kj": 22.275,
+        "healthy_terminal_equivalent_kj": 16.740269999999995,
+        "fault_terminal_equivalent_kj": 15.345247499999997,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": "Excluded capacitors can retain physical stored charge; bypass does not establish discharge or safety.",
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "bypassed",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 12,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.9166666666666666,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 180.0,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 180.0,
+        "effective_mean_charge_kv_stage": 180.0,
+        "mode_note": "A conductive bypass excludes the selected stage capacitor and its per-stage front/tail sections. This is an explicitly altered topology, not a spark gap that fails to close.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": false,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 9.260102978468602e-12,
+            "healthy": 8.974424842354813e-12
+          },
+          "BDF": {
+            "fault": 2.2132174514568505e-10,
+            "healthy": 2.5947283653032937e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 3.9290635283845894e-14,
+          "tail_us": 1.348541183836954e-14,
+          "t30_us": 1.6653345369377348e-16,
+          "t90_us": 2.7755575615628914e-14,
+          "t50_us": 1.3264635984655385e-14,
+          "virtual_origin_us": 1.4155343563970746e-14
+        },
+        "input_stage_energy_expected_kj": 22.275,
+        "terminal_equivalent_energy_expected_kj": 15.345247499999997,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "cpri_12_bypass_12",
+      "expected_rejection": true,
+      "all_applicable_gates_pass": true,
+      "error_type": "ValueError",
+      "error": "Bypassing every stage leaves no erected generator. This scenario is unsupported."
+    },
+    {
+      "id": "workbook_10_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1223.0249172689778,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484093,
+        "tail_us": 54.19810451445913,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.412406218986522,
+        "t50_us": 53.86195425717463,
+        "virtual_origin_us": -0.3361502572845044,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 442.1450863695748,
+        "fault_input_kj": 397.93057773261734,
+        "healthy_terminal_equivalent_kj": 304.59375000000006,
+        "fault_terminal_equivalent_kj": 246.72093750000008,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 27.413437500000015,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 10,
+        "fault_stage_count": 10,
+        "source_voltage_ratio": 0.9,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 10,
+          "charge_kv_stage": 154.51807228915666,
+          "front_r_stage": 75.0,
+          "tail_r_stage": 23.953488372093023,
+          "stage_c_uf": 3.0,
+          "total_c_pf": 930.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 171.68674698795184,
+        "effective_mean_charge_kv_stage": 154.51807228915666,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 9.432989440786284e-12,
+            "healthy": 8.177923477798932e-12
+          },
+          "BDF": {
+            "fault": 3.5545572955125936e-10,
+            "healthy": 3.9050287349730077e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.269804359106144e-14,
+          "tail_us": 1.3896709242013847e-14,
+          "t30_us": 1.3877787807814457e-16,
+          "t90_us": 1.8708008808569524e-14,
+          "t50_us": 1.424727649050536e-14,
+          "virtual_origin_us": 1.304512053934559e-14
+        },
+        "proportionality_error_normalized": 3.346396381782033e-16,
+        "input_stage_energy_expected_kj": 397.93057773261734,
+        "terminal_equivalent_energy_expected_kj": 246.72093750000005,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "workbook_10_uncharged_9",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 135.89165747433086,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484049,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.2467019014725046,
+        "t90_us": 1.4124062189865196,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.3361502572845029,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 442.1450863695748,
+        "fault_input_kj": 44.21450863695748,
+        "healthy_terminal_equivalent_kj": 304.59375000000006,
+        "fault_terminal_equivalent_kj": 3.0459375000000013,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 27.413437500000008,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 10,
+        "fault_stage_count": 10,
+        "source_voltage_ratio": 0.1,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 10,
+          "charge_kv_stage": 17.168674698795183,
+          "front_r_stage": 75.0,
+          "tail_r_stage": 23.953488372093023,
+          "stage_c_uf": 3.0,
+          "total_c_pf": 930.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 171.68674698795184,
+        "effective_mean_charge_kv_stage": 17.168674698795183,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.19212233854377e-12,
+            "healthy": 8.177923477798932e-12
+          },
+          "BDF": {
+            "fault": 6.660269973728623e-11,
+            "healthy": 3.9050287349730077e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 2.3040225152735774e-14,
+          "tail_us": 1.3765608211428808e-14,
+          "t30_us": 1.6653345369377348e-16,
+          "t90_us": 1.886521896662476e-14,
+          "t50_us": 1.4115357263741416e-14,
+          "virtual_origin_us": 1.3600232051658168e-14
+        },
+        "proportionality_error_normalized": 4.1829954772275414e-17,
+        "input_stage_energy_expected_kj": 44.21450863695748,
+        "terminal_equivalent_energy_expected_kj": 3.0459375,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "workbook_10_uncharged_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 0.0,
+        "peak_time_us": null,
+        "front_us": null,
+        "tail_us": null,
+        "t30_us": null,
+        "t90_us": null,
+        "t50_us": null,
+        "virtual_origin_us": null,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "No output: front and tail are undefined."
+      },
+      "energy": {
+        "healthy_input_kj": 442.1450863695748,
+        "fault_input_kj": 0.0,
+        "healthy_terminal_equivalent_kj": 304.59375000000006,
+        "fault_terminal_equivalent_kj": 0.0,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 10,
+        "fault_stage_count": 10,
+        "source_voltage_ratio": 0.0,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fault_circuit_args": {
+          "stages": 10,
+          "charge_kv_stage": 0.0,
+          "front_r_stage": 75.0,
+          "tail_r_stage": 23.953488372093023,
+          "stage_c_uf": 3.0,
+          "total_c_pf": 930.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 171.68674698795184,
+        "effective_mean_charge_kv_stage": 0.0,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 0.0,
+            "healthy": 8.177923477798932e-12
+          },
+          "BDF": {
+            "fault": 0.0,
+            "healthy": 3.9050287349730077e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 0.0,
+          "tail_us": 0.0
+        },
+        "proportionality_error_normalized": 0.0,
+        "input_stage_energy_expected_kj": 0.0,
+        "terminal_equivalent_energy_expected_kj": 0.0,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "workbook_10_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 10,
+        "charge_kv_stage": 171.68674698795184,
+        "front_r_stage": 75.0,
+        "tail_r_stage": 23.953488372093023,
+        "stage_c_uf": 3.0,
+        "total_c_pf": 930.0,
+        "l_uh": 12.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1358.9165747433085,
+        "peak_time_us": 3.2140012141163967,
+        "front_us": 1.9467262102484086,
+        "tail_us": 54.19810451445914,
+        "t30_us": 0.24670190147250443,
+        "t90_us": 1.4124062189865216,
+        "t50_us": 53.86195425717464,
+        "virtual_origin_us": -0.33615025728450415,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1227.9956160222252,
+        "peak_time_us": 2.9453218426615617,
+        "front_us": 1.7585517789592164,
+        "tail_us": 53.80672003260912,
+        "t30_us": 0.22543527052712256,
+        "t90_us": 1.2784602878679707,
+        "t50_us": 53.50564279446582,
+        "virtual_origin_us": -0.30107723814330156,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 442.1450863695748,
+        "fault_input_kj": 397.93057773261734,
+        "healthy_terminal_equivalent_kj": 304.59375000000006,
+        "fault_terminal_equivalent_kj": 274.1343750000001,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": "Excluded capacitors can retain physical stored charge; bypass does not establish discharge or safety.",
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "bypassed",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 10,
+        "fault_stage_count": 9,
+        "source_voltage_ratio": 0.9,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 9,
+          "charge_kv_stage": 171.68674698795184,
+          "front_r_stage": 75.0,
+          "tail_r_stage": 23.953488372093023,
+          "stage_c_uf": 3.0,
+          "total_c_pf": 930.0,
+          "l_uh": 12.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 171.68674698795184,
+        "effective_mean_charge_kv_stage": 171.68674698795184,
+        "mode_note": "A conductive bypass excludes the selected stage capacitor and its per-stage front/tail sections. This is an explicitly altered topology, not a spark gap that fails to close.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": false,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 6.731778281411826e-12,
+            "healthy": 8.624667394766833e-12
+          },
+          "BDF": {
+            "fault": 3.4457308119788507e-10,
+            "healthy": 3.907202219422975e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 6.288027146867254e-14,
+          "tail_us": 1.4526011042160322e-15,
+          "t30_us": 0.0,
+          "t90_us": 5.1757018106530496e-14,
+          "t50_us": 1.9919657964568686e-15,
+          "virtual_origin_us": 3.3084646133829665e-14
+        },
+        "input_stage_energy_expected_kj": 397.93057773261734,
+        "terminal_equivalent_energy_expected_kj": 274.1343750000001,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "workbook_10_bypass_10",
+      "expected_rejection": true,
+      "all_applicable_gates_pass": true,
+      "error_type": "ValueError",
+      "error": "Bypassing every stage leaves no erected generator. This scenario is unsupported."
+    },
+    {
+      "id": "zero_l_uncharged_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1292.5205174600683,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648495,
+        "tail_us": 53.97178660905103,
+        "t30_us": 0.15042945482450368,
+        "t90_us": 0.927169035162737,
+        "t50_us": 53.73384627370642,
+        "virtual_origin_us": -0.23794033534461298,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 20.68039069062089,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 12.951564678880663,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 1.2951564678880665,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.9090909090909091,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 165.36617296518534,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 0.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 165.36617296518534,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.4545127401624535e-11,
+            "healthy": 1.5552960112480246e-11
+          },
+          "BDF": {
+            "fault": 7.629931712659221e-10,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 1.4044553292560654e-16,
+          "BDF": 1.4044553292560654e-16
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 8.853847244504535e-12,
+          "tail_us": 1.8984041280450123e-13,
+          "t30_us": 7.121969680667917e-12,
+          "t90_us": 2.4491519923230953e-13,
+          "t50_us": 5.950518216458058e-15,
+          "virtual_origin_us": 1.056049692138572e-11
+        },
+        "proportionality_error_normalized": 3.19845354127487e-16,
+        "input_stage_energy_expected_kj": 20.68039069062089,
+        "terminal_equivalent_energy_expected_kj": 12.951564678880667,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "zero_l_uncharged_10",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 129.25205174600686,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.297155099164851,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.927169035162738,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.23794033534461337,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 2.068039069062089,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 0.12951564678880664,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 1.2951564678880665,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.09090909090909091,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 16.536617296518536,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 0.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 16.536617296518536,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.3566040791971031e-12,
+            "healthy": 1.5552960112480246e-11
+          },
+          "BDF": {
+            "fault": 7.607787619372897e-11,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 8.853504888212567e-12,
+          "tail_us": 1.8997206357621035e-13,
+          "t30_us": 7.122025191819148e-12,
+          "t90_us": 2.452482661396971e-13,
+          "t50_us": 5.818284478314546e-15,
+          "virtual_origin_us": 1.0560441410234489e-11
+        },
+        "proportionality_error_normalized": 3.9980669265935876e-17,
+        "input_stage_energy_expected_kj": 2.068039069062089,
+        "terminal_equivalent_energy_expected_kj": 0.12951564678880664,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "zero_l_uncharged_11",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 0.0,
+        "peak_time_us": null,
+        "front_us": null,
+        "tail_us": null,
+        "t30_us": null,
+        "t90_us": null,
+        "t50_us": null,
+        "virtual_origin_us": null,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "No output: front and tail are undefined."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 0.0,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 0.0,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": null,
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "uncharged_conducting",
+        "stage_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 11,
+        "source_voltage_ratio": 0.0,
+        "stage_charge_fractions": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fault_circuit_args": {
+          "stages": 11,
+          "charge_kv_stage": 0.0,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 0.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 0.0,
+        "mode_note": "All N stages remain erected and their gaps are assumed conducting. Selected stage capacitors begin at reduced charge. Cg, total Rf and total Rt remain unchanged; only the sum of initial stage voltages changes.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": true,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 0.0,
+            "healthy": 1.5552960112480246e-11
+          },
+          "BDF": {
+            "fault": 0.0,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 0.0,
+          "tail_us": 0.0
+        },
+        "proportionality_error_normalized": 0.0,
+        "input_stage_energy_expected_kj": 0.0,
+        "terminal_equivalent_energy_expected_kj": 0.0,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "zero_l_bypass_1",
+      "kind": "stage_failure",
+      "configuration": {
+        "stages": 11,
+        "charge_kv_stage": 181.90279026170387,
+        "front_r_stage": 30.0,
+        "tail_r_stage": 520.0,
+        "stage_c_uf": 0.125,
+        "total_c_pf": 1500.0,
+        "l_uh": 0.0,
+        "efficiency": 0.83
+      },
+      "actual_chop_classification": null,
+      "healthy_metrics": {
+        "crest_kv": 1421.772569206075,
+        "peak_time_us": 2.25359290383967,
+        "front_us": 1.2971550991648506,
+        "tail_us": 53.971786609051016,
+        "t30_us": 0.15042945482450373,
+        "t90_us": 0.9271690351627376,
+        "t50_us": 53.733846273706405,
+        "virtual_origin_us": -0.2379403353446132,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "fault_metrics": {
+        "crest_kv": 1308.8563015054299,
+        "peak_time_us": 2.0998237099408725,
+        "front_us": 1.1976094226624792,
+        "tail_us": 53.21722011853948,
+        "t30_us": 0.13851789667369202,
+        "t90_us": 0.8556492874895478,
+        "t50_us": 52.997172319805244,
+        "virtual_origin_us": -0.2200477987342359,
+        "minimum_kv": 0.0,
+        "reversal_pct": 0.0,
+        "definition": "Existing circuit solver: Lightning virtual front and half-value tail; Switching time to peak and half-value time.",
+        "front_tail_status": "Resolved circuit descriptors."
+      },
+      "energy": {
+        "healthy_input_kj": 22.74842975968298,
+        "fault_input_kj": 20.68039069062089,
+        "healthy_terminal_equivalent_kj": 15.671393261445605,
+        "fault_terminal_equivalent_kj": 14.24672114676873,
+        "remaining_energy_kj": null,
+        "shunt_dissipated_kj": null,
+        "unmodeled_internal_offset_energy_kj": 0.0,
+        "bypassed_capacitor_charge_note": "Excluded capacitors can retain physical stored charge; bypass does not establish discharge or safety.",
+        "balance_relative_error": null,
+        "definition": "Input energy sums actual stage capacitor charges squared. Unequal-charge conducting stages have internal charge-offset energy that is not accessible in the lumped terminal equivalent. Their original stage charge is not reoptimized."
+      },
+      "event": {
+        "mode": "bypassed",
+        "stage_indices": [
+          1
+        ],
+        "remaining_charge_fraction": 0.0,
+        "healthy_stage_count": 11,
+        "fault_stage_count": 10,
+        "source_voltage_ratio": 0.9090909090909091,
+        "stage_charge_fractions": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fault_circuit_args": {
+          "stages": 10,
+          "charge_kv_stage": 181.90279026170387,
+          "front_r_stage": 30.0,
+          "tail_r_stage": 520.0,
+          "stage_c_uf": 0.125,
+          "total_c_pf": 1500.0,
+          "l_uh": 0.0,
+          "efficiency": 0.83
+        },
+        "stage_position_scope": "Numbers identify selected conceptual stages only. The lumped model predicts no dependence on their physical locations.",
+        "charge_kv_stage_held_fixed": 181.90279026170387,
+        "effective_mean_charge_kv_stage": 181.90279026170387,
+        "mode_note": "A conductive bypass excludes the selected stage capacitor and its per-stage front/tail sections. This is an explicitly altered topology, not a spark gap that fails to close.",
+        "unsupported_failure": "A spark gap that does not fire can leave an open chain; its distributed transient is not represented by either supported mode."
+      },
+      "production_checks": {
+        "original_charge_held_fixed": true,
+        "output_renormalized": false,
+        "same_capacitance_and_resistance_for_reduced_charge": false,
+        "failure_is_not_open_gap_misfire": true,
+        "numerical_method": "lumped RLC Marx equivalent v2.1"
+      },
+      "gates": {
+        "G1_independent_voltage": true,
+        "G3_continuity_and_passivity": true,
+        "G4_metrics_export_consistency": true,
+        "G5_stage_fault_semantics": true,
+        "G7_input_and_provenance": true
+      },
+      "all_applicable_gates_pass": true,
+      "details": {
+        "voltage_error_normalized_by_healthy_crest": {
+          "Radau": {
+            "fault": 1.4995789505590163e-11,
+            "healthy": 1.5552960112480246e-11
+          },
+          "BDF": {
+            "fault": 7.724082990326958e-10,
+            "healthy": 8.382209584793841e-10
+          }
+        },
+        "independent_energy_maximum_increase_ratio": {
+          "Radau": 0.0,
+          "BDF": 0.0
+        },
+        "exported_metric_relative_error": {
+          "crest_kv": 0.0,
+          "peak_time_us": 0.0,
+          "front_us": 7.946709195565153e-12,
+          "tail_us": 1.546132034288049e-13,
+          "t30_us": 5.766775945659219e-12,
+          "t90_us": 6.794564910705958e-14,
+          "t50_us": 7.373950110202565e-15,
+          "virtual_origin_us": 8.616218849510915e-12
+        },
+        "input_stage_energy_expected_kj": 20.68039069062089,
+        "terminal_equivalent_energy_expected_kj": 14.24672114676873,
+        "energy_metadata_matches": true
+      }
+    },
+    {
+      "id": "zero_l_bypass_11",
+      "expected_rejection": true,
+      "all_applicable_gates_pass": true,
+      "error_type": "ValueError",
+      "error": "Bypassing every stage leaves no erected generator. This scenario is unsupported."
+    }
+  ],
+  "numeric_case_count": 34,
+  "expected_rejection_case_count": 4,
+  "all_cases_pass": false,
+  "gate_summary": {
+    "G1_independent_voltage": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    },
+    "G2_pre_chop_match": {
+      "pass": true,
+      "scored_cases": 18,
+      "passing_cases": 18
+    },
+    "G3_continuity_and_passivity": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    },
+    "G4_metrics_export_consistency": {
+      "pass": false,
+      "scored_cases": 34,
+      "passing_cases": 30
+    },
+    "G5_stage_fault_semantics": {
+      "pass": true,
+      "scored_cases": 16,
+      "passing_cases": 16
+    },
+    "G6_RC_analytic_limit": {
+      "pass": true,
+      "scored_cases": 2,
+      "passing_cases": 2
+    },
+    "G7_input_and_provenance": {
+      "pass": true,
+      "scored_cases": 34,
+      "passing_cases": 34
+    }
+  },
+  "input_rejection_regressions": "See tests/test_fault_tests_independent.py pytest record; G7 case scores here cover provenance only.",
+  "not_established": [
+    "Real CPRI accuracy",
+    "actual gap or physical stage-failure waveform prediction",
+    "IEC compliance",
+    "physical safety"
+  ]
+}

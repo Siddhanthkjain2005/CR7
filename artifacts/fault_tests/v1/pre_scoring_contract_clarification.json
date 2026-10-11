@@ -1,0 +1,19 @@
+{
+  "created_before_scoring": true,
+  "original_protocol_sha256": "62388b611034937ee8c2e073578feced01dbaf8a35fad45cf99c829d79809b38",
+  "case_inputs_or_tolerances_changed": false,
+  "contract_clarifications": [
+    {
+      "case_ids": [
+        "cpri_11_bypass_11",
+        "cpri_12_bypass_12",
+        "workbook_10_bypass_10",
+        "zero_l_bypass_11"
+      ],
+      "expected_result": "Reject all-bypassed scenario with ValueError/HTTP422; no remaining erected generator.",
+      "reason": "Original gate permits zero only under explicit supported conductive topology; current public contract has no source-free substitute topology. All-bypassed fixtures exercise expected unsupported rejection, not numerical accuracy."
+    }
+  ],
+  "numeric_case_count": 34,
+  "expected_rejection_case_count": 4
+}

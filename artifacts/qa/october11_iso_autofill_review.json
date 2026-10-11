@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-11",
+  "scope": "Frontend ISO 8601 capture timestamp autofill only; walkthrough video postponed by owner",
+  "forms": ["Waveform Diagnostics upload", "Compare measurement capture metadata"],
+  "format": "YYYY-MM-DDTHH:mm:ss±HH:mm",
+  "clock": "Device local clock and timezone offset at the timestamp's instant",
+  "behavior": {
+    "initialize": "Once after client mount, outside server rendering",
+    "editable": true,
+    "refresh_action": "Use current time",
+    "clear_action": "Clear time; blank optional metadata continues to be omitted",
+    "provenance": "Device-clock suggestion is labelled; edit to actual capture time or clear if unknown",
+    "draft_label": "Included on upload"
+  },
+  "verification": {
+    "frontend_unit_tests": {"passed": 28, "failed": 0},
+    "time_zones": ["UTC", "Asia/Kolkata", "Asia/Kathmandu", "America/New_York winter/summer and autumn repeated-hour transition"],
+    "typecheck": "PASS",
+    "production_build": "PASS; 15 static pages",
+    "browser": {
+      "environment": "Temporary port 8002 and isolated database; generated demonstration reference",
+      "checks": [
+        "Diagnostics edited time survives origin change",
+        "Diagnostics cleared time stays blank after polarity change",
+        "Diagnostics explicit refresh fills current local ISO time",
+        "Compare measurement autofills actual value after client mount",
+        "Compare measurement clear leaves time blank",
+        "Compare measurement refresh fills current local ISO time"
+      ],
+      "passed": 6,
+      "console_errors": 0,
+      "screenshots": "None; focused interaction and DOM checks only",
+      "limitations": "No upload submission or cross-browser/OS review in this frontend-only pass"
+    },
+    "release_smoke": {"status": "PASS", "fresh_database": true, "external_network_denied": true, "local_assets": 31, "saved_recommendation": true},
+    "backend_test_suite": "Not rerun; no backend edits for timestamp autofill. Previous fault-test verification remains a separate record."
+  },
+  "cloud_use": false,
+  "deployment": false,
+  "push": false,
+  "video_created": false
+}

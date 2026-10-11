@@ -10,6 +10,8 @@ import EngineeringChart from './engineering-chart';
 import TrialQuality from './trial-quality';
 import TrialEvaluator from './trial-evaluator';
 import CaptureAdmission from './capture-admission';
+import CaptureTimeField from './capture-time-field';
+import {captureTimeNow} from '@/lib/capture-time';
 import {comparisonWaveform} from '@/lib/trial-waveform';
 import {sourceLabel, trialSourceType} from './evidence-pages';
 import {metricName} from './hall';
@@ -57,6 +59,11 @@ export function TrialCalibrator() {
   const router = useRouter();
   const [trialRun, setTrialRun] = useState<Data | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    // Client-only, once per form: keep later edits and deliberately blank times.
+    const capturedAt = captureTimeNow();
+    setForm(current => ({...current, captured_at: current.captured_at || capturedAt}));
+  }, []);
   useEffect(() => {
     let alive = true;
     if (trial)
@@ -311,14 +318,11 @@ export function TrialCalibrator() {
                 <details className="disclosure">
                   <summary>
                     Capture metadata
-                    <small>{form.captured_at || form.measurement_instrument ? 'Recorded' : 'Optional · not recorded'}</small>
+                    <small>{form.captured_at || form.measurement_instrument ? 'Included on upload' : 'Optional · not recorded'}</small>
                     <ChevronDown size={16} className="chev" aria-hidden />
                   </summary>
                   <div className="disclosure-body">
-                    <label className="field">
-                      <span>Captured at (ISO 8601)</span>
-                      <input value={form.captured_at} placeholder="2026-10-10T14:05:00+05:30" onChange={e => setForm({...form, captured_at: e.target.value})} />
-                    </label>
+                    <CaptureTimeField value={form.captured_at} onChange={captured_at => setForm(current => ({...current, captured_at}))} />
                     <label className="field">
                       <span>Measurement instrument</span>
                       <input value={form.measurement_instrument} placeholder="Digitizer, divider and probe identity" onChange={e => setForm({...form, measurement_instrument: e.target.value})} />
