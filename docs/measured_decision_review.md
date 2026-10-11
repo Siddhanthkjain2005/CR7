@@ -31,7 +31,7 @@ The saved prediction envelope is reported independently as contained, overlappin
 
 These are descriptive results on a small, operator-selected sample. Capture origin is operator-labeled and acquisition checks are heuristics. Instrument bandwidth, calibration and authenticity are not certified. Near-boundary decisions can still depend on measurement uncertainty. No confidence interval, generalization estimate, laboratory success probability or automatic promotion is inferred.
 
-This capability addresses the master prompt's requested false-pass/false-fail and worst-error reporting and supports the organizer's emphasis on numeric compliance. It is not a newly discovered weighted judging criterion. Current official and supplied expectations are audited in `judging_criteria_evidence.md`.
+This capability reports false passes, false failures and worst errors, supporting the organizer's emphasis on numeric compliance. It is not a newly discovered weighted judging criterion. Current official and supplied expectations are audited in `judging_criteria_evidence.md`.
 
 ## Verification and use
 

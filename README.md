@@ -93,12 +93,15 @@ These are distinct software and simulation results, **not a laboratory-accuracy 
 backend/app/       API, physics, optimization, ML gates and records
 frontend/          Next.js interface, charts and conceptual digital twin
 config/            Generator profiles, compliance and search configuration
-data/              Supplied sources, processed and labelled generated data
+data/source/       Original challenge PDF, workbook and briefing transcript
+data/              Processed and labelled generated data
 artifacts/         Frozen models, protocols and completed study records
-docs/              Engineering explanations and workflow guides
+docs/              Architecture, demo guides and engineering explanations
+docs/validation/   Detailed optimization report
 scripts/           Startup, audits and reproducibility utilities
 tests/             Backend regression and numerical checks
 presentations/     Team pitch deck
+release/           Instructions for generating a reproducible package
 ```
 
 ## Team CR7

@@ -39,11 +39,12 @@ Start with the demonstration and architecture. Detailed implementation links bel
 
 Numerical agreement, synthetic benchmarks, generated studies and independent physical measurements answer different questions. A passed software test is not a measured laboratory-accuracy result.
 
-## Presentation and handoff
+## Submission and presentation
 
 - [Team pitch deck](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/presentations/CR7_ImpulseTwin_AI_Vertical_Architecture.pptx)
 - [Judge Mode guide](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/judge_mode.md)
 - [Questions and answers](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/judges_qa.md)
 - [Reviewed judging material](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/judging_criteria_evidence.md)
-- [Engineering handoff](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/HANDOFF.md)
-- [Project history](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/project_history.md)
+
+- [Reproducible submission package](../release/README.md)
+- [Original challenge sources](../data/source/README.md)
