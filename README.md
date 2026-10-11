@@ -6,7 +6,7 @@ The laboratory workflow often repeats analytical estimates, physical adjustments
 
 The engineering UI and Judge Mode now start with the **CPRI physical profile and circuit physics**. Source stock quantities are unknown, so enter actual counts or a clearly labeled operator assumption before optimizing. The displayed load, divider, stray capacitance, inductance and efficiency are editable example inputs, not measured machine parameters. The 545 pF source capacitance is included explicitly and must be excluded if already represented by the divider/system inputs.
 
-**Hardening verification:** final verification pending. The current change rationale, before/after checks and remaining limits will be recorded in [OPTIMIZATION_REPORT.md](OPTIMIZATION_REPORT.md) and `artifacts/optimization_report.json`. Earlier dated release reports remain historical evidence.
+**Hardening verification:** final verification pending. The current change rationale, before/after checks and remaining limits will be recorded in [OPTIMIZATION_REPORT.md](docs/validation/optimization_report.md) and `artifacts/optimization_report.json`. Earlier dated release reports remain historical evidence.
 
 ## Architecture
 
@@ -60,7 +60,7 @@ Open **http://127.0.0.1:8000/judge/**. For exact Windows PowerShell, macOS and L
 
 Engineering pages retain waveform exploration, trial calibration, setup-change planning, model metrics, history and reports. **Laboratory Evidence**, **Hardware Verification**, **Experiment Timeline** and **Search Quality** make the supporting evidence easier to inspect. [Evidence levels](docs/evidence_levels.md), [hardware provenance](docs/hardware_verification.md), [test-object references](docs/test_object_reference.md).
 
-The 6 October hardening passes 263 backend tests, frontend checks and desktop/mobile browser review while preserving frozen evidence. Before/after timings, search comparisons, numerical corrections and remaining limits are in [the optimization report](OPTIMIZATION_REPORT.md); progress is recorded in [AGENTS.md](AGENTS.md).
+The 6 October hardening passes 263 backend tests, frontend checks and desktop/mobile browser review while preserving frozen evidence. Before/after timings, search comparisons, numerical corrections and remaining limits are in [the optimization report](docs/validation/optimization_report.md).
 
 ## Validate a release
 
@@ -70,4 +70,22 @@ python scripts/verify_release.py
 
 The verifier checks frozen hashes, configuration/models, tests, frontend typecheck/build, static assets and a fresh database with external network blocked in-process. It writes `artifacts/release_readiness.json` with PASS / FAIL / NOT TESTED. Unverified platforms and disconnected-laptop rehearsal remain explicit.
 
-No deployment is included. Confirm the remaining hardware metadata for physical application. Independent measured captures can later establish laboratory performance; they are not a prerequisite for the current physics-based challenge solution. Original implementation history and deeper results are preserved in [project history](docs/project_history.md), [PROJECT_STATE.md](PROJECT_STATE.md), and [HANDOFF.md](HANDOFF.md).
+No deployment is included. Confirm the remaining hardware metadata for physical application. Independent measured captures can later establish laboratory performance; they are not a prerequisite for the current physics-based challenge solution. Detailed engineering results are retained in the documentation and completed evidence records.md), [Accuracy report](docs/accuracy_progress.md), and [Accuracy report](docs/accuracy_progress.md).
+
+## Repository guide
+
+```text
+backend/          API, physics, optimization and stored records
+frontend/         Interface source and prepared static application
+config/           Generator profiles and engineering rules
+data/source/      Original challenge PDF, workbook and briefing
+data/             Processed and labelled generated data
+artifacts/        Frozen models and completed scientific evidence
+docs/             Workflow guides and engineering explanations
+docs/validation/  Detailed optimization report
+scripts/          Startup, packaging and reproducibility utilities
+tests/            Regression and numerical checks
+release/          Reproducible submission-package instructions
+```
+
+[Documentation](docs/README.md) · [Contributor guide](CONTRIBUTING.md) · [Current demo branch](https://github.com/Siddhanthkjain2005/CR7/tree/codex/assembly-twin)

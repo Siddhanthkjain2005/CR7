@@ -102,7 +102,7 @@ For a judge's RLC question, use **Explore R, L and C** on the Optimizer: the sav
 
 - Exact workbook reproduction and source exceptions: [source reconciliation](source_reconciliation.md).
 - Frozen split policy and all six errors: [data audit](data_audit.md), `artifacts/models/hidden_test_evaluation.json`.
-- Implemented acceptance evidence and external limits: [acceptance review](acceptance_review.md).
+- Implemented acceptance evidence and external limits: [Accuracy report](accuracy_progress.md).
 - Detailed click sequence and fallback: [demo script](demo_script.md).
 
 Do not claim a guaranteed win, global optimum, complete IEC certification, measured shot reduction, laboratory accuracy or verified mechanical/pulse compatibility. Keep generated samples separate from measured trials. If the live app is unavailable, use the saved report and the sixty-second version; do not invent an execution result.

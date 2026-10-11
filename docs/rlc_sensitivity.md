@@ -1,6 +1,6 @@
 # RLC sensitivity explorer
 
-The briefing (20:01–20:16 and 24:58–25:37) asks teams to explain the roles of resistance, inductance and capacitance. The master prompt also requests an educational panel that varies one parameter at a time. **Explore R, L and C** on the Optimizer now supports that demonstration.
+The briefing (20:01–20:16 and 24:58–25:37) asks teams to explain the roles of resistance, inductance and capacitance. **Explore R, L and C** on the Optimizer now supports that demonstration.
 
 ## Rehearse the comparison
 
