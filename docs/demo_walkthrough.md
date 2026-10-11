@@ -49,7 +49,7 @@ Image-derived samples do not enter calibration or laboratory-accuracy evaluation
 
 ## Export and conclude · 4:30–5:00
 
-Show exports, saved history and evidence views. The [pitch deck](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/presentations/CR7_ImpulseTwin_AI_Vertical_Architecture.pptx) provides the architecture and team introduction.
+Show exports, saved history and evidence views. The [pitch deck](https://github.com/Siddhanthkjain2005/CR7/blob/main/presentations/CR7_ImpulseTwin_AI_Vertical_Architecture.pptx) provides the architecture and team introduction.
 
 Explain: “ImpulseTwin connects configuration search, inspectable physics, visual hardware understanding and capture feedback. Software/numerical checks are recorded. Independent measurements on the real generator are needed to establish laboratory accuracy.”
 

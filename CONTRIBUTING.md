@@ -1,6 +1,6 @@
 # Contributing
 
-Start from [`codex/assembly-twin`](https://github.com/Siddhanthkjain2005/CR7/tree/codex/assembly-twin). Read the [system architecture](docs/system_architecture.md), [assumptions](docs/assumptions.md) and [documentation](docs/README.md) before scientific changes.
+Start from [`main`](https://github.com/Siddhanthkjain2005/CR7/tree/main). Read the [system architecture](docs/system_architecture.md), [assumptions](docs/assumptions.md) and [documentation](docs/README.md) before scientific changes.
 
 ## Development
 
