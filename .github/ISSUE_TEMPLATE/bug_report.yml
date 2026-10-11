@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a reproducible application or documentation problem.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "Include reproduction details. Do not attach credentials or private laboratory files."
+  - type: input
+    id: version
+    attributes:
+      label: Branch or commit
+      placeholder: codex/assembly-twin
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the page, profile, preset and relevant inputs.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: Include the error and whether this occurs locally or on the hosted demo.
+    validations:
+      required: true
+  - type: dropdown
+    id: origin
+    attributes:
+      label: Data origin, if relevant
+      options:
+        - No uploaded data
+        - Generated demonstration
+        - Software simulation
+        - Physical capture
+        - Unknown
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and context
+      description: Browser, operating system and logs with sensitive information removed.

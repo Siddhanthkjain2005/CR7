@@ -1,91 +1,117 @@
+![ImpulseTwin AI — impulse-generator decision support](docs/media/impulsetwin-banner.svg)
+
 # ImpulseTwin AI
 
-Physics-guided decision support for high-voltage impulse-generator setup. It recommends counted resistor/stage configurations before the next physical trial and makes the evidence, uncertainty and source assumptions inspectable.
+**Understand the waveform. Inspect the configuration. Prepare the next trial.**
 
-The laboratory workflow often repeats analytical estimates, physical adjustments and trial shots. ImpulseTwin combines the CPRI physical generator profile, an explicit lumped Marx/RLC model and counted inventory constraints to propose a defensible starting point. The separate workbook profile supports reference reproduction and synthetic ML benchmarking. Frozen residual ML applies only to supported workbook calculator settings; it remains disabled for the CPRI profile and circuit mode.
+ImpulseTwin AI helps engineers explore high-voltage impulse-generator settings before a physical trial. It brings circuit physics, counted-component search, scoped machine learning, waveform diagnostics and a conceptual assembly twin into one inspectable workflow.
 
-The engineering UI and Judge Mode now start with the **CPRI physical profile and circuit physics**. Source stock quantities are unknown, so enter actual counts or a clearly labeled operator assumption before optimizing. The displayed load, divider, stray capacitance, inductance and efficiency are editable example inputs, not measured machine parameters. The 545 pF source capacitance is included explicitly and must be excluded if already represented by the divider/system inputs.
+Built by **Team CR7** for **PowerNext AI 2026 · Track 1**.
 
-**Hardening verification:** final verification pending. The current change rationale, before/after checks and remaining limits will be recorded in [OPTIMIZATION_REPORT.md](OPTIMIZATION_REPORT.md) and `artifacts/optimization_report.json`. Earlier dated release reports remain historical evidence.
+**[Live demo](https://cr7-impulsetwin-730856d9.azurewebsites.net/)** · **[Pitch deck](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/presentations/CR7_ImpulseTwin_AI_Vertical_Architecture.pptx)** · **[Five-minute tour](docs/demo_walkthrough.md)** · **[Documentation](docs/README.md)**
 
-## Judge workflow (10 October 2026)
+> **Current demo branch:** [`codex/assembly-twin`](https://github.com/Siddhanthkjain2005/CR7/tree/codex/assembly-twin). The live app uses its engineering implementation. The default branch provides this project entry point; clone the demo branch for the features described below.
 
-Open **http://127.0.0.1:8000/** for the primary workflow: **Configure test → Recommend settings → Inspect waveform → Compare measurement**.
+## The problem
 
-- **Configure test:** generator profile (or a custom generator with complete ratings), impulse type, desired crest in V or kV, test-object capacitance and divider capacitance. Stray capacitance, inductance and the loss factor sit under *Circuit assumptions*. Stock, engine and equipment reference have their own sections. Every assumption is saved with the run.
-- **Results:** these lead with the waveform plot and say plainly what produced it, for example "Circuit prediction" or "Outside validated ML range; workbook-equation metrics used". The metrics shown are re-extracted from the plotted curve. Next come the conceptual 3D stack, the recommended stages and charge per stage, the front and tail resistor construction, deviations from target, the hardware and waveform verdicts and a few ranked alternatives. Detailed engineering evidence is collapsed underneath.
-- **Compare measurement:** imports a measured CSV with its purpose (independent validation or calibration), divider scale, polarity, onset, session and shot, and the settings actually fired. The unchanged circuit is re-simulated at the as-fired settings. A shared admission check decides whether the capture may be used for a one-shot offset, a parameter fit or independent evaluation. A precursor, a polarity mismatch or a different firing setting can no longer slip through on any route ([capture admission](docs/capture_admission.md)).
-- **Waveform Diagnostics** (`/diagnostics/`, or *Diagnose this waveform* on a result): compares a raw CSV or a photo or screenshot of a waveform with the circuit prediction at the settings actually fired. It then fits physically meaningful explanations with the existing solver: resistor networks, effective capacitance, inductance, charge, loss convention, measurement gain, timing or baseline. Competing explanations are kept, fit scores are not fault probabilities, and image-derived samples never enter calibration ([waveform diagnostics](docs/waveform_diagnostics.md)).
+An impulse generator must deliver the required peak voltage and timing while respecting stage, voltage, energy and resistor-stock constraints. Engineers also need to inspect the component arrangement, assumptions, uncertainty and what changed after a trial.
 
-What is demonstrated, and what is not, is in [docs/accuracy_report.md](docs/accuracy_report.md). The supporting documents are:
+ImpulseTwin connects those decisions, from a requested waveform to a saved configuration and a comparison with an uploaded capture.
 
-- [physics audit](docs/physics_audit.md)
-- [laboratory validation checklist](docs/laboratory_validation_checklist.md)
-- the evaluation pack, which you can re-run with `python -m scripts.evaluation_pack`
-- the Waveform Diagnostics evaluation, which you can re-run with `python -m scripts.evaluate_waveform_diagnostics` (generated fixtures; protocol in `artifacts/waveform_diagnostics/v1`)
+## What you can do
 
-The static UI must be rebuilt after a source change: `cd frontend && npm run build -- --webpack` (Node 22).
+| Capability | What it provides |
+|---|---|
+| **Recommend settings** | Ranked stages, charge and constructible front/tail resistor networks under the declared ratings and counted stock. |
+| **Inspect the waveform** | Circuit curves, crest/timing metrics, target deviations, uncertainty checks and prediction-basis labels. |
+| **Assemble digitally** | Interactive RLC assembly, component inspection and staged safety briefings in a conceptual twin. |
+| **Explore faults** | Front/tail-chopped lightning impulses, reduced-charge conducting stages and assumed conductive bypasses at fixed charge. |
+| **Diagnose differences** | Compare CSV or digitized plot images with the as-fired prediction and inspect competing explanations. |
+| **Use capture feedback** | Admitted calibration, effective-parameter fitting, separate independent evaluation and recorded provenance. |
+| **Explain and export** | Judge Mode, evidence views, saved history and HTML/JSON/CSV reports where supported. |
 
-## Architecture
+## The workflow
 
 ```mermaid
-flowchart LR
-  A[Request + source profile] --> B[CPRI circuit physics or separate workbook reference]
-  B --> C[Counted resistor / stage search]
-  C --> D[Supported ML or physics fallback]
-  D --> E[Limits + uncertainty + ranking]
-  E --> F[Independent RLC + fixed-setting challenge]
-  F --> G[Model evidence card + Judge Mode]
-  E --> H[Saved prediction + raw trial]
-  H --> I[Scoped calibration / independent measured evaluation]
-  I --> G
+flowchart TD
+    A[Configure profile, target, circuit assumptions and stock] --> B[Recommend feasible settings]
+    B --> C[Inspect saved waveform and component networks]
+    C --> D[Virtual assembly and generated fault experiments]
+    C --> E[Compare a capture at as-fired settings]
+    E --> F[Review quality, provenance and possible causes]
+    F --> G[Admitted calibration or separate independent evaluation]
+    D --> H[Save and export the engineering record]
+    G --> H
 ```
 
-[Architecture detail](docs/architecture.md) explains ownership and data flow. Post-ranking challenges do not rerank candidates.
+**CPRI recommendations use circuit physics.** The 12-stage / 0.125 µF CPRI reference stays separate from the 15-stage / 3 µF workbook benchmark. Frozen workbook residual ML is applied only inside its supported domain. [Architecture and technology stack →](docs/system_architecture.md)
 
-## Evidence available
+## Try it in five minutes
 
-- **Synthetic benchmark:** frozen V1 reduced macro tolerance-normalized RMSE by 41.9265% versus physics on the original supplied Hidden Test. This is error reduction, not an accuracy percentage. Saved results are preserved; Hidden Test was not reused for tuning.
-- **Development experiments:** V2 remains optional/experimental. V3, V4 and V5 remain non-promoted. Their development CV comparisons cannot be added to the V1 result. [Timeline](docs/experiment_timeline.md).
-- **Saved search-quality evidence:** the previous release's bounded winner matches exhaustive enumeration in all four declared small synthetic cases, with zero objective gaps. The current hardening comparison is recorded separately in the optimization report. These small cases do not establish a global optimum. [Protocol and limits](docs/optimizer_quality_benchmark.md).
-- **Generated trial feedback:** exercises upload, quality review and scoped calibration, always labeled as generated.
-- **Measured laboratory accuracy:** pending actual independent captures. The [laboratory evidence workflow](docs/laboratory_evidence.md) is ready to accept and evaluate them without mixing sources.
+1. Open the [live app](https://cr7-impulsetwin-730856d9.azurewebsites.net/).
+2. Select **CPRI Lightning · matched example, assumed stock** and choose **Recommend settings**.
+3. Inspect the waveform, stages, charge and resistor construction.
+4. Open **Assemble digitally**, then **Fault test lab** to compare generated scenarios.
+5. Open **Waveform Diagnostics** and use its labelled generated demonstration.
+6. Export a report and review the supporting evidence.
 
-## Important limits
-
-The organizer clarification supplied for this hardening identifies the problem-statement parameters as the actual/reference CPRI generator inputs: 12 maximum stages, 200 kV/stage, 0.125 µF/stage and 2.5 kJ/stage / 30 kJ total. The workbook's 15-stage / 3 µF synthetic reference remains separate. CPRI stock counts, pulse ratings, permitted mounting, physical minimum operating voltage/stages and the role of 545 pF remain unverified. The configured 50 kV and two-stage lower bounds are application assumptions. Unknown inventory requires an explicit operator override. Equipment test levels are not invented when no authoritative catalog exists.
-
-Reference and circuit predictions may disagree. Synthetic uncertainty and finite scenario checks do not guarantee laboratory performance. The workbook's static validation-table discrepancy remains unresolved. This software is decision support, not a hardware controller or IEC certification. [Source reconciliation](docs/source_reconciliation.md).
-
-Circuit **v2.1** keeps the same physical equations while stabilizing the zero-inductance analytic solution, retaining significant tiny inductance and refining fast crossings at an appropriate numerical tolerance. It returns an explicit diagnostic if continuous crest or decay modes cannot be resolved. The matched CPRI Lightning regression retains approximately 11 stages, 181.90 kV/stage, 1.187 µs front, 53.744 µs tail and 22.75 kJ stored charging energy. [Model assumptions and units](docs/assumptions.md).
+The public demo has shared history. Use generated examples, not private lab files. Preset stock quantities are assumptions, not confirmed CPRI inventory. [Complete demo guide →](docs/demo_walkthrough.md)
 
 ## Run locally
 
-Use Python 3.12. Frozen models and the static UI are included, so training and Node are unnecessary to run the prepared app.
+Use **Python 3.12**. The prepared frontend and frozen models are included on the demo branch; Node.js is needed only to rebuild the frontend.
 
-```sh
-python -m venv .venv
-# Activate .venv for your shell, then:
+```bash
+git clone --branch codex/assembly-twin https://github.com/Siddhanthkjain2005/CR7.git
+cd CR7
+python3 -m venv .venv
+source .venv/bin/activate
 python -m pip install -r requirements.txt
 python scripts/dev.py
 ```
 
-Open **http://127.0.0.1:8000/** (the guided seven-step walkthrough remains at `/judge/`). For exact Windows PowerShell, macOS and Linux installation/build commands, see [local setup and release readiness](docs/release_readiness.md). Setup needs internet for dependencies; inference runs locally after preparation.
+Open **http://127.0.0.1:8000/**. On Windows, use `py -3.12 -m venv .venv` and `.\.venv\Scripts\Activate.ps1` for environment creation/activation. Installing dependencies needs internet; the prepared local inference workflow can run offline.
 
-## Demo and engineering views
+[Detailed setup and platform notes](https://github.com/Siddhanthkjain2005/CR7/blob/codex/assembly-twin/docs/release_readiness.md) · [Contributor guide](CONTRIBUTING.md)
 
-**Judge Mode** guides a 4–6 minute tour: problem → request → exact configuration → evidence → alternatives → trial feedback → summary. Predictions and labels come from actual backend results. [Demo guide](docs/judge_mode.md).
+## Evidence, with its scope
 
-Engineering pages retain waveform exploration, trial calibration, setup-change planning, model metrics, history and reports. **Laboratory Evidence**, **Hardware Verification**, **Experiment Timeline** and **Search Quality** make the supporting evidence easier to inspect. [Evidence levels](docs/evidence_levels.md), [hardware provenance](docs/hardware_verification.md), [test-object references](docs/test_object_reference.md).
+| Recorded evidence | What it establishes |
+|---|---|
+| **36/36 expected outcomes** in the generated evaluation pack | Declared recommendation/rejection behavior under the assumed circuit; 14/14 bounded-versus-exhaustive comparisons matched. |
+| **Seven numerical gates passed** for the fault study | Agreement with independent integration of the same equations: 34 resolved scenarios and four expected all-bypass rejections. |
+| **Frozen workbook V1: 5/6 outputs better than kNN** | Preserved synthetic benchmark evidence. V2's separate development result does not replace it. |
+| **Waveform Diagnostics: 7/8 gates passed** | Generated-fixture evidence; a second-tail component remains an ambiguous effective-resistance explanation. |
+| **438 backend tests** in the recorded fault-release verification | Software regression coverage for that version; frontend checks and dated QA are recorded separately. |
+| **Live Azure checks passed** | Pages/assets, evidence APIs, recommendation, four fault scenarios, diagnostics and saved records/image persistence after restart. |
 
-The 6 October hardening passes 263 backend tests, frontend checks and desktop/mobile browser review while preserving frozen evidence. Before/after timings, search comparisons, numerical corrections and remaining limits are in [the optimization report](OPTIMIZATION_REPORT.md); progress is recorded in [AGENTS.md](AGENTS.md).
+These are distinct software and simulation results, **not a laboratory-accuracy percentage**. Independent CPRI measurements remain necessary to establish real-equipment agreement. [Evidence and limitations →](docs/README.md#evidence-and-validation)
 
-## Validate a release
+## Inside the demo branch
 
-```sh
-python scripts/verify_release.py
+```text
+backend/app/       API, physics, optimization, ML gates and records
+frontend/          Next.js interface, charts and conceptual digital twin
+config/            Generator profiles, compliance and search configuration
+data/              Supplied sources, processed and labelled generated data
+artifacts/         Frozen models, protocols and completed study records
+docs/              Engineering explanations and workflow guides
+scripts/           Startup, audits and reproducibility utilities
+tests/             Backend regression and numerical checks
+presentations/     Team pitch deck
 ```
 
-The verifier checks frozen hashes, configuration/models, tests, frontend typecheck/build, static assets and a fresh database with external network blocked in-process. It writes `artifacts/release_readiness.json` with PASS / FAIL / NOT TESTED. Unverified platforms and disconnected-laptop rehearsal remain explicit.
+## Team CR7
 
-No deployment is included. Confirm the remaining hardware metadata for physical application. Independent measured captures can later establish laboratory performance; they are not a prerequisite for the current physics-based challenge solution. Original implementation history and deeper results are preserved in [project history](docs/project_history.md), [PROJECT_STATE.md](PROJECT_STATE.md), and [HANDOFF.md](HANDOFF.md).
+| Name | Role |
+|---|---|
+| **Adithya P** | Team lead |
+| **Siddhanth K Jain** | Team member |
+| **Kamma Rohan** | Team member |
+| **Dinesh Kulkarni** | Team member |
+
+## Scope of use
+
+Engineering decision support: no hardware control, physical assembly/firing authorization, personal-safety certification or IEC certification. Unknown stock, ratings, mounting and measurement facts remain unknown. Generated captures and conceptual diagrams retain their labels.
+
+Use **Issues** for reproducible questions or problems; include the branch, profile and reproduction steps.
